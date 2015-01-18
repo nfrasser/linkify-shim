@@ -1,0 +1,31 @@
+{
+  "name": "linkifyjs",
+  "main": "linkify.min.js",
+  "version": "2.0.0",
+  "authors": [
+    "SoapBox Innovations Inc. <dev@soapboxhq.com>"
+  ],
+  "description": "Intelligent URL recognition, made easy",
+  "keywords": [
+    "node",
+    "js",
+    "jquery",
+    "link",
+    "autolink",
+    "text",
+    "url",
+    "email"
+  ],
+  "license": "MIT",
+  "homepage": "http://soapbox.github.io/jQuery-linkify/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7.0"
+  }
+}
