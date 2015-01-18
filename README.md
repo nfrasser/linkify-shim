@@ -11,3 +11,12 @@ Package Managers
 ```
 bower install linkifyjs
 ```
+
+### [NPM](https://npmjs.com/)
+
+See the [main repo](https://github.com/SoapBox/jQuery-linkify/blob/master/README.md) for usage with Node.js/Browserify.
+
+```
+npm install linkifyjs
+```
+
