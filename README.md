@@ -1,7 +1,7 @@
 Linkify
 =======
 
-Shim repository for [Linkify](http://github.com/SoapBox/jQuery-linkify/).
+Shim repository for Linkify. All issues with this plugin should be directed to http://github.com/SoapBox/jQuery-linkify/
 
 Package Managers
 ----------------
