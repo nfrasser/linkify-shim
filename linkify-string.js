@@ -1,95 +1,82 @@
 ;(function (linkify) {
 "use strict";
-var tokenize = linkify.tokenize;
+var tokenize = linkify.tokenize, options = linkify.options;
 "use strict";
 
-function typeToTarget(type) {
-	return type === "url" ? "_blank" : null;
+function cleanText(text) {
+	return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function cleanAttr(href) {
+	return href.replace(/"/g, "&quot;");
 }
 
 function attributesToString(attributes) {
-	if (!attributes) return "";
-	var result = [];
+
+	if (!attributes) {
+		return "";
+	}var result = [];
 
 	for (var attr in attributes) {
 		var val = (attributes[attr] + "").replace(/"/g, "&quot;");
-		result.push("" + attr + "=\"" + val + "\"");
+		result.push("" + attr + "=\"" + cleanAttr(val) + "\"");
 	}
 	return result.join(" ");
 }
 
-/**
-	Options:
+function linkifyStr(str) {
+	var opts = arguments[1] === undefined ? {} : arguments[1];
 
-	defaultProtocol: 'http'
-	format: null
-	linkAttributes: null,
-	linkClass: null,
-	newLine: '\n', // deprecated
-	nl2br: false,
-	tagName: 'a',
-	target: '_blank',
-*/
-function linkifyStr(str, options) {
-	options = options || {};
+	opts = options.normalize(opts);
 
-	var defaultProtocol = options.defaultProtocol || "http",
-	    tagName = options.tagName || "a",
-	    target = options.target || typeToTarget,
-	    newLine = options.newLine || false,
-	    // deprecated
-	nl2br = !!newLine || options.nl2br || false,
-	    format = options.format || null,
-	    attributes = options.linkAttributes || null,
-	    linkClass = "linkified",
+	var tokens = tokenize(str),
 	    result = [];
-
-	if (options.linkClass) {
-		linkClass += " " + options.linkClass;
-	}
-
-	var tokens = tokenize(str);
 
 	for (var i = 0; i < tokens.length; i++) {
 		var token = tokens[i];
 		if (token.isLink) {
-			var link = "<" + tagName + " href=\"" + token.toHref(defaultProtocol) + "\" class=\"" + linkClass + "\"",
-			    targetStr = typeof target === "function" ? target(token.type) : target,
-			    attributesHash = typeof attributes === "function" ? attributes(token.type) : attributes;
 
-			if (targetStr) {
-				link += " target=\"" + targetStr + "\"";
+			var tagName = options.resolve(opts.tagName, token.type),
+			    linkClass = options.resolve(opts.linkClass, token.type),
+			    target = options.resolve(opts.target, token.type),
+			    formatted = options.resolve(opts.format, token.toString(), token.type),
+			    href = token.toHref(opts.defaultProtocol),
+			    formattedHref = options.resolve(opts.formatHref, href, token.type),
+			    attributesHash = options.resolve(opts.attributes, token.type);
+
+			var link = "<" + tagName + " href=\"" + cleanAttr(formattedHref) + "\" class=\"" + linkClass + "\"";
+			if (target) {
+				link += " target=\"" + target + "\"";
 			}
 
 			if (attributesHash) {
 				link += " " + attributesToString(attributesHash);
 			}
 
-			link += ">";
-			link += typeof format === "function" ? format(token.toString(), token.type) : token.toString();
-			link += "</" + tagName + ">";
-
+			link += ">" + cleanText(formatted) + "</" + tagName + ">";
 			result.push(link);
-		} else if (token.type === "nl" && nl2br) {
-			if (newLine) {
-				result.push(newLine);
+		} else if (token.type === "nl" && opts.nl2br) {
+			if (opts.newLine) {
+				result.push(opts.newLine);
 			} else {
 				result.push("<br>\n");
 			}
 		} else {
-			result.push(token.toString());
+			result.push(cleanText(token.toString()));
 		}
 	}
 
 	return result.join("");
 }
 
+if (!String.prototype.linkify) {
+	String.prototype.linkify = function (options) {
+		return linkifyStr(this, options);
+	};
+}
+
 /**
 	Convert strings of text into linkable HTML text
-	TODO: Support for computed attributes based on the type?
 */
 window.linkifyStr = linkifyStr;
-String.prototype.linkify = function (options) {
-	return linkifyStr(this, options);
-};
 })(window.linkify);

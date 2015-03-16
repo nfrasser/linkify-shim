@@ -1,3 +1,36 @@
+define('linkify/utils/options', ['exports'], function (exports) {
+    'use strict';
+    function noop(val) {
+        return val;
+    }
+    function typeToTarget(type) {
+        return type === 'url' ? '_blank' : null;
+    }
+    function normalize(opts) {
+        opts = opts || {};
+        var newLine = opts.newLine || false;
+        return {
+            attributes: opts.linkAttributes || null,
+            defaultProtocol: opts.defaultProtocol || 'http',
+            format: opts.format || noop,
+            formatHref: opts.formatHref || noop,
+            newLine: opts.newLine || false,
+            nl2br: !!newLine || opts.nl2br || false,
+            tagName: opts.tagName || 'a',
+            target: opts.target || typeToTarget,
+            linkClass: opts.linkClass || 'linkified'
+        };
+    }
+    function resolve(value) {
+        for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+            params[_key - 1] = arguments[_key];
+        }
+        return typeof value === 'function' ? value.apply(undefined, params) : value;
+    }
+    exports.normalize = normalize;
+    exports.resolve = resolve;
+    Object.defineProperty(exports, '__esModule', { value: true });
+});
 define('linkify/core/tokens', ['exports'], function (exports) {
     'use strict';
     var _get = function get(object, property, receiver) {
@@ -40,26 +73,30 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         if (instanceProps)
             Object.defineProperties(child.prototype, instanceProps);
     };
+    var _classCallCheck = function (instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError('Cannot call a class as a function');
+        }
+    };
     var TextToken = function () {
         function TextToken(value) {
+            _classCallCheck(this, TextToken);
             this.v = value;
         }
         _prototypeProperties(TextToken, {
             test: {
-                value: function (value) {
+                value: function test(value) {
                     return value instanceof this;
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         }, {
             toString: {
-                value: function () {
+                value: function toString() {
                     return this.v + '';
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         });
@@ -67,8 +104,9 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }();
     var DOMAIN = function (TextToken) {
         function DOMAIN() {
-            if (Object.getPrototypeOf(DOMAIN) !== null) {
-                Object.getPrototypeOf(DOMAIN).apply(this, arguments);
+            _classCallCheck(this, DOMAIN);
+            if (TextToken != null) {
+                TextToken.apply(this, arguments);
             }
         }
         _inherits(DOMAIN, TextToken);
@@ -76,6 +114,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var AT = function (TextToken) {
         function AT() {
+            _classCallCheck(this, AT);
             _get(Object.getPrototypeOf(AT.prototype), 'constructor', this).call(this, '@');
         }
         _inherits(AT, TextToken);
@@ -83,6 +122,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var COLON = function (TextToken) {
         function COLON() {
+            _classCallCheck(this, COLON);
             _get(Object.getPrototypeOf(COLON.prototype), 'constructor', this).call(this, ':');
         }
         _inherits(COLON, TextToken);
@@ -90,6 +130,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var DOT = function (TextToken) {
         function DOT() {
+            _classCallCheck(this, DOT);
             _get(Object.getPrototypeOf(DOT.prototype), 'constructor', this).call(this, '.');
         }
         _inherits(DOT, TextToken);
@@ -97,24 +138,27 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var LOCALHOST = function (TextToken) {
         function LOCALHOST() {
-            if (Object.getPrototypeOf(LOCALHOST) !== null) {
-                Object.getPrototypeOf(LOCALHOST).apply(this, arguments);
+            _classCallCheck(this, LOCALHOST);
+            if (TextToken != null) {
+                TextToken.apply(this, arguments);
             }
         }
         _inherits(LOCALHOST, TextToken);
         return LOCALHOST;
     }(TextToken);
-    var NL = function (TextToken) {
-        function NL() {
-            _get(Object.getPrototypeOf(NL.prototype), 'constructor', this).call(this, '\n');
+    var TNL = function (TextToken) {
+        function TNL() {
+            _classCallCheck(this, TNL);
+            _get(Object.getPrototypeOf(TNL.prototype), 'constructor', this).call(this, '\n');
         }
-        _inherits(NL, TextToken);
-        return NL;
+        _inherits(TNL, TextToken);
+        return TNL;
     }(TextToken);
     var NUM = function (TextToken) {
         function NUM() {
-            if (Object.getPrototypeOf(NUM) !== null) {
-                Object.getPrototypeOf(NUM).apply(this, arguments);
+            _classCallCheck(this, NUM);
+            if (TextToken != null) {
+                TextToken.apply(this, arguments);
             }
         }
         _inherits(NUM, TextToken);
@@ -122,6 +166,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var PLUS = function (TextToken) {
         function PLUS() {
+            _classCallCheck(this, PLUS);
             _get(Object.getPrototypeOf(PLUS.prototype), 'constructor', this).call(this, '+');
         }
         _inherits(PLUS, TextToken);
@@ -129,6 +174,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var POUND = function (TextToken) {
         function POUND() {
+            _classCallCheck(this, POUND);
             _get(Object.getPrototypeOf(POUND.prototype), 'constructor', this).call(this, '#');
         }
         _inherits(POUND, TextToken);
@@ -136,8 +182,9 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var PROTOCOL = function (TextToken) {
         function PROTOCOL() {
-            if (Object.getPrototypeOf(PROTOCOL) !== null) {
-                Object.getPrototypeOf(PROTOCOL).apply(this, arguments);
+            _classCallCheck(this, PROTOCOL);
+            if (TextToken != null) {
+                TextToken.apply(this, arguments);
             }
         }
         _inherits(PROTOCOL, TextToken);
@@ -145,6 +192,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var QUERY = function (TextToken) {
         function QUERY() {
+            _classCallCheck(this, QUERY);
             _get(Object.getPrototypeOf(QUERY.prototype), 'constructor', this).call(this, '?');
         }
         _inherits(QUERY, TextToken);
@@ -152,6 +200,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var SLASH = function (TextToken) {
         function SLASH() {
+            _classCallCheck(this, SLASH);
             _get(Object.getPrototypeOf(SLASH.prototype), 'constructor', this).call(this, '/');
         }
         _inherits(SLASH, TextToken);
@@ -159,8 +208,9 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var SYM = function (TextToken) {
         function SYM() {
-            if (Object.getPrototypeOf(SYM) !== null) {
-                Object.getPrototypeOf(SYM).apply(this, arguments);
+            _classCallCheck(this, SYM);
+            if (TextToken != null) {
+                TextToken.apply(this, arguments);
             }
         }
         _inherits(SYM, TextToken);
@@ -168,8 +218,9 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var TLD = function (TextToken) {
         function TLD() {
-            if (Object.getPrototypeOf(TLD) !== null) {
-                Object.getPrototypeOf(TLD).apply(this, arguments);
+            _classCallCheck(this, TLD);
+            if (TextToken != null) {
+                TextToken.apply(this, arguments);
             }
         }
         _inherits(TLD, TextToken);
@@ -177,8 +228,9 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(TextToken);
     var WS = function (TextToken) {
         function WS() {
-            if (Object.getPrototypeOf(WS) !== null) {
-                Object.getPrototypeOf(WS).apply(this, arguments);
+            _classCallCheck(this, WS);
+            if (TextToken != null) {
+                TextToken.apply(this, arguments);
             }
         }
         _inherits(WS, TextToken);
@@ -191,7 +243,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         COLON: COLON,
         DOT: DOT,
         LOCALHOST: LOCALHOST,
-        NL: NL,
+        NL: TNL,
         NUM: NUM,
         PLUS: PLUS,
         POUND: POUND,
@@ -207,22 +259,22 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }
     var MultiToken = function () {
         function MultiToken(value) {
+            _classCallCheck(this, MultiToken);
             this.v = value;
             this.type = 'token';
             this.isLink = false;
         }
         _prototypeProperties(MultiToken, {
             test: {
-                value: function (token) {
+                value: function test(token) {
                     return token instanceof this;
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         }, {
             toString: {
-                value: function () {
+                value: function toString() {
                     var result = [];
                     for (var i = 0; i < this.v.length; i++) {
                         result.push(this.v[i].toString());
@@ -230,19 +282,17 @@ define('linkify/core/tokens', ['exports'], function (exports) {
                     return result.join('');
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             },
             toHref: {
-                value: function () {
+                value: function toHref() {
                     return this.toString();
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             },
             toObject: {
-                value: function () {
+                value: function toObject() {
                     var protocol = arguments[0] === undefined ? 'http' : arguments[0];
                     return {
                         type: this.type,
@@ -251,7 +301,6 @@ define('linkify/core/tokens', ['exports'], function (exports) {
                     };
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         });
@@ -259,6 +308,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }();
     var EMAIL = function (MultiToken) {
         function EMAIL(value) {
+            _classCallCheck(this, EMAIL);
             _get(Object.getPrototypeOf(EMAIL.prototype), 'constructor', this).call(this, value);
             this.type = 'email';
             this.isLink = true;
@@ -266,11 +316,10 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(EMAIL, MultiToken);
         _prototypeProperties(EMAIL, null, {
             toHref: {
-                value: function () {
+                value: function toHref() {
                     return 'mailto:' + this.toString();
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         });
@@ -278,22 +327,25 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     }(MultiToken);
     var TEXT = function (MultiToken) {
         function TEXT(value) {
+            _classCallCheck(this, TEXT);
             _get(Object.getPrototypeOf(TEXT.prototype), 'constructor', this).call(this, value);
             this.type = 'text';
         }
         _inherits(TEXT, MultiToken);
         return TEXT;
     }(MultiToken);
-    var NL = function (MultiToken) {
-        function NL(value) {
-            _get(Object.getPrototypeOf(NL.prototype), 'constructor', this).call(this, value);
+    var MNL = function (MultiToken) {
+        function MNL(value) {
+            _classCallCheck(this, MNL);
+            _get(Object.getPrototypeOf(MNL.prototype), 'constructor', this).call(this, value);
             this.type = 'nl';
         }
-        _inherits(NL, MultiToken);
-        return NL;
+        _inherits(MNL, MultiToken);
+        return MNL;
     }(MultiToken);
     var URL = function (MultiToken) {
         function URL(value) {
+            _classCallCheck(this, URL);
             _get(Object.getPrototypeOf(URL.prototype), 'constructor', this).call(this, value);
             this.type = 'url';
             this.isLink = true;
@@ -301,11 +353,11 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(URL, MultiToken);
         _prototypeProperties(URL, null, {
             toHref: {
-                value: function () {
+                value: function toHref() {
                     var protocol = arguments[0] === undefined ? 'http' : arguments[0];
-                    var _hasProtocol = false, hasSlashSlash = false, tokens = this.v, result = [], i = 0;
+                    var hasProtocol = false, hasSlashSlash = false, tokens = this.v, result = [], i = 0;
                     while (PROTOCOL.test(tokens[i])) {
-                        _hasProtocol = true;
+                        hasProtocol = true;
                         result.push(tokens[i].toString().toLowerCase());
                         i++;
                     }
@@ -322,21 +374,19 @@ define('linkify/core/tokens', ['exports'], function (exports) {
                         result.push(tokens[i].toString());
                     }
                     result = result.join('');
-                    if (!(_hasProtocol || hasSlashSlash)) {
+                    if (!(hasProtocol || hasSlashSlash)) {
                         result = protocol + '://' + result;
                     }
                     return result;
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             },
             hasProtocol: {
-                value: function () {
+                value: function hasProtocol() {
                     return this.v[0] instanceof PROTOCOL;
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         });
@@ -345,12 +395,13 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     var multi = {
         Base: MultiToken,
         EMAIL: EMAIL,
-        NL: NL,
+        NL: MNL,
         TEXT: TEXT,
         URL: URL
     };
     exports.text = text;
     exports.multi = multi;
+    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify/core/state', ['exports'], function (exports) {
     'use strict';
@@ -375,14 +426,20 @@ define('linkify/core/state', ['exports'], function (exports) {
         if (instanceProps)
             Object.defineProperties(child.prototype, instanceProps);
     };
+    var _classCallCheck = function (instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError('Cannot call a class as a function');
+        }
+    };
     var BaseState = function () {
         function BaseState(tClass) {
+            _classCallCheck(this, BaseState);
             this.j = [];
             this.T = tClass || null;
         }
         _prototypeProperties(BaseState, null, {
             on: {
-                value: function (symbol, state) {
+                value: function on(symbol, state) {
                     if (symbol instanceof Array) {
                         for (var i = 0; i < symbol.length; i++) {
                             this.j.push([
@@ -398,44 +455,40 @@ define('linkify/core/state', ['exports'], function (exports) {
                     ]);
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             },
             next: {
-                value: function (item) {
+                value: function next(item) {
                     for (var i = 0; i < this.j.length; i++) {
                         var jump = this.j[i], symbol = jump[0], state = jump[1];
-                        if (this.test(item, symbol))
+                        if (this.test(item, symbol)) {
                             return state;
+                        }
                     }
                     return false;
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             },
             accepts: {
-                value: function () {
+                value: function accepts() {
                     return !!this.T;
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             },
             test: {
-                value: function (item, symbol) {
+                value: function test(item, symbol) {
                     return item === symbol;
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             },
             emit: {
-                value: function () {
+                value: function emit() {
                     return this.T;
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         });
@@ -443,18 +496,18 @@ define('linkify/core/state', ['exports'], function (exports) {
     }();
     var CharacterState = function (BaseState) {
         function CharacterState() {
-            if (Object.getPrototypeOf(CharacterState) !== null) {
-                Object.getPrototypeOf(CharacterState).apply(this, arguments);
+            _classCallCheck(this, CharacterState);
+            if (BaseState != null) {
+                BaseState.apply(this, arguments);
             }
         }
         _inherits(CharacterState, BaseState);
         _prototypeProperties(CharacterState, null, {
             test: {
-                value: function (character, charOrRegExp) {
+                value: function test(character, charOrRegExp) {
                     return character === charOrRegExp || charOrRegExp instanceof RegExp && charOrRegExp.test(character);
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         });
@@ -462,18 +515,18 @@ define('linkify/core/state', ['exports'], function (exports) {
     }(BaseState);
     var TokenState = function (BaseState) {
         function TokenState() {
-            if (Object.getPrototypeOf(TokenState) !== null) {
-                Object.getPrototypeOf(TokenState).apply(this, arguments);
+            _classCallCheck(this, TokenState);
+            if (BaseState != null) {
+                BaseState.apply(this, arguments);
             }
         }
         _inherits(TokenState, BaseState);
         _prototypeProperties(TokenState, null, {
             test: {
-                value: function (token, tokenClass) {
+                value: function test(token, tokenClass) {
                     return tokenClass.test(token);
                 },
                 writable: true,
-                enumerable: true,
                 configurable: true
             }
         });
@@ -485,8 +538,9 @@ define('linkify/core/state', ['exports'], function (exports) {
             state = nextState;
             i++;
         }
-        if (i >= len)
+        if (i >= len) {
             return [];
+        }
         while (i < len - 1) {
             nextState = new CharacterState(defaultToken);
             newStates.push(nextState);
@@ -502,28 +556,18 @@ define('linkify/core/state', ['exports'], function (exports) {
     exports.CharacterState = CharacterState;
     exports.TokenState = TokenState;
     exports.stateify = stateify;
-});
-define('linkify/core/tlds', [
-    'exports',
-    'module'
-], function (exports, module) {
-    'use strict';
-    module.exports = 'abogado|ac|academy|accountants|active|actor|ad|adult|ae|aero|af|ag|agency|ai|airforce|al|allfinanz|alsace|am|an|android|ao|aq|aquarelle|ar|archi|army|arpa|as|asia|associates|at|attorney|au|auction|audio|autos|aw|ax|axa|az|ba|band|bar|bargains|bayern|bb|bd|be|beer|berlin|best|bf|bg|bh|bi|bid|bike|bio|biz|bj|black|blackfriday|bloomberg|blue|bm|bmw|bn|bnpparibas|bo|boo|boutique|br|brussels|bs|bt|budapest|build|builders|business|buzz|bv|bw|by|bz|bzh|ca|cab|cal|camera|camp|cancerresearch|capetown|capital|caravan|cards|care|career|careers|casa|cash|cat|catering|cc|cd|center|ceo|cern|cf|cg|ch|channel|cheap|christmas|chrome|church|ci|citic|city|ck|cl|claims|cleaning|click|clinic|clothing|club|cm|cn|co|coach|codes|coffee|college|cologne|com|community|company|computer|condos|construction|consulting|contractors|cooking|cool|coop|country|cr|credit|creditcard|cricket|crs|cruises|cu|cuisinella|cv|cw|cx|cy|cymru|cz|dad|dance|dating|day|de|deals|degree|delivery|democrat|dental|dentist|desi|diamonds|diet|digital|direct|directory|discount|dj|dk|dm|dnp|do|domains|durban|dvag|dz|eat|ec|edu|education|ee|eg|email|emerck|energy|engineer|engineering|enterprises|equipment|er|es|esq|estate|et|eu|eurovision|eus|events|everbank|exchange|expert|exposed|fail|farm|fashion|feedback|fi|finance|financial|firmdale|fish|fishing|fitness|fj|fk|flights|florist|flsmidth|fly|fm|fo|foo|forsale|foundation|fr|frl|frogans|fund|furniture|futbol|ga|gal|gallery|gb|gbiz|gd|ge|gent|gf|gg|gh|gi|gift|gifts|gives|gl|glass|gle|global|globo|gm|gmail|gmo|gmx|gn|google|gop|gov|gp|gq|gr|graphics|gratis|green|gripe|gs|gt|gu|guide|guitars|guru|gw|gy|hamburg|haus|healthcare|help|here|hiphop|hiv|hk|hm|hn|holdings|holiday|homes|horse|host|hosting|house|how|hr|ht|hu|ibm|id|ie|il|im|immo|immobilien|in|industries|info|ing|ink|institute|insure|int|international|investments|io|iq|ir|irish|is|it|je|jetzt|jm|jo|jobs|joburg|jp|juegos|kaufen|ke|kg|kh|ki|kim|kitchen|kiwi|km|kn|koeln|kp|kr|krd|kred|kw|ky|kz|la|lacaixa|land|latrobe|lawyer|lb|lc|lds|lease|legal|lgbt|li|life|lighting|limited|limo|link|lk|loans|london|lotto|lr|ls|lt|ltda|lu|luxe|luxury|lv|ly|ma|madrid|maison|management|mango|market|marketing|mc|md|me|media|meet|melbourne|meme|memorial|menu|mg|mh|miami|mil|mini|mk|ml|mm|mn|mo|mobi|moda|moe|monash|money|mormon|mortgage|moscow|motorcycles|mov|mp|mq|mr|ms|mt|mu|museum|mv|mw|mx|my|mz|na|nagoya|name|navy|nc|ne|net|network|neustar|new|nexus|nf|ng|ngo|nhk|ni|ninja|nl|no|np|nr|nra|nrw|nu|nyc|nz|okinawa|om|ong|onl|ooo|org|organic|otsuka|ovh|pa|paris|partners|parts|party|pe|pf|pg|ph|pharmacy|photo|photography|photos|physio|pics|pictures|pink|pizza|pk|pl|place|plumbing|pm|pn|pohl|poker|porn|post|pr|praxi|press|pro|prod|productions|prof|properties|property|ps|pt|pub|pw|py|qa|qpon|quebec|re|realtor|recipes|red|rehab|reise|reisen|reit|ren|rentals|repair|report|republican|rest|restaurant|reviews|rich|rio|rip|ro|rocks|rodeo|rs|rsvp|ru|ruhr|rw|ryukyu|sa|saarland|sarl|sb|sc|sca|scb|schmidt|schule|science|scot|sd|se|services|sexy|sg|sh|shiksha|shoes|si|singles|sj|sk|sl|sm|sn|so|social|software|sohu|solar|solutions|soy|space|spiegel|sr|st|su|supplies|supply|support|surf|surgery|suzuki|sv|sx|sy|sydney|systems|sz|taipei|tatar|tattoo|tax|tc|td|technology|tel|tf|tg|th|tienda|tips|tirol|tj|tk|tl|tm|tn|to|today|tokyo|tools|top|town|toys|tp|tr|trade|training|travel|trust|tt|tui|tv|tw|tz|ua|ug|uk|university|uno|uol|us|uy|uz|va|vacations|vc|ve|vegas|ventures|versicherung|vet|vg|vi|viajes|villas|vision|vlaanderen|vn|vodka|vote|voting|voto|voyage|vu|wales|wang|watch|webcam|website|wed|wedding|wf|whoswho|wien|wiki|williamhill|wme|work|works|world|ws|wtc|wtf|xxx|xyz|yachts|yandex|ye|yoga|yokohama|youtube|yt|za|zip|zm|zone|zw'.split('|');
+    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify/core/scanner', [
     'exports',
     './tokens',
-    './state',
-    './tlds'
-], function (exports, _tokens, _state, _tlds) {
+    './state'
+], function (exports, _tokens, _state) {
     'use strict';
-    var _interopRequire = function (obj) {
-        return obj && (obj['default'] || obj);
-    };
     var TOKENS = _tokens.text;
     var State = _state.CharacterState;
     var stateify = _state.stateify;
-    var tlds = _interopRequire(_tlds);
+    var tlds = 'abogado|ac|academy|accountants|active|actor|ad|adult|ae|aero|af|ag|agency|ai|airforce|al|allfinanz|alsace|am|an|android|ao|aq|aquarelle|ar|archi|army|arpa|as|asia|associates|at|attorney|au|auction|audio|autos|aw|ax|axa|az|ba|band|bar|bargains|bayern|bb|bd|be|beer|berlin|best|bf|bg|bh|bi|bid|bike|bio|biz|bj|black|blackfriday|bloomberg|blue|bm|bmw|bn|bnpparibas|bo|boo|boutique|br|brussels|bs|bt|budapest|build|builders|business|buzz|bv|bw|by|bz|bzh|ca|cab|cal|camera|camp|cancerresearch|capetown|capital|caravan|cards|care|career|careers|casa|cash|cat|catering|cc|cd|center|ceo|cern|cf|cg|ch|channel|cheap|christmas|chrome|church|ci|citic|city|ck|cl|claims|cleaning|click|clinic|clothing|club|cm|cn|co|coach|codes|coffee|college|cologne|com|community|company|computer|condos|construction|consulting|contractors|cooking|cool|coop|country|cr|credit|creditcard|cricket|crs|cruises|cu|cuisinella|cv|cw|cx|cy|cymru|cz|dad|dance|dating|day|de|deals|degree|delivery|democrat|dental|dentist|desi|diamonds|diet|digital|direct|directory|discount|dj|dk|dm|dnp|do|domains|durban|dvag|dz|eat|ec|edu|education|ee|eg|email|emerck|energy|engineer|engineering|enterprises|equipment|er|es|esq|estate|et|eu|eurovision|eus|events|everbank|exchange|expert|exposed|fail|farm|fashion|feedback|fi|finance|financial|firmdale|fish|fishing|fitness|fj|fk|flights|florist|flsmidth|fly|fm|fo|foo|forsale|foundation|fr|frl|frogans|fund|furniture|futbol|ga|gal|gallery|gb|gbiz|gd|ge|gent|gf|gg|gh|gi|gift|gifts|gives|gl|glass|gle|global|globo|gm|gmail|gmo|gmx|gn|google|gop|gov|gp|gq|gr|graphics|gratis|green|gripe|gs|gt|gu|guide|guitars|guru|gw|gy|hamburg|haus|healthcare|help|here|hiphop|hiv|hk|hm|hn|holdings|holiday|homes|horse|host|hosting|house|how|hr|ht|hu|ibm|id|ie|il|im|immo|immobilien|in|industries|info|ing|ink|institute|insure|int|international|investments|io|iq|ir|irish|is|it|je|jetzt|jm|jo|jobs|joburg|jp|juegos|kaufen|ke|kg|kh|ki|kim|kitchen|kiwi|km|kn|koeln|kp|kr|krd|kred|kw|ky|kz|la|lacaixa|land|latrobe|lawyer|lb|lc|lds|lease|legal|lgbt|li|life|lighting|limited|limo|link|lk|loans|london|lotto|lr|ls|lt|ltda|lu|luxe|luxury|lv|ly|ma|madrid|maison|management|mango|market|marketing|mc|md|me|media|meet|melbourne|meme|memorial|menu|mg|mh|miami|mil|mini|mk|ml|mm|mn|mo|mobi|moda|moe|monash|money|mormon|mortgage|moscow|motorcycles|mov|mp|mq|mr|ms|mt|mu|museum|mv|mw|mx|my|mz|na|nagoya|name|navy|nc|ne|net|network|neustar|new|nexus|nf|ng|ngo|nhk|ni|ninja|nl|no|np|nr|nra|nrw|nu|nyc|nz|okinawa|om|ong|onl|ooo|org|organic|otsuka|ovh|pa|paris|partners|parts|party|pe|pf|pg|ph|pharmacy|photo|photography|photos|physio|pics|pictures|pink|pizza|pk|pl|place|plumbing|pm|pn|pohl|poker|porn|post|pr|praxi|press|pro|prod|productions|prof|properties|property|ps|pt|pub|pw|py|qa|qpon|quebec|re|realtor|recipes|red|rehab|reise|reisen|reit|ren|rentals|repair|report|republican|rest|restaurant|reviews|rich|rio|rip|ro|rocks|rodeo|rs|rsvp|ru|ruhr|rw|ryukyu|sa|saarland|sarl|sb|sc|sca|scb|schmidt|schule|science|scot|sd|se|services|sexy|sg|sh|shiksha|shoes|si|singles|sj|sk|sl|sm|sn|so|social|software|sohu|solar|solutions|soy|space|spiegel|sr|st|su|supplies|supply|support|surf|surgery|suzuki|sv|sx|sy|sydney|systems|sz|taipei|tatar|tattoo|tax|tc|td|technology|tel|tf|tg|th|tienda|tips|tirol|tj|tk|tl|tm|tn|to|today|tokyo|tools|top|town|toys|tp|tr|trade|training|travel|trust|tt|tui|tv|tw|tz|ua|ug|uk|university|uno|uol|us|uy|uz|va|vacations|vc|ve|vegas|ventures|versicherung|vet|vg|vi|viajes|villas|vision|vlaanderen|vn|vodka|vote|voting|voto|voyage|vu|wales|wang|watch|webcam|website|wed|wedding|wf|whoswho|wien|wiki|williamhill|wme|work|works|world|ws|wtc|wtf|xxx|xyz|yachts|yandex|ye|yoga|yokohama|youtube|yt|za|zip|zm|zone|zw'.split('|');
     var REGEXP_NUM = /[0-9]/, REGEXP_ALPHANUM = /[a-z0-9]/, COLON = ':';
     var domainStates = [], makeState = function (tokenClass) {
             return new State(tokenClass);
@@ -572,7 +616,7 @@ define('linkify/core/scanner', [
     S_DOMAIN_HYPHEN.on(REGEXP_NUM, S_DOMAIN);
     S_DOMAIN_HYPHEN.on(REGEXP_ALPHANUM, S_DOMAIN);
     S_START.on(/./, makeState(TOKENS.SYM));
-    var run = function (str) {
+    var run = function run(str) {
         var lowerStr = str.toLowerCase(), len = str.length, cursor = 0, tokens = [];
         while (cursor < len) {
             var state = S_START, secondState = null, nextState = null, tokenLength = 0, latestAccepting = null, sinceAccepts = -1;
@@ -602,13 +646,13 @@ define('linkify/core/scanner', [
     exports.TOKENS = TOKENS;
     exports.run = run;
     exports.start = start;
+    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify/core/parser', [
     'exports',
-    'module',
     './tokens',
     './state'
-], function (exports, module, _tokens, _state) {
+], function (exports, _tokens, _state) {
     'use strict';
     var TEXT_TOKENS = _tokens.text;
     var MULTI_TOKENS = _tokens.multi;
@@ -706,7 +750,7 @@ define('linkify/core/parser', [
     S_LOCALPART_AT.on(TT_TLD, S_EMAIL_DOMAIN);
     S_LOCALPART_AT.on(TT_DOMAIN, S_EMAIL_DOMAIN);
     S_LOCALPART_AT.on(TT_LOCALHOST, S_EMAIL);
-    var run = function (tokens) {
+    var run = function run(tokens) {
         var len = tokens.length, cursor = 0, multis = [], textTokens = [];
         while (cursor < len) {
             var state = S_START, secondState = null, nextState = null, multiLength = 0, latestAccepting = null, sinceAccepts = -1;
@@ -745,41 +789,46 @@ define('linkify/core/parser', [
         }
         return multis;
     };
-    module.exports = {
-        State: State,
-        TOKENS: MULTI_TOKENS,
-        run: run,
-        start: S_START
-    };
+    var TOKENS = MULTI_TOKENS, start = S_START;
+    exports.State = State;
+    exports.TOKENS = TOKENS;
+    exports.run = run;
+    exports.start = start;
+    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify', [
     'exports',
+    './linkify/utils/options',
     './linkify/core/scanner',
     './linkify/core/parser'
-], function (exports, _linkifyCoreScanner, _linkifyCoreParser) {
+], function (exports, _linkifyUtilsOptions, _linkifyCoreScanner, _linkifyCoreParser) {
     'use strict';
+    var options = _linkifyUtilsOptions;
     var scanner = _linkifyCoreScanner;
     var parser = _linkifyCoreParser;
-    var tokenize = function (str) {
+    var tokenize = function tokenize(str) {
         return parser.run(scanner.run(str));
     };
-    var find = function (str) {
+    var find = function find(str) {
+        var type = arguments[1] === undefined ? null : arguments[1];
         var tokens = tokenize(str), filtered = [];
         for (var i = 0; i < tokens.length; i++) {
-            if (tokens[i].isLink) {
+            if (tokens[i].isLink && (!type || tokens[i].type === type)) {
                 filtered.push(tokens[i].toObject());
             }
         }
         return filtered;
     };
-    var test = function (str) {
+    var test = function test(str) {
         var type = arguments[1] === undefined ? null : arguments[1];
         var tokens = tokenize(str);
         return tokens.length === 1 && tokens[0].isLink && (!type || tokens[0].type === type);
     };
     exports.find = find;
+    exports.options = options;
     exports.parser = parser;
     exports.scanner = scanner;
     exports.test = test;
     exports.tokenize = tokenize;
+    Object.defineProperty(exports, '__esModule', { value: true });
 });
