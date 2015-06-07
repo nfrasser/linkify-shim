@@ -34,7 +34,8 @@ define("linkify-element", ["exports", "module", "./linkify"], function (exports,
 				    formatted = options.resolve(opts.format, token.toString(), token.type),
 				    href = token.toHref(opts.defaultProtocol),
 				    formattedHref = options.resolve(opts.formatHref, href, token.type),
-				    attributesHash = options.resolve(opts.attributes, token.type);
+				    attributesHash = options.resolve(opts.attributes, token.type),
+				    events = options.resolve(opts.events, token.type);
 
 				// Build the link
 				var link = doc.createElement(tagName);
@@ -48,6 +49,16 @@ define("linkify-element", ["exports", "module", "./linkify"], function (exports,
 				if (attributesHash) {
 					for (var attr in attributesHash) {
 						link.setAttribute(attr, attributesHash[attr]);
+					}
+				}
+
+				if (events) {
+					for (var _event in events) {
+						if (link.addEventListener) {
+							link.addEventListener(_event, events[_event]);
+						} else if (link.attachEvent) {
+							link.attachEvent("on" + _event, events[_event]);
+						}
 					}
 				}
 

@@ -20,7 +20,7 @@ define("linkify/plugins/hashtag", ["exports", "module"], function (exports, modu
 		    S_HASH = undefined,
 		    S_HASHTAG = undefined;
 
-		var HASHTAG = (function (MultiToken) {
+		var HASHTAG = (function (_MultiToken) {
 			function HASHTAG(value) {
 				_classCallCheck(this, HASHTAG);
 
@@ -29,7 +29,7 @@ define("linkify/plugins/hashtag", ["exports", "module"], function (exports, modu
 				this.isLink = true;
 			}
 
-			_inherits(HASHTAG, MultiToken);
+			_inherits(HASHTAG, _MultiToken);
 
 			return HASHTAG;
 		})(MultiToken);

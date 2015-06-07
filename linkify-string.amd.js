@@ -1,9 +1,9 @@
 define("linkify-string", ["exports", "module", "./linkify"], function (exports, module, _linkify) {
-	"use strict";
-
 	/**
  	Convert strings of text into linkable HTML text
  */
+
+	"use strict";
 
 	var tokenize = _linkify.tokenize;
 	var options = _linkify.options;

@@ -1,5 +1,6 @@
 define('linkify/utils/options', ['exports'], function (exports) {
     'use strict';
+    Object.defineProperty(exports, '__esModule', { value: true });
     function noop(val) {
         return val;
     }
@@ -12,6 +13,7 @@ define('linkify/utils/options', ['exports'], function (exports) {
         return {
             attributes: opts.linkAttributes || null,
             defaultProtocol: opts.defaultProtocol || 'http',
+            events: opts.events || null,
             format: opts.format || noop,
             formatHref: opts.formatHref || noop,
             newLine: opts.newLine || false,
@@ -29,7 +31,6 @@ define('linkify/utils/options', ['exports'], function (exports) {
     }
     exports.normalize = normalize;
     exports.resolve = resolve;
-    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify/core/tokens', ['exports'], function (exports) {
     'use strict';
@@ -67,173 +68,182 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         if (superClass)
             subClass.__proto__ = superClass;
     };
-    var _prototypeProperties = function (child, staticProps, instanceProps) {
-        if (staticProps)
-            Object.defineProperties(child, staticProps);
-        if (instanceProps)
-            Object.defineProperties(child.prototype, instanceProps);
-    };
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var key in props) {
+                var prop = props[key];
+                prop.configurable = true;
+                if (prop.value)
+                    prop.writable = true;
+            }
+            Object.defineProperties(target, props);
+        }
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps)
+                defineProperties(Constructor.prototype, protoProps);
+            if (staticProps)
+                defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
     var _classCallCheck = function (instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError('Cannot call a class as a function');
         }
     };
+    Object.defineProperty(exports, '__esModule', { value: true });
     var TextToken = function () {
         function TextToken(value) {
             _classCallCheck(this, TextToken);
             this.v = value;
         }
-        _prototypeProperties(TextToken, {
-            test: {
-                value: function test(value) {
-                    return value instanceof this;
-                },
-                writable: true,
-                configurable: true
-            }
-        }, {
+        _createClass(TextToken, {
             toString: {
                 value: function toString() {
                     return this.v + '';
-                },
-                writable: true,
-                configurable: true
+                }
+            }
+        }, {
+            test: {
+                value: function test(value) {
+                    return value instanceof this;
+                }
             }
         });
         return TextToken;
     }();
-    var DOMAIN = function (TextToken) {
+    var DOMAIN = function (_TextToken) {
         function DOMAIN() {
             _classCallCheck(this, DOMAIN);
-            if (TextToken != null) {
-                TextToken.apply(this, arguments);
+            if (_TextToken != null) {
+                _TextToken.apply(this, arguments);
             }
         }
-        _inherits(DOMAIN, TextToken);
+        _inherits(DOMAIN, _TextToken);
         return DOMAIN;
     }(TextToken);
-    var AT = function (TextToken) {
+    var AT = function (_TextToken2) {
         function AT() {
             _classCallCheck(this, AT);
             _get(Object.getPrototypeOf(AT.prototype), 'constructor', this).call(this, '@');
         }
-        _inherits(AT, TextToken);
+        _inherits(AT, _TextToken2);
         return AT;
     }(TextToken);
-    var COLON = function (TextToken) {
+    var COLON = function (_TextToken3) {
         function COLON() {
             _classCallCheck(this, COLON);
             _get(Object.getPrototypeOf(COLON.prototype), 'constructor', this).call(this, ':');
         }
-        _inherits(COLON, TextToken);
+        _inherits(COLON, _TextToken3);
         return COLON;
     }(TextToken);
-    var DOT = function (TextToken) {
+    var DOT = function (_TextToken4) {
         function DOT() {
             _classCallCheck(this, DOT);
             _get(Object.getPrototypeOf(DOT.prototype), 'constructor', this).call(this, '.');
         }
-        _inherits(DOT, TextToken);
+        _inherits(DOT, _TextToken4);
         return DOT;
     }(TextToken);
-    var LOCALHOST = function (TextToken) {
+    var LOCALHOST = function (_TextToken5) {
         function LOCALHOST() {
             _classCallCheck(this, LOCALHOST);
-            if (TextToken != null) {
-                TextToken.apply(this, arguments);
+            if (_TextToken5 != null) {
+                _TextToken5.apply(this, arguments);
             }
         }
-        _inherits(LOCALHOST, TextToken);
+        _inherits(LOCALHOST, _TextToken5);
         return LOCALHOST;
     }(TextToken);
-    var TNL = function (TextToken) {
+    var TNL = function (_TextToken6) {
         function TNL() {
             _classCallCheck(this, TNL);
             _get(Object.getPrototypeOf(TNL.prototype), 'constructor', this).call(this, '\n');
         }
-        _inherits(TNL, TextToken);
+        _inherits(TNL, _TextToken6);
         return TNL;
     }(TextToken);
-    var NUM = function (TextToken) {
+    var NUM = function (_TextToken7) {
         function NUM() {
             _classCallCheck(this, NUM);
-            if (TextToken != null) {
-                TextToken.apply(this, arguments);
+            if (_TextToken7 != null) {
+                _TextToken7.apply(this, arguments);
             }
         }
-        _inherits(NUM, TextToken);
+        _inherits(NUM, _TextToken7);
         return NUM;
     }(TextToken);
-    var PLUS = function (TextToken) {
+    var PLUS = function (_TextToken8) {
         function PLUS() {
             _classCallCheck(this, PLUS);
             _get(Object.getPrototypeOf(PLUS.prototype), 'constructor', this).call(this, '+');
         }
-        _inherits(PLUS, TextToken);
+        _inherits(PLUS, _TextToken8);
         return PLUS;
     }(TextToken);
-    var POUND = function (TextToken) {
+    var POUND = function (_TextToken9) {
         function POUND() {
             _classCallCheck(this, POUND);
             _get(Object.getPrototypeOf(POUND.prototype), 'constructor', this).call(this, '#');
         }
-        _inherits(POUND, TextToken);
+        _inherits(POUND, _TextToken9);
         return POUND;
     }(TextToken);
-    var PROTOCOL = function (TextToken) {
+    var PROTOCOL = function (_TextToken10) {
         function PROTOCOL() {
             _classCallCheck(this, PROTOCOL);
-            if (TextToken != null) {
-                TextToken.apply(this, arguments);
+            if (_TextToken10 != null) {
+                _TextToken10.apply(this, arguments);
             }
         }
-        _inherits(PROTOCOL, TextToken);
+        _inherits(PROTOCOL, _TextToken10);
         return PROTOCOL;
     }(TextToken);
-    var QUERY = function (TextToken) {
+    var QUERY = function (_TextToken11) {
         function QUERY() {
             _classCallCheck(this, QUERY);
             _get(Object.getPrototypeOf(QUERY.prototype), 'constructor', this).call(this, '?');
         }
-        _inherits(QUERY, TextToken);
+        _inherits(QUERY, _TextToken11);
         return QUERY;
     }(TextToken);
-    var SLASH = function (TextToken) {
+    var SLASH = function (_TextToken12) {
         function SLASH() {
             _classCallCheck(this, SLASH);
             _get(Object.getPrototypeOf(SLASH.prototype), 'constructor', this).call(this, '/');
         }
-        _inherits(SLASH, TextToken);
+        _inherits(SLASH, _TextToken12);
         return SLASH;
     }(TextToken);
-    var SYM = function (TextToken) {
+    var SYM = function (_TextToken13) {
         function SYM() {
             _classCallCheck(this, SYM);
-            if (TextToken != null) {
-                TextToken.apply(this, arguments);
+            if (_TextToken13 != null) {
+                _TextToken13.apply(this, arguments);
             }
         }
-        _inherits(SYM, TextToken);
+        _inherits(SYM, _TextToken13);
         return SYM;
     }(TextToken);
-    var TLD = function (TextToken) {
+    var TLD = function (_TextToken14) {
         function TLD() {
             _classCallCheck(this, TLD);
-            if (TextToken != null) {
-                TextToken.apply(this, arguments);
+            if (_TextToken14 != null) {
+                _TextToken14.apply(this, arguments);
             }
         }
-        _inherits(TLD, TextToken);
+        _inherits(TLD, _TextToken14);
         return TLD;
     }(TextToken);
-    var WS = function (TextToken) {
+    var WS = function (_TextToken15) {
         function WS() {
             _classCallCheck(this, WS);
-            if (TextToken != null) {
-                TextToken.apply(this, arguments);
+            if (_TextToken15 != null) {
+                _TextToken15.apply(this, arguments);
             }
         }
-        _inherits(WS, TextToken);
+        _inherits(WS, _TextToken15);
         return WS;
     }(TextToken);
     var text = {
@@ -264,15 +274,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
             this.type = 'token';
             this.isLink = false;
         }
-        _prototypeProperties(MultiToken, {
-            test: {
-                value: function test(token) {
-                    return token instanceof this;
-                },
-                writable: true,
-                configurable: true
-            }
-        }, {
+        _createClass(MultiToken, {
             toString: {
                 value: function toString() {
                     var result = [];
@@ -280,16 +282,12 @@ define('linkify/core/tokens', ['exports'], function (exports) {
                         result.push(this.v[i].toString());
                     }
                     return result.join('');
-                },
-                writable: true,
-                configurable: true
+                }
             },
             toHref: {
                 value: function toHref() {
                     return this.toString();
-                },
-                writable: true,
-                configurable: true
+                }
             },
             toObject: {
                 value: function toObject() {
@@ -299,59 +297,61 @@ define('linkify/core/tokens', ['exports'], function (exports) {
                         value: this.toString(),
                         href: this.toHref(protocol)
                     };
-                },
-                writable: true,
-                configurable: true
+                }
+            }
+        }, {
+            test: {
+                value: function test(token) {
+                    return token instanceof this;
+                }
             }
         });
         return MultiToken;
     }();
-    var EMAIL = function (MultiToken) {
+    var EMAIL = function (_MultiToken) {
         function EMAIL(value) {
             _classCallCheck(this, EMAIL);
             _get(Object.getPrototypeOf(EMAIL.prototype), 'constructor', this).call(this, value);
             this.type = 'email';
             this.isLink = true;
         }
-        _inherits(EMAIL, MultiToken);
-        _prototypeProperties(EMAIL, null, {
+        _inherits(EMAIL, _MultiToken);
+        _createClass(EMAIL, {
             toHref: {
                 value: function toHref() {
                     return 'mailto:' + this.toString();
-                },
-                writable: true,
-                configurable: true
+                }
             }
         });
         return EMAIL;
     }(MultiToken);
-    var TEXT = function (MultiToken) {
+    var TEXT = function (_MultiToken2) {
         function TEXT(value) {
             _classCallCheck(this, TEXT);
             _get(Object.getPrototypeOf(TEXT.prototype), 'constructor', this).call(this, value);
             this.type = 'text';
         }
-        _inherits(TEXT, MultiToken);
+        _inherits(TEXT, _MultiToken2);
         return TEXT;
     }(MultiToken);
-    var MNL = function (MultiToken) {
+    var MNL = function (_MultiToken3) {
         function MNL(value) {
             _classCallCheck(this, MNL);
             _get(Object.getPrototypeOf(MNL.prototype), 'constructor', this).call(this, value);
             this.type = 'nl';
         }
-        _inherits(MNL, MultiToken);
+        _inherits(MNL, _MultiToken3);
         return MNL;
     }(MultiToken);
-    var URL = function (MultiToken) {
+    var URL = function (_MultiToken4) {
         function URL(value) {
             _classCallCheck(this, URL);
             _get(Object.getPrototypeOf(URL.prototype), 'constructor', this).call(this, value);
             this.type = 'url';
             this.isLink = true;
         }
-        _inherits(URL, MultiToken);
-        _prototypeProperties(URL, null, {
+        _inherits(URL, _MultiToken4);
+        _createClass(URL, {
             toHref: {
                 value: function toHref() {
                     var protocol = arguments[0] === undefined ? 'http' : arguments[0];
@@ -378,16 +378,12 @@ define('linkify/core/tokens', ['exports'], function (exports) {
                         result = protocol + '://' + result;
                     }
                     return result;
-                },
-                writable: true,
-                configurable: true
+                }
             },
             hasProtocol: {
                 value: function hasProtocol() {
                     return this.v[0] instanceof PROTOCOL;
-                },
-                writable: true,
-                configurable: true
+                }
             }
         });
         return URL;
@@ -401,7 +397,6 @@ define('linkify/core/tokens', ['exports'], function (exports) {
     };
     exports.text = text;
     exports.multi = multi;
-    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify/core/state', ['exports'], function (exports) {
     'use strict';
@@ -420,24 +415,37 @@ define('linkify/core/state', ['exports'], function (exports) {
         if (superClass)
             subClass.__proto__ = superClass;
     };
-    var _prototypeProperties = function (child, staticProps, instanceProps) {
-        if (staticProps)
-            Object.defineProperties(child, staticProps);
-        if (instanceProps)
-            Object.defineProperties(child.prototype, instanceProps);
-    };
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var key in props) {
+                var prop = props[key];
+                prop.configurable = true;
+                if (prop.value)
+                    prop.writable = true;
+            }
+            Object.defineProperties(target, props);
+        }
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps)
+                defineProperties(Constructor.prototype, protoProps);
+            if (staticProps)
+                defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
     var _classCallCheck = function (instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError('Cannot call a class as a function');
         }
     };
+    Object.defineProperty(exports, '__esModule', { value: true });
     var BaseState = function () {
         function BaseState(tClass) {
             _classCallCheck(this, BaseState);
             this.j = [];
             this.T = tClass || null;
         }
-        _prototypeProperties(BaseState, null, {
+        _createClass(BaseState, {
             on: {
                 value: function on(symbol, state) {
                     if (symbol instanceof Array) {
@@ -453,9 +461,7 @@ define('linkify/core/state', ['exports'], function (exports) {
                         symbol,
                         state
                     ]);
-                },
-                writable: true,
-                configurable: true
+                }
             },
             next: {
                 value: function next(item) {
@@ -466,68 +472,56 @@ define('linkify/core/state', ['exports'], function (exports) {
                         }
                     }
                     return false;
-                },
-                writable: true,
-                configurable: true
+                }
             },
             accepts: {
                 value: function accepts() {
                     return !!this.T;
-                },
-                writable: true,
-                configurable: true
+                }
             },
             test: {
                 value: function test(item, symbol) {
                     return item === symbol;
-                },
-                writable: true,
-                configurable: true
+                }
             },
             emit: {
                 value: function emit() {
                     return this.T;
-                },
-                writable: true,
-                configurable: true
+                }
             }
         });
         return BaseState;
     }();
-    var CharacterState = function (BaseState) {
+    var CharacterState = function (_BaseState) {
         function CharacterState() {
             _classCallCheck(this, CharacterState);
-            if (BaseState != null) {
-                BaseState.apply(this, arguments);
+            if (_BaseState != null) {
+                _BaseState.apply(this, arguments);
             }
         }
-        _inherits(CharacterState, BaseState);
-        _prototypeProperties(CharacterState, null, {
+        _inherits(CharacterState, _BaseState);
+        _createClass(CharacterState, {
             test: {
                 value: function test(character, charOrRegExp) {
                     return character === charOrRegExp || charOrRegExp instanceof RegExp && charOrRegExp.test(character);
-                },
-                writable: true,
-                configurable: true
+                }
             }
         });
         return CharacterState;
     }(BaseState);
-    var TokenState = function (BaseState) {
+    var TokenState = function (_BaseState2) {
         function TokenState() {
             _classCallCheck(this, TokenState);
-            if (BaseState != null) {
-                BaseState.apply(this, arguments);
+            if (_BaseState2 != null) {
+                _BaseState2.apply(this, arguments);
             }
         }
-        _inherits(TokenState, BaseState);
-        _prototypeProperties(TokenState, null, {
+        _inherits(TokenState, _BaseState2);
+        _createClass(TokenState, {
             test: {
                 value: function test(token, tokenClass) {
                     return tokenClass.test(token);
-                },
-                writable: true,
-                configurable: true
+                }
             }
         });
         return TokenState;
@@ -556,7 +550,6 @@ define('linkify/core/state', ['exports'], function (exports) {
     exports.CharacterState = CharacterState;
     exports.TokenState = TokenState;
     exports.stateify = stateify;
-    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify/core/scanner', [
     'exports',
@@ -564,6 +557,7 @@ define('linkify/core/scanner', [
     './state'
 ], function (exports, _tokens, _state) {
     'use strict';
+    Object.defineProperty(exports, '__esModule', { value: true });
     var TOKENS = _tokens.text;
     var State = _state.CharacterState;
     var stateify = _state.stateify;
@@ -646,7 +640,6 @@ define('linkify/core/scanner', [
     exports.TOKENS = TOKENS;
     exports.run = run;
     exports.start = start;
-    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify/core/parser', [
     'exports',
@@ -654,6 +647,7 @@ define('linkify/core/parser', [
     './state'
 ], function (exports, _tokens, _state) {
     'use strict';
+    Object.defineProperty(exports, '__esModule', { value: true });
     var TEXT_TOKENS = _tokens.text;
     var MULTI_TOKENS = _tokens.multi;
     var State = _state.TokenState;
@@ -794,7 +788,6 @@ define('linkify/core/parser', [
     exports.TOKENS = TOKENS;
     exports.run = run;
     exports.start = start;
-    Object.defineProperty(exports, '__esModule', { value: true });
 });
 define('linkify', [
     'exports',
@@ -803,6 +796,7 @@ define('linkify', [
     './linkify/core/parser'
 ], function (exports, _linkifyUtilsOptions, _linkifyCoreScanner, _linkifyCoreParser) {
     'use strict';
+    Object.defineProperty(exports, '__esModule', { value: true });
     var options = _linkifyUtilsOptions;
     var scanner = _linkifyCoreScanner;
     var parser = _linkifyCoreParser;
@@ -830,5 +824,4 @@ define('linkify', [
     exports.scanner = scanner;
     exports.test = test;
     exports.tokenize = tokenize;
-    Object.defineProperty(exports, '__esModule', { value: true });
 });

@@ -20,7 +20,7 @@ function hashtag(linkify) {
 	    S_HASH = undefined,
 	    S_HASHTAG = undefined;
 
-	var HASHTAG = (function (MultiToken) {
+	var HASHTAG = (function (_MultiToken) {
 		function HASHTAG(value) {
 			_classCallCheck(this, HASHTAG);
 
@@ -29,7 +29,7 @@ function hashtag(linkify) {
 			this.isLink = true;
 		}
 
-		_inherits(HASHTAG, MultiToken);
+		_inherits(HASHTAG, _MultiToken);
 
 		return HASHTAG;
 	})(MultiToken);
