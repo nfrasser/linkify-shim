@@ -2,11 +2,11 @@
   "name": "linkifyjs",
   "main": "linkify.js",
 
-  "version": "2.0.0",
+  "version": "2.0.0-beta.1",
   "authors": [
     "SoapBox Innovations Inc. <dev@soapboxhq.com>"
   ],
-  "description": "Intelligent URL recognition, made easy",
+  "description": "Intelligent link recognition, made easy",
   "keywords": [
     "node",
     "js",
@@ -18,7 +18,7 @@
     "email"
   ],
   "license": "MIT",
-  "homepage": "http://soapbox.github.io/jQuery-linkify/",
+  "homepage": "http://soapbox.github.io/linkifyjs/",
   "ignore": [
     "**/.*",
     "node_modules",
