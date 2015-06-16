@@ -1,27 +1,30 @@
 ;(function (linkify) {
 "use strict";
 var tokenize = linkify.tokenize, options = linkify.options;
-"use strict";
+/**
+	Convert strings of text into linkable HTML text
+*/
+
+'use strict';
 
 function cleanText(text) {
-	return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function cleanAttr(href) {
-	return href.replace(/"/g, "&quot;");
+	return href.replace(/"/g, '&quot;');
 }
 
 function attributesToString(attributes) {
 
-	if (!attributes) {
-		return "";
-	}var result = [];
+	if (!attributes) return '';
+	var result = [];
 
 	for (var attr in attributes) {
-		var val = (attributes[attr] + "").replace(/"/g, "&quot;");
-		result.push("" + attr + "=\"" + cleanAttr(val) + "\"");
+		var val = (attributes[attr] + '').replace(/"/g, '&quot;');
+		result.push('' + attr + '="' + cleanAttr(val) + '"');
 	}
-	return result.join(" ");
+	return result.join(' ');
 }
 
 function linkifyStr(str) {
@@ -44,29 +47,29 @@ function linkifyStr(str) {
 			    formattedHref = options.resolve(opts.formatHref, href, token.type),
 			    attributesHash = options.resolve(opts.attributes, token.type);
 
-			var link = "<" + tagName + " href=\"" + cleanAttr(formattedHref) + "\" class=\"" + linkClass + "\"";
+			var link = '<' + tagName + ' href="' + cleanAttr(formattedHref) + '" class="' + linkClass + '"';
 			if (target) {
-				link += " target=\"" + target + "\"";
+				link += ' target="' + target + '"';
 			}
 
 			if (attributesHash) {
-				link += " " + attributesToString(attributesHash);
+				link += ' ' + attributesToString(attributesHash);
 			}
 
-			link += ">" + cleanText(formatted) + "</" + tagName + ">";
+			link += '>' + cleanText(formatted) + '</' + tagName + '>';
 			result.push(link);
-		} else if (token.type === "nl" && opts.nl2br) {
+		} else if (token.type === 'nl' && opts.nl2br) {
 			if (opts.newLine) {
 				result.push(opts.newLine);
 			} else {
-				result.push("<br>\n");
+				result.push('<br>\n');
 			}
 		} else {
 			result.push(cleanText(token.toString()));
 		}
 	}
 
-	return result.join("");
+	return result.join('');
 }
 
 if (!String.prototype.linkify) {
@@ -74,9 +77,5 @@ if (!String.prototype.linkify) {
 		return linkifyStr(this, options);
 	};
 }
-
-/**
-	Convert strings of text into linkable HTML text
-*/
 window.linkifyStr = linkifyStr;
 })(window.linkify);

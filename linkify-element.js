@@ -1,9 +1,11 @@
 ;(function (linkify) {
 "use strict";
 var tokenize = linkify.tokenize, options = linkify.options;
-"use strict";
+/**
+	Linkify a HTML DOM node
+*/
 
-var _toConsumableArray = function (arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } };
+'use strict';
 
 var HTML_NODE = 1,
     TXT_NODE = 3;
@@ -34,10 +36,10 @@ function tokensToNodes(tokens, opts, doc) {
 
 			// Build the link
 			var link = doc.createElement(tagName);
-			link.setAttribute("href", formattedHref);
-			link.setAttribute("class", linkClass);
+			link.setAttribute('href', formattedHref);
+			link.setAttribute('class', linkClass);
 			if (target) {
-				link.setAttribute("target", target);
+				link.setAttribute('target', target);
 			}
 
 			// Build up additional attributes
@@ -52,15 +54,15 @@ function tokensToNodes(tokens, opts, doc) {
 					if (link.addEventListener) {
 						link.addEventListener(_event, events[_event]);
 					} else if (link.attachEvent) {
-						link.attachEvent("on" + _event, events[_event]);
+						link.attachEvent('on' + _event, events[_event]);
 					}
 				}
 			}
 
 			link.appendChild(doc.createTextNode(formatted));
 			result.push(link);
-		} else if (token.type === "nl" && opts.nl2br) {
-			result.push(doc.createElement("br"));
+		} else if (token.type === 'nl' && opts.nl2br) {
+			result.push(doc.createElement('br'));
 		} else {
 			result.push(doc.createTextNode(token.toString()));
 		}
@@ -73,12 +75,12 @@ function tokensToNodes(tokens, opts, doc) {
 function linkifyElementHelper(element, opts, doc) {
 
 	// Can the element be linkified?
-	if (!element || typeof element !== "object" || element.nodeType !== HTML_NODE) {
-		throw new Error("Cannot linkify " + element + " - Invalid DOM Node type");
+	if (!element || typeof element !== 'object' || element.nodeType !== HTML_NODE) {
+		throw new Error('Cannot linkify ' + element + ' - Invalid DOM Node type');
 	}
 
 	// Is this element already a link?
-	if (element.tagName.toLowerCase() === "a" /*|| element.hasClass('linkified')*/) {
+	if (element.tagName.toLowerCase() === 'a' /*|| element.hasClass('linkified')*/) {
 		// No need to linkify
 		return element;
 	}
@@ -96,7 +98,7 @@ function linkifyElementHelper(element, opts, doc) {
 
 				var str = childElement.nodeValue,
 				    tokens = tokenize(str);
-				children.push.apply(children, _toConsumableArray(tokensToNodes(tokens, opts, doc)));
+				children.push.apply(children, tokensToNodes(tokens, opts, doc));
 
 				break;
 
@@ -128,7 +130,7 @@ function linkifyElement(element, opts) {
 	} catch (e) {}
 
 	if (!doc) {
-		throw new Error("Cannot find document implementation. " + "If you are in a non-browser environment like Node.js, " + "pass the document implementation as the third argument to linkifyElement.");
+		throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
 	}
 
 	opts = options.normalize(opts);
@@ -139,10 +141,6 @@ function linkifyElement(element, opts) {
 // cycles
 linkifyElement.helper = linkifyElementHelper;
 linkifyElement.normalize = options.normalize;
-
-/**
-	Linkify a HTML DOM node
-*/
 
 /* do nothing for now */
 window.linkifyElement = linkifyElement;
