@@ -2,7 +2,7 @@
   "name": "linkifyjs",
   "main": "linkify.js",
 
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "authors": [
     "SoapBox Innovations Inc. <dev@soapboxhq.com>"
   ],
@@ -15,7 +15,11 @@
     "autolink",
     "text",
     "url",
-    "email"
+    "email",
+    "hashtag",
+    "hashtags",
+    "mention",
+    "mentions"
   ],
   "license": "MIT",
   "homepage": "http://soapbox.github.io/linkifyjs/",

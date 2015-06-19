@@ -9,6 +9,19 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 	    TXT_NODE = 3;
 
 	/**
+ 	Given a parent element and child node that the parent contains, replaces
+ 	that child with the given aary of new children
+ */
+	function replaceChildWithChildren(parent, oldChild, newChildren) {
+		var lastNewChild = newChildren[newChildren.length - 1];
+		parent.replaceChild(lastNewChild, oldChild);
+		for (var i = newChildren.length - 2; i >= 0; i--) {
+			parent.insertBefore(newChildren[i], lastNewChild);
+			lastNewChild = newChildren[i];
+		}
+	}
+
+	/**
  	Given an array of MultiTokens, return an array of Nodes that are either
  	(a) Plain Text nodes (node type 3)
  	(b) Anchor tag nodes (usually, unless tag name is overriden in the options)
@@ -23,14 +36,14 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 
 			if (token.isLink) {
 
-				var tagName = _linkify.options.resolve(opts.tagName, token.type),
-				    linkClass = _linkify.options.resolve(opts.linkClass, token.type),
-				    target = _linkify.options.resolve(opts.target, token.type),
+				var href = token.toHref(opts.defaultProtocol),
 				    formatted = _linkify.options.resolve(opts.format, token.toString(), token.type),
-				    href = token.toHref(opts.defaultProtocol),
 				    formattedHref = _linkify.options.resolve(opts.formatHref, href, token.type),
-				    attributesHash = _linkify.options.resolve(opts.attributes, token.type),
-				    events = _linkify.options.resolve(opts.events, token.type);
+				    attributesHash = _linkify.options.resolve(opts.attributes, href, token.type),
+				    tagName = _linkify.options.resolve(opts.tagName, href, token.type),
+				    linkClass = _linkify.options.resolve(opts.linkClass, href, token.type),
+				    target = _linkify.options.resolve(opts.target, href, token.type),
+				    events = _linkify.options.resolve(opts.events, href, token.type);
 
 				// Build the link
 				var link = doc.createElement(tagName);
@@ -48,11 +61,11 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 				}
 
 				if (events) {
-					for (var _event in events) {
+					for (var event in events) {
 						if (link.addEventListener) {
-							link.addEventListener(_event, events[_event]);
+							link.addEventListener(event, events[event]);
 						} else if (link.attachEvent) {
-							link.attachEvent('on' + _event, events[_event]);
+							link.attachEvent('on' + event, events[event]);
 						}
 					}
 				}
@@ -78,7 +91,7 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 		}
 
 		// Is this element already a link?
-		if (element.tagName.toLowerCase() === 'a' /*|| element.hasClass('linkified')*/) {
+		if (element.tagName === 'A' /*|| element.hasClass('linkified')*/) {
 			// No need to linkify
 			return element;
 		}
@@ -95,8 +108,14 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 				case TXT_NODE:
 
 					var str = childElement.nodeValue,
-					    tokens = (0, _linkify.tokenize)(str);
-					children.push.apply(children, tokensToNodes(tokens, opts, doc));
+					    tokens = (0, _linkify.tokenize)(str),
+					    nodes = tokensToNodes(tokens, opts, doc);
+
+					// Swap out the current child for the set of nodes
+					replaceChildWithChildren(element, childElement, nodes);
+
+					// so that the correct sibling is selected
+					childElement = nodes[nodes.length - 1];
 
 					break;
 
@@ -105,16 +124,6 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 			}
 
 			childElement = childElement.nextSibling;
-		}
-
-		// Clear out the element
-		while (element.firstChild) {
-			element.removeChild(element.firstChild);
-		}
-
-		// Replace with all the new nodes
-		for (var i = 0; i < children.length; i++) {
-			element.appendChild(children[i]);
 		}
 
 		return element;

@@ -462,8 +462,8 @@ var module$lib$linkify$utils$options = {__esModule:!0};
 function noop$$module$lib$linkify$utils$options(a) {
   return a;
 }
-function typeToTarget$$module$lib$linkify$utils$options(a) {
-  return "url" === a ? "_blank" : null;
+function typeToTarget$$module$lib$linkify$utils$options(a, b) {
+  return "url" === b ? "_blank" : null;
 }
 function normalize$$module$lib$linkify$utils$options(a) {
   a = a || {};

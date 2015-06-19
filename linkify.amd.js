@@ -4,7 +4,7 @@ define('linkify/utils/options', ['exports'], function (exports) {
     function noop(val) {
         return val;
     }
-    function typeToTarget(type) {
+    function typeToTarget(href, type) {
         return type === 'url' ? '_blank' : null;
     }
     function normalize(opts) {
