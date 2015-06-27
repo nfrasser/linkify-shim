@@ -10,7 +10,7 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 
 	/**
  	Given a parent element and child node that the parent contains, replaces
- 	that child with the given aary of new children
+ 	that child with the given array of new children
  */
 	function replaceChildWithChildren(parent, oldChild, newChildren) {
 		var lastNewChild = newChildren[newChildren.length - 1];
@@ -24,9 +24,10 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 	/**
  	Given an array of MultiTokens, return an array of Nodes that are either
  	(a) Plain Text nodes (node type 3)
- 	(b) Anchor tag nodes (usually, unless tag name is overriden in the options)
+ 	(b) Anchor tag nodes (usually, unless tag name is overridden in the options)
  
- 	Takes the same options as linkifyElement and an optional doc element (this should be passed in by linkifyElement)
+ 	Takes the same options as linkifyElement and an optional doc element
+ 	(this should be passed in by linkifyElement)
  */
 	function tokensToNodes(tokens, opts, doc) {
 		var result = [];
@@ -96,14 +97,13 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 			return element;
 		}
 
-		var children = [],
-		    childElement = element.firstChild;
+		var childElement = element.firstChild;
 
 		while (childElement) {
 
 			switch (childElement.nodeType) {
 				case HTML_NODE:
-					children.push(linkifyElementHelper(childElement, opts, doc));
+					linkifyElementHelper(childElement, opts, doc);
 					break;
 				case TXT_NODE:
 
@@ -118,9 +118,6 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 					childElement = nodes[nodes.length - 1];
 
 					break;
-
-				default:
-					children.push(childElement);break;
 			}
 
 			childElement = childElement.nextSibling;
@@ -144,8 +141,7 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 		return linkifyElementHelper(element, opts, doc);
 	}
 
-	// Maintain reference to the recursive helper to save some option-normalization
-	// cycles
+	// Maintain reference to the recursive helper to cache option-normalization
 	linkifyElement.helper = linkifyElementHelper;
 	linkifyElement.normalize = _linkify.options.normalize;
 

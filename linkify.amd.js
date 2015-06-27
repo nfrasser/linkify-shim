@@ -99,104 +99,114 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(DOT, _TextToken4);
         return DOT;
     }(TextToken);
-    var LOCALHOST = function (_TextToken5) {
-        function LOCALHOST() {
-            _classCallCheck(this, LOCALHOST);
+    var PUNCTUATION = function (_TextToken5) {
+        function PUNCTUATION() {
+            _classCallCheck(this, PUNCTUATION);
             if (_TextToken5 != null) {
                 _TextToken5.apply(this, arguments);
             }
         }
-        _inherits(LOCALHOST, _TextToken5);
+        _inherits(PUNCTUATION, _TextToken5);
+        return PUNCTUATION;
+    }(TextToken);
+    var LOCALHOST = function (_TextToken6) {
+        function LOCALHOST() {
+            _classCallCheck(this, LOCALHOST);
+            if (_TextToken6 != null) {
+                _TextToken6.apply(this, arguments);
+            }
+        }
+        _inherits(LOCALHOST, _TextToken6);
         return LOCALHOST;
     }(TextToken);
-    var TNL = function (_TextToken6) {
+    var TNL = function (_TextToken7) {
         function TNL() {
             _classCallCheck(this, TNL);
-            _TextToken6.call(this, '\n');
+            _TextToken7.call(this, '\n');
         }
-        _inherits(TNL, _TextToken6);
+        _inherits(TNL, _TextToken7);
         return TNL;
     }(TextToken);
-    var NUM = function (_TextToken7) {
+    var NUM = function (_TextToken8) {
         function NUM() {
             _classCallCheck(this, NUM);
-            if (_TextToken7 != null) {
-                _TextToken7.apply(this, arguments);
+            if (_TextToken8 != null) {
+                _TextToken8.apply(this, arguments);
             }
         }
-        _inherits(NUM, _TextToken7);
+        _inherits(NUM, _TextToken8);
         return NUM;
     }(TextToken);
-    var PLUS = function (_TextToken8) {
+    var PLUS = function (_TextToken9) {
         function PLUS() {
             _classCallCheck(this, PLUS);
-            _TextToken8.call(this, '+');
+            _TextToken9.call(this, '+');
         }
-        _inherits(PLUS, _TextToken8);
+        _inherits(PLUS, _TextToken9);
         return PLUS;
     }(TextToken);
-    var POUND = function (_TextToken9) {
+    var POUND = function (_TextToken10) {
         function POUND() {
             _classCallCheck(this, POUND);
-            _TextToken9.call(this, '#');
+            _TextToken10.call(this, '#');
         }
-        _inherits(POUND, _TextToken9);
+        _inherits(POUND, _TextToken10);
         return POUND;
     }(TextToken);
-    var PROTOCOL = function (_TextToken10) {
+    var PROTOCOL = function (_TextToken11) {
         function PROTOCOL() {
             _classCallCheck(this, PROTOCOL);
-            if (_TextToken10 != null) {
-                _TextToken10.apply(this, arguments);
+            if (_TextToken11 != null) {
+                _TextToken11.apply(this, arguments);
             }
         }
-        _inherits(PROTOCOL, _TextToken10);
+        _inherits(PROTOCOL, _TextToken11);
         return PROTOCOL;
     }(TextToken);
-    var QUERY = function (_TextToken11) {
+    var QUERY = function (_TextToken12) {
         function QUERY() {
             _classCallCheck(this, QUERY);
-            _TextToken11.call(this, '?');
+            _TextToken12.call(this, '?');
         }
-        _inherits(QUERY, _TextToken11);
+        _inherits(QUERY, _TextToken12);
         return QUERY;
     }(TextToken);
-    var SLASH = function (_TextToken12) {
+    var SLASH = function (_TextToken13) {
         function SLASH() {
             _classCallCheck(this, SLASH);
-            _TextToken12.call(this, '/');
+            _TextToken13.call(this, '/');
         }
-        _inherits(SLASH, _TextToken12);
+        _inherits(SLASH, _TextToken13);
         return SLASH;
     }(TextToken);
-    var SYM = function (_TextToken13) {
+    var SYM = function (_TextToken14) {
         function SYM() {
             _classCallCheck(this, SYM);
-            if (_TextToken13 != null) {
-                _TextToken13.apply(this, arguments);
-            }
-        }
-        _inherits(SYM, _TextToken13);
-        return SYM;
-    }(TextToken);
-    var TLD = function (_TextToken14) {
-        function TLD() {
-            _classCallCheck(this, TLD);
             if (_TextToken14 != null) {
                 _TextToken14.apply(this, arguments);
             }
         }
-        _inherits(TLD, _TextToken14);
-        return TLD;
+        _inherits(SYM, _TextToken14);
+        return SYM;
     }(TextToken);
-    var WS = function (_TextToken15) {
-        function WS() {
-            _classCallCheck(this, WS);
+    var TLD = function (_TextToken15) {
+        function TLD() {
+            _classCallCheck(this, TLD);
             if (_TextToken15 != null) {
                 _TextToken15.apply(this, arguments);
             }
         }
-        _inherits(WS, _TextToken15);
+        _inherits(TLD, _TextToken15);
+        return TLD;
+    }(TextToken);
+    var WS = function (_TextToken16) {
+        function WS() {
+            _classCallCheck(this, WS);
+            if (_TextToken16 != null) {
+                _TextToken16.apply(this, arguments);
+            }
+        }
+        _inherits(WS, _TextToken16);
         return WS;
     }(TextToken);
     var text = {
@@ -205,6 +215,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         AT: AT,
         COLON: COLON,
         DOT: DOT,
+        PUNCTUATION: PUNCTUATION,
         LOCALHOST: LOCALHOST,
         NL: TNL,
         NUM: NUM,
@@ -461,6 +472,7 @@ define('linkify/core/scanner', [
     S_START.on('?', makeState(_tokens.text.QUERY));
     S_START.on('/', makeState(_tokens.text.SLASH));
     S_START.on(COLON, makeState(_tokens.text.COLON));
+    S_START.on(/[,;!]/, makeState(_tokens.text.PUNCTUATION));
     S_START.on(/\n/, makeState(_tokens.text.NL));
     S_START.on(/\s/, S_WS);
     S_WS.on(/[^\S\n]/, S_WS);
@@ -537,7 +549,7 @@ define('linkify/core/parser', [
     var makeState = function makeState(tokenClass) {
         return new _state.TokenState(tokenClass);
     };
-    var TT_DOMAIN = _tokens.text.DOMAIN, TT_AT = _tokens.text.AT, TT_COLON = _tokens.text.COLON, TT_DOT = _tokens.text.DOT, TT_LOCALHOST = _tokens.text.LOCALHOST, TT_NL = _tokens.text.NL, TT_NUM = _tokens.text.NUM, TT_PLUS = _tokens.text.PLUS, TT_POUND = _tokens.text.POUND, TT_PROTOCOL = _tokens.text.PROTOCOL, TT_QUERY = _tokens.text.QUERY, TT_SLASH = _tokens.text.SLASH, TT_SYM = _tokens.text.SYM, TT_TLD = _tokens.text.TLD;
+    var TT_DOMAIN = _tokens.text.DOMAIN, TT_AT = _tokens.text.AT, TT_COLON = _tokens.text.COLON, TT_DOT = _tokens.text.DOT, TT_PUNCTUATION = _tokens.text.PUNCTUATION, TT_LOCALHOST = _tokens.text.LOCALHOST, TT_NL = _tokens.text.NL, TT_NUM = _tokens.text.NUM, TT_PLUS = _tokens.text.PLUS, TT_POUND = _tokens.text.POUND, TT_PROTOCOL = _tokens.text.PROTOCOL, TT_QUERY = _tokens.text.QUERY, TT_SLASH = _tokens.text.SLASH, TT_SYM = _tokens.text.SYM, TT_TLD = _tokens.text.TLD;
     var T_EMAIL = _tokens.multi.EMAIL, T_NL = _tokens.multi.NL, T_TEXT = _tokens.multi.TEXT, T_URL = _tokens.multi.URL;
     var S_START = makeState();
     var S_PROTOCOL = makeState(), S_PROTOCOL_SLASH = makeState(), S_PROTOCOL_SLASH_SLASH = makeState(), S_DOMAIN = makeState(), S_DOMAIN_DOT = makeState(), S_TLD = makeState(T_URL), S_TLD_COLON = makeState(), S_TLD_PORT = makeState(T_URL), S_PSS_DOMAIN = makeState(), S_PSS_DOMAIN_DOT = makeState(), S_PSS_TLD = makeState(T_URL), S_PSS_TLD_COLON = makeState(), S_PSS_TLD_PORT = makeState(T_URL), S_URL = makeState(T_URL), S_URL_SYMS = makeState(), S_EMAIL_DOMAIN = makeState(), S_EMAIL_DOMAIN_DOT = makeState(), S_EMAIL = makeState(T_EMAIL), S_EMAIL_COLON = makeState(), S_EMAIL_PORT = makeState(T_EMAIL), S_LOCALPART = makeState(), S_LOCALPART_AT = makeState(), S_LOCALPART_DOT = makeState(), S_NL = makeState(T_NL);
@@ -549,21 +561,25 @@ define('linkify/core/parser', [
     S_START.on(TT_TLD, S_DOMAIN);
     S_START.on(TT_DOMAIN, S_DOMAIN);
     S_START.on(TT_LOCALHOST, S_TLD);
-    S_START.on(TT_NUM, S_LOCALPART);
+    S_START.on(TT_NUM, S_DOMAIN);
     S_PROTOCOL_SLASH_SLASH.on(TT_TLD, S_PSS_DOMAIN);
     S_PROTOCOL_SLASH_SLASH.on(TT_DOMAIN, S_PSS_DOMAIN);
+    S_PROTOCOL_SLASH_SLASH.on(TT_NUM, S_PSS_DOMAIN);
     S_PROTOCOL_SLASH_SLASH.on(TT_LOCALHOST, S_PSS_TLD);
     S_DOMAIN.on(TT_DOT, S_DOMAIN_DOT);
     S_PSS_DOMAIN.on(TT_DOT, S_PSS_DOMAIN_DOT);
     S_EMAIL_DOMAIN.on(TT_DOT, S_EMAIL_DOMAIN_DOT);
     S_DOMAIN_DOT.on(TT_TLD, S_TLD);
     S_DOMAIN_DOT.on(TT_DOMAIN, S_DOMAIN);
+    S_DOMAIN_DOT.on(TT_NUM, S_DOMAIN);
     S_DOMAIN_DOT.on(TT_LOCALHOST, S_DOMAIN);
     S_PSS_DOMAIN_DOT.on(TT_TLD, S_PSS_TLD);
     S_PSS_DOMAIN_DOT.on(TT_DOMAIN, S_PSS_DOMAIN);
+    S_PSS_DOMAIN_DOT.on(TT_NUM, S_PSS_DOMAIN);
     S_PSS_DOMAIN_DOT.on(TT_LOCALHOST, S_PSS_DOMAIN);
     S_EMAIL_DOMAIN_DOT.on(TT_TLD, S_EMAIL);
     S_EMAIL_DOMAIN_DOT.on(TT_DOMAIN, S_EMAIL_DOMAIN);
+    S_EMAIL_DOMAIN_DOT.on(TT_NUM, S_EMAIL_DOMAIN);
     S_EMAIL_DOMAIN_DOT.on(TT_LOCALHOST, S_EMAIL_DOMAIN);
     S_TLD.on(TT_DOT, S_DOMAIN_DOT);
     S_PSS_TLD.on(TT_DOT, S_PSS_DOMAIN_DOT);
@@ -587,13 +603,14 @@ define('linkify/core/parser', [
         TT_POUND,
         TT_PROTOCOL,
         TT_SLASH,
-        TT_TLD
+        TT_TLD,
+        TT_SYM
     ];
     var qsNonAccepting = [
         TT_COLON,
         TT_DOT,
         TT_QUERY,
-        TT_SYM
+        TT_PUNCTUATION
     ];
     S_URL.on(qsAccepting, S_URL);
     S_URL_SYMS.on(qsAccepting, S_URL);
@@ -601,7 +618,6 @@ define('linkify/core/parser', [
     S_URL_SYMS.on(qsNonAccepting, S_URL_SYMS);
     var localpartAccepting = [
         TT_DOMAIN,
-        TT_COLON,
         TT_NUM,
         TT_PLUS,
         TT_POUND,
@@ -614,12 +630,6 @@ define('linkify/core/parser', [
     S_DOMAIN_DOT.on(localpartAccepting, S_LOCALPART);
     S_TLD.on(localpartAccepting, S_LOCALPART);
     S_TLD.on(TT_AT, S_LOCALPART_AT);
-    S_TLD_COLON.on(localpartAccepting, S_LOCALPART);
-    S_TLD_COLON.on(TT_DOT, S_LOCALPART);
-    S_TLD_COLON.on(TT_AT, S_LOCALPART_AT);
-    S_TLD_PORT.on(localpartAccepting, S_LOCALPART);
-    S_TLD_PORT.on(TT_DOT, S_LOCALPART_DOT);
-    S_TLD_PORT.on(TT_AT, S_LOCALPART_AT);
     S_LOCALPART.on(localpartAccepting, S_LOCALPART);
     S_LOCALPART.on(TT_AT, S_LOCALPART_AT);
     S_LOCALPART.on(TT_DOT, S_LOCALPART_DOT);

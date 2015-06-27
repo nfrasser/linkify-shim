@@ -137,6 +137,13 @@ var TextToken$$module$lib$linkify$core$tokens = function() {
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
+}(TextToken$$module$lib$linkify$core$tokens), PUNCTUATION$$module$lib$linkify$core$tokens = function(a) {
+  function b() {
+    _classCallCheck$$module$lib$linkify$core$tokens(this, b);
+    null != a && a.apply(this, arguments);
+  }
+  _inherits$$module$lib$linkify$core$tokens(b, a);
+  return b;
 }(TextToken$$module$lib$linkify$core$tokens), LOCALHOST$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
@@ -214,8 +221,8 @@ var TextToken$$module$lib$linkify$core$tokens = function() {
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
-}(TextToken$$module$lib$linkify$core$tokens), text$$module$lib$linkify$core$tokens = {Base:TextToken$$module$lib$linkify$core$tokens, DOMAIN:DOMAIN$$module$lib$linkify$core$tokens, AT:AT$$module$lib$linkify$core$tokens, COLON:COLON$$module$lib$linkify$core$tokens, DOT:DOT$$module$lib$linkify$core$tokens, LOCALHOST:LOCALHOST$$module$lib$linkify$core$tokens, NL:TNL$$module$lib$linkify$core$tokens, NUM:NUM$$module$lib$linkify$core$tokens, PLUS:PLUS$$module$lib$linkify$core$tokens, POUND:POUND$$module$lib$linkify$core$tokens, 
-QUERY:QUERY$$module$lib$linkify$core$tokens, PROTOCOL:PROTOCOL$$module$lib$linkify$core$tokens, SLASH:SLASH$$module$lib$linkify$core$tokens, SYM:SYM$$module$lib$linkify$core$tokens, TLD:TLD$$module$lib$linkify$core$tokens, WS:WS$$module$lib$linkify$core$tokens};
+}(TextToken$$module$lib$linkify$core$tokens), text$$module$lib$linkify$core$tokens = {Base:TextToken$$module$lib$linkify$core$tokens, DOMAIN:DOMAIN$$module$lib$linkify$core$tokens, AT:AT$$module$lib$linkify$core$tokens, COLON:COLON$$module$lib$linkify$core$tokens, DOT:DOT$$module$lib$linkify$core$tokens, PUNCTUATION:PUNCTUATION$$module$lib$linkify$core$tokens, LOCALHOST:LOCALHOST$$module$lib$linkify$core$tokens, NL:TNL$$module$lib$linkify$core$tokens, NUM:NUM$$module$lib$linkify$core$tokens, PLUS:PLUS$$module$lib$linkify$core$tokens, 
+POUND:POUND$$module$lib$linkify$core$tokens, QUERY:QUERY$$module$lib$linkify$core$tokens, PROTOCOL:PROTOCOL$$module$lib$linkify$core$tokens, SLASH:SLASH$$module$lib$linkify$core$tokens, SYM:SYM$$module$lib$linkify$core$tokens, TLD:TLD$$module$lib$linkify$core$tokens, WS:WS$$module$lib$linkify$core$tokens};
 function isDomainToken$$module$lib$linkify$core$tokens(a) {
   return a instanceof DOMAIN$$module$lib$linkify$core$tokens || a instanceof TLD$$module$lib$linkify$core$tokens;
 }
@@ -302,15 +309,15 @@ module$lib$linkify$core$tokens.text = text$$module$lib$linkify$core$tokens;
 module$lib$linkify$core$tokens.multi = multi$$module$lib$linkify$core$tokens;
 var module$lib$linkify$core$parser = {__esModule:!0}, _tokens$$module$lib$linkify$core$parser = module$lib$linkify$core$tokens, _state$$module$lib$linkify$core$parser = module$lib$linkify$core$state, makeState$$module$lib$linkify$core$parser = function(a) {
   return new _state$$module$lib$linkify$core$parser.TokenState(a);
-}, TT_DOMAIN$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.DOMAIN, TT_AT$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.AT, TT_COLON$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.COLON, TT_DOT$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.DOT, TT_LOCALHOST$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.LOCALHOST, TT_NL$$module$lib$linkify$core$parser = 
-_tokens$$module$lib$linkify$core$parser.text.NL, TT_NUM$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.NUM, TT_PLUS$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.PLUS, TT_POUND$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.POUND, TT_PROTOCOL$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.PROTOCOL, TT_QUERY$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.QUERY, 
-TT_SLASH$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.SLASH, TT_SYM$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.SYM, TT_TLD$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.TLD, T_EMAIL$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.multi.EMAIL, T_NL$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.multi.NL, T_TEXT$$module$lib$linkify$core$parser = 
-_tokens$$module$lib$linkify$core$parser.multi.TEXT, T_URL$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.multi.URL, S_START$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PROTOCOL$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PROTOCOL_SLASH$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PROTOCOL_SLASH_SLASH$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), 
-S_DOMAIN$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_DOMAIN_DOT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_TLD$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), S_TLD_COLON$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_TLD_PORT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), 
-S_PSS_DOMAIN$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PSS_DOMAIN_DOT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PSS_TLD$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), S_PSS_TLD_COLON$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PSS_TLD_PORT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), 
-S_URL$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), S_URL_SYMS$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_EMAIL_DOMAIN$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_EMAIL_DOMAIN_DOT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_EMAIL$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_EMAIL$$module$lib$linkify$core$parser), 
-S_EMAIL_COLON$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_EMAIL_PORT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_EMAIL$$module$lib$linkify$core$parser), S_LOCALPART$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_LOCALPART_AT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_LOCALPART_DOT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), 
-S_NL$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_NL$$module$lib$linkify$core$parser);
+}, TT_DOMAIN$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.DOMAIN, TT_AT$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.AT, TT_COLON$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.COLON, TT_DOT$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.DOT, TT_PUNCTUATION$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.PUNCTUATION, TT_LOCALHOST$$module$lib$linkify$core$parser = 
+_tokens$$module$lib$linkify$core$parser.text.LOCALHOST, TT_NL$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.NL, TT_NUM$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.NUM, TT_PLUS$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.PLUS, TT_POUND$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.POUND, TT_PROTOCOL$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.PROTOCOL, 
+TT_QUERY$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.QUERY, TT_SLASH$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.SLASH, TT_SYM$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.SYM, TT_TLD$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.text.TLD, T_EMAIL$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.multi.EMAIL, T_NL$$module$lib$linkify$core$parser = 
+_tokens$$module$lib$linkify$core$parser.multi.NL, T_TEXT$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.multi.TEXT, T_URL$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.multi.URL, S_START$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PROTOCOL$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PROTOCOL_SLASH$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), 
+S_PROTOCOL_SLASH_SLASH$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_DOMAIN$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_DOMAIN_DOT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_TLD$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), S_TLD_COLON$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_TLD_PORT$$module$lib$linkify$core$parser = 
+makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), S_PSS_DOMAIN$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PSS_DOMAIN_DOT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PSS_TLD$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), S_PSS_TLD_COLON$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_PSS_TLD_PORT$$module$lib$linkify$core$parser = 
+makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), S_URL$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_URL$$module$lib$linkify$core$parser), S_URL_SYMS$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_EMAIL_DOMAIN$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_EMAIL_DOMAIN_DOT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_EMAIL$$module$lib$linkify$core$parser = 
+makeState$$module$lib$linkify$core$parser(T_EMAIL$$module$lib$linkify$core$parser), S_EMAIL_COLON$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_EMAIL_PORT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_EMAIL$$module$lib$linkify$core$parser), S_LOCALPART$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_LOCALPART_AT$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(), S_LOCALPART_DOT$$module$lib$linkify$core$parser = 
+makeState$$module$lib$linkify$core$parser(), S_NL$$module$lib$linkify$core$parser = makeState$$module$lib$linkify$core$parser(T_NL$$module$lib$linkify$core$parser);
 S_START$$module$lib$linkify$core$parser.on(TT_NL$$module$lib$linkify$core$parser, S_NL$$module$lib$linkify$core$parser);
 S_START$$module$lib$linkify$core$parser.on(TT_PROTOCOL$$module$lib$linkify$core$parser, S_PROTOCOL$$module$lib$linkify$core$parser);
 S_START$$module$lib$linkify$core$parser.on(TT_SLASH$$module$lib$linkify$core$parser, S_PROTOCOL_SLASH$$module$lib$linkify$core$parser);
@@ -319,21 +326,25 @@ S_PROTOCOL_SLASH$$module$lib$linkify$core$parser.on(TT_SLASH$$module$lib$linkify
 S_START$$module$lib$linkify$core$parser.on(TT_TLD$$module$lib$linkify$core$parser, S_DOMAIN$$module$lib$linkify$core$parser);
 S_START$$module$lib$linkify$core$parser.on(TT_DOMAIN$$module$lib$linkify$core$parser, S_DOMAIN$$module$lib$linkify$core$parser);
 S_START$$module$lib$linkify$core$parser.on(TT_LOCALHOST$$module$lib$linkify$core$parser, S_TLD$$module$lib$linkify$core$parser);
-S_START$$module$lib$linkify$core$parser.on(TT_NUM$$module$lib$linkify$core$parser, S_LOCALPART$$module$lib$linkify$core$parser);
+S_START$$module$lib$linkify$core$parser.on(TT_NUM$$module$lib$linkify$core$parser, S_DOMAIN$$module$lib$linkify$core$parser);
 S_PROTOCOL_SLASH_SLASH$$module$lib$linkify$core$parser.on(TT_TLD$$module$lib$linkify$core$parser, S_PSS_DOMAIN$$module$lib$linkify$core$parser);
 S_PROTOCOL_SLASH_SLASH$$module$lib$linkify$core$parser.on(TT_DOMAIN$$module$lib$linkify$core$parser, S_PSS_DOMAIN$$module$lib$linkify$core$parser);
+S_PROTOCOL_SLASH_SLASH$$module$lib$linkify$core$parser.on(TT_NUM$$module$lib$linkify$core$parser, S_PSS_DOMAIN$$module$lib$linkify$core$parser);
 S_PROTOCOL_SLASH_SLASH$$module$lib$linkify$core$parser.on(TT_LOCALHOST$$module$lib$linkify$core$parser, S_PSS_TLD$$module$lib$linkify$core$parser);
 S_DOMAIN$$module$lib$linkify$core$parser.on(TT_DOT$$module$lib$linkify$core$parser, S_DOMAIN_DOT$$module$lib$linkify$core$parser);
 S_PSS_DOMAIN$$module$lib$linkify$core$parser.on(TT_DOT$$module$lib$linkify$core$parser, S_PSS_DOMAIN_DOT$$module$lib$linkify$core$parser);
 S_EMAIL_DOMAIN$$module$lib$linkify$core$parser.on(TT_DOT$$module$lib$linkify$core$parser, S_EMAIL_DOMAIN_DOT$$module$lib$linkify$core$parser);
 S_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_TLD$$module$lib$linkify$core$parser, S_TLD$$module$lib$linkify$core$parser);
 S_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_DOMAIN$$module$lib$linkify$core$parser, S_DOMAIN$$module$lib$linkify$core$parser);
+S_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_NUM$$module$lib$linkify$core$parser, S_DOMAIN$$module$lib$linkify$core$parser);
 S_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_LOCALHOST$$module$lib$linkify$core$parser, S_DOMAIN$$module$lib$linkify$core$parser);
 S_PSS_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_TLD$$module$lib$linkify$core$parser, S_PSS_TLD$$module$lib$linkify$core$parser);
 S_PSS_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_DOMAIN$$module$lib$linkify$core$parser, S_PSS_DOMAIN$$module$lib$linkify$core$parser);
+S_PSS_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_NUM$$module$lib$linkify$core$parser, S_PSS_DOMAIN$$module$lib$linkify$core$parser);
 S_PSS_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_LOCALHOST$$module$lib$linkify$core$parser, S_PSS_DOMAIN$$module$lib$linkify$core$parser);
 S_EMAIL_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_TLD$$module$lib$linkify$core$parser, S_EMAIL$$module$lib$linkify$core$parser);
 S_EMAIL_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_DOMAIN$$module$lib$linkify$core$parser, S_EMAIL_DOMAIN$$module$lib$linkify$core$parser);
+S_EMAIL_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_NUM$$module$lib$linkify$core$parser, S_EMAIL_DOMAIN$$module$lib$linkify$core$parser);
 S_EMAIL_DOMAIN_DOT$$module$lib$linkify$core$parser.on(TT_LOCALHOST$$module$lib$linkify$core$parser, S_EMAIL_DOMAIN$$module$lib$linkify$core$parser);
 S_TLD$$module$lib$linkify$core$parser.on(TT_DOT$$module$lib$linkify$core$parser, S_DOMAIN_DOT$$module$lib$linkify$core$parser);
 S_PSS_TLD$$module$lib$linkify$core$parser.on(TT_DOT$$module$lib$linkify$core$parser, S_PSS_DOMAIN_DOT$$module$lib$linkify$core$parser);
@@ -348,24 +359,18 @@ S_PSS_TLD_COLON$$module$lib$linkify$core$parser.on(TT_NUM$$module$lib$linkify$co
 S_PSS_TLD_PORT$$module$lib$linkify$core$parser.on(TT_SLASH$$module$lib$linkify$core$parser, S_URL$$module$lib$linkify$core$parser);
 S_EMAIL$$module$lib$linkify$core$parser.on(TT_COLON$$module$lib$linkify$core$parser, S_EMAIL_COLON$$module$lib$linkify$core$parser);
 S_EMAIL_COLON$$module$lib$linkify$core$parser.on(TT_NUM$$module$lib$linkify$core$parser, S_EMAIL_PORT$$module$lib$linkify$core$parser);
-var qsAccepting$$module$lib$linkify$core$parser = [TT_DOMAIN$$module$lib$linkify$core$parser, TT_AT$$module$lib$linkify$core$parser, TT_LOCALHOST$$module$lib$linkify$core$parser, TT_NUM$$module$lib$linkify$core$parser, TT_PLUS$$module$lib$linkify$core$parser, TT_POUND$$module$lib$linkify$core$parser, TT_PROTOCOL$$module$lib$linkify$core$parser, TT_SLASH$$module$lib$linkify$core$parser, TT_TLD$$module$lib$linkify$core$parser], qsNonAccepting$$module$lib$linkify$core$parser = [TT_COLON$$module$lib$linkify$core$parser, 
-TT_DOT$$module$lib$linkify$core$parser, TT_QUERY$$module$lib$linkify$core$parser, TT_SYM$$module$lib$linkify$core$parser];
+var qsAccepting$$module$lib$linkify$core$parser = [TT_DOMAIN$$module$lib$linkify$core$parser, TT_AT$$module$lib$linkify$core$parser, TT_LOCALHOST$$module$lib$linkify$core$parser, TT_NUM$$module$lib$linkify$core$parser, TT_PLUS$$module$lib$linkify$core$parser, TT_POUND$$module$lib$linkify$core$parser, TT_PROTOCOL$$module$lib$linkify$core$parser, TT_SLASH$$module$lib$linkify$core$parser, TT_TLD$$module$lib$linkify$core$parser, TT_SYM$$module$lib$linkify$core$parser], qsNonAccepting$$module$lib$linkify$core$parser = 
+[TT_COLON$$module$lib$linkify$core$parser, TT_DOT$$module$lib$linkify$core$parser, TT_QUERY$$module$lib$linkify$core$parser, TT_PUNCTUATION$$module$lib$linkify$core$parser];
 S_URL$$module$lib$linkify$core$parser.on(qsAccepting$$module$lib$linkify$core$parser, S_URL$$module$lib$linkify$core$parser);
 S_URL_SYMS$$module$lib$linkify$core$parser.on(qsAccepting$$module$lib$linkify$core$parser, S_URL$$module$lib$linkify$core$parser);
 S_URL$$module$lib$linkify$core$parser.on(qsNonAccepting$$module$lib$linkify$core$parser, S_URL_SYMS$$module$lib$linkify$core$parser);
 S_URL_SYMS$$module$lib$linkify$core$parser.on(qsNonAccepting$$module$lib$linkify$core$parser, S_URL_SYMS$$module$lib$linkify$core$parser);
-var localpartAccepting$$module$lib$linkify$core$parser = [TT_DOMAIN$$module$lib$linkify$core$parser, TT_COLON$$module$lib$linkify$core$parser, TT_NUM$$module$lib$linkify$core$parser, TT_PLUS$$module$lib$linkify$core$parser, TT_POUND$$module$lib$linkify$core$parser, TT_QUERY$$module$lib$linkify$core$parser, TT_SYM$$module$lib$linkify$core$parser, TT_TLD$$module$lib$linkify$core$parser];
+var localpartAccepting$$module$lib$linkify$core$parser = [TT_DOMAIN$$module$lib$linkify$core$parser, TT_NUM$$module$lib$linkify$core$parser, TT_PLUS$$module$lib$linkify$core$parser, TT_POUND$$module$lib$linkify$core$parser, TT_QUERY$$module$lib$linkify$core$parser, TT_SYM$$module$lib$linkify$core$parser, TT_TLD$$module$lib$linkify$core$parser];
 S_DOMAIN$$module$lib$linkify$core$parser.on(localpartAccepting$$module$lib$linkify$core$parser, S_LOCALPART$$module$lib$linkify$core$parser);
 S_DOMAIN$$module$lib$linkify$core$parser.on(TT_AT$$module$lib$linkify$core$parser, S_LOCALPART_AT$$module$lib$linkify$core$parser);
 S_DOMAIN_DOT$$module$lib$linkify$core$parser.on(localpartAccepting$$module$lib$linkify$core$parser, S_LOCALPART$$module$lib$linkify$core$parser);
 S_TLD$$module$lib$linkify$core$parser.on(localpartAccepting$$module$lib$linkify$core$parser, S_LOCALPART$$module$lib$linkify$core$parser);
 S_TLD$$module$lib$linkify$core$parser.on(TT_AT$$module$lib$linkify$core$parser, S_LOCALPART_AT$$module$lib$linkify$core$parser);
-S_TLD_COLON$$module$lib$linkify$core$parser.on(localpartAccepting$$module$lib$linkify$core$parser, S_LOCALPART$$module$lib$linkify$core$parser);
-S_TLD_COLON$$module$lib$linkify$core$parser.on(TT_DOT$$module$lib$linkify$core$parser, S_LOCALPART$$module$lib$linkify$core$parser);
-S_TLD_COLON$$module$lib$linkify$core$parser.on(TT_AT$$module$lib$linkify$core$parser, S_LOCALPART_AT$$module$lib$linkify$core$parser);
-S_TLD_PORT$$module$lib$linkify$core$parser.on(localpartAccepting$$module$lib$linkify$core$parser, S_LOCALPART$$module$lib$linkify$core$parser);
-S_TLD_PORT$$module$lib$linkify$core$parser.on(TT_DOT$$module$lib$linkify$core$parser, S_LOCALPART_DOT$$module$lib$linkify$core$parser);
-S_TLD_PORT$$module$lib$linkify$core$parser.on(TT_AT$$module$lib$linkify$core$parser, S_LOCALPART_AT$$module$lib$linkify$core$parser);
 S_LOCALPART$$module$lib$linkify$core$parser.on(localpartAccepting$$module$lib$linkify$core$parser, S_LOCALPART$$module$lib$linkify$core$parser);
 S_LOCALPART$$module$lib$linkify$core$parser.on(TT_AT$$module$lib$linkify$core$parser, S_LOCALPART_AT$$module$lib$linkify$core$parser);
 S_LOCALPART$$module$lib$linkify$core$parser.on(TT_DOT$$module$lib$linkify$core$parser, S_LOCALPART_DOT$$module$lib$linkify$core$parser);
@@ -409,6 +414,7 @@ S_START$$module$lib$linkify$core$scanner.on("#", makeState$$module$lib$linkify$c
 S_START$$module$lib$linkify$core$scanner.on("?", makeState$$module$lib$linkify$core$scanner(_tokens$$module$lib$linkify$core$scanner.text.QUERY));
 S_START$$module$lib$linkify$core$scanner.on("/", makeState$$module$lib$linkify$core$scanner(_tokens$$module$lib$linkify$core$scanner.text.SLASH));
 S_START$$module$lib$linkify$core$scanner.on(COLON$$module$lib$linkify$core$scanner, makeState$$module$lib$linkify$core$scanner(_tokens$$module$lib$linkify$core$scanner.text.COLON));
+S_START$$module$lib$linkify$core$scanner.on(/[,;!]/, makeState$$module$lib$linkify$core$scanner(_tokens$$module$lib$linkify$core$scanner.text.PUNCTUATION));
 S_START$$module$lib$linkify$core$scanner.on(/\n/, makeState$$module$lib$linkify$core$scanner(_tokens$$module$lib$linkify$core$scanner.text.NL));
 S_START$$module$lib$linkify$core$scanner.on(/\s/, S_WS$$module$lib$linkify$core$scanner);
 S_WS$$module$lib$linkify$core$scanner.on(/[^\S\n]/, S_WS$$module$lib$linkify$core$scanner);
