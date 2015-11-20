@@ -48,7 +48,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
             }
         });
         if (superClass)
-            subClass.__proto__ = superClass;
+            Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -66,147 +66,131 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         return TextToken;
     }();
     var DOMAIN = function (_TextToken) {
+        _inherits(DOMAIN, _TextToken);
         function DOMAIN() {
             _classCallCheck(this, DOMAIN);
-            if (_TextToken != null) {
-                _TextToken.apply(this, arguments);
-            }
+            _TextToken.apply(this, arguments);
         }
-        _inherits(DOMAIN, _TextToken);
         return DOMAIN;
     }(TextToken);
     var AT = function (_TextToken2) {
+        _inherits(AT, _TextToken2);
         function AT() {
             _classCallCheck(this, AT);
             _TextToken2.call(this, '@');
         }
-        _inherits(AT, _TextToken2);
         return AT;
     }(TextToken);
     var COLON = function (_TextToken3) {
+        _inherits(COLON, _TextToken3);
         function COLON() {
             _classCallCheck(this, COLON);
             _TextToken3.call(this, ':');
         }
-        _inherits(COLON, _TextToken3);
         return COLON;
     }(TextToken);
     var DOT = function (_TextToken4) {
+        _inherits(DOT, _TextToken4);
         function DOT() {
             _classCallCheck(this, DOT);
             _TextToken4.call(this, '.');
         }
-        _inherits(DOT, _TextToken4);
         return DOT;
     }(TextToken);
     var PUNCTUATION = function (_TextToken5) {
+        _inherits(PUNCTUATION, _TextToken5);
         function PUNCTUATION() {
             _classCallCheck(this, PUNCTUATION);
-            if (_TextToken5 != null) {
-                _TextToken5.apply(this, arguments);
-            }
+            _TextToken5.apply(this, arguments);
         }
-        _inherits(PUNCTUATION, _TextToken5);
         return PUNCTUATION;
     }(TextToken);
     var LOCALHOST = function (_TextToken6) {
+        _inherits(LOCALHOST, _TextToken6);
         function LOCALHOST() {
             _classCallCheck(this, LOCALHOST);
-            if (_TextToken6 != null) {
-                _TextToken6.apply(this, arguments);
-            }
+            _TextToken6.apply(this, arguments);
         }
-        _inherits(LOCALHOST, _TextToken6);
         return LOCALHOST;
     }(TextToken);
     var TNL = function (_TextToken7) {
+        _inherits(TNL, _TextToken7);
         function TNL() {
             _classCallCheck(this, TNL);
             _TextToken7.call(this, '\n');
         }
-        _inherits(TNL, _TextToken7);
         return TNL;
     }(TextToken);
     var NUM = function (_TextToken8) {
+        _inherits(NUM, _TextToken8);
         function NUM() {
             _classCallCheck(this, NUM);
-            if (_TextToken8 != null) {
-                _TextToken8.apply(this, arguments);
-            }
+            _TextToken8.apply(this, arguments);
         }
-        _inherits(NUM, _TextToken8);
         return NUM;
     }(TextToken);
     var PLUS = function (_TextToken9) {
+        _inherits(PLUS, _TextToken9);
         function PLUS() {
             _classCallCheck(this, PLUS);
             _TextToken9.call(this, '+');
         }
-        _inherits(PLUS, _TextToken9);
         return PLUS;
     }(TextToken);
     var POUND = function (_TextToken10) {
+        _inherits(POUND, _TextToken10);
         function POUND() {
             _classCallCheck(this, POUND);
             _TextToken10.call(this, '#');
         }
-        _inherits(POUND, _TextToken10);
         return POUND;
     }(TextToken);
     var PROTOCOL = function (_TextToken11) {
+        _inherits(PROTOCOL, _TextToken11);
         function PROTOCOL() {
             _classCallCheck(this, PROTOCOL);
-            if (_TextToken11 != null) {
-                _TextToken11.apply(this, arguments);
-            }
+            _TextToken11.apply(this, arguments);
         }
-        _inherits(PROTOCOL, _TextToken11);
         return PROTOCOL;
     }(TextToken);
     var QUERY = function (_TextToken12) {
+        _inherits(QUERY, _TextToken12);
         function QUERY() {
             _classCallCheck(this, QUERY);
             _TextToken12.call(this, '?');
         }
-        _inherits(QUERY, _TextToken12);
         return QUERY;
     }(TextToken);
     var SLASH = function (_TextToken13) {
+        _inherits(SLASH, _TextToken13);
         function SLASH() {
             _classCallCheck(this, SLASH);
             _TextToken13.call(this, '/');
         }
-        _inherits(SLASH, _TextToken13);
         return SLASH;
     }(TextToken);
     var SYM = function (_TextToken14) {
+        _inherits(SYM, _TextToken14);
         function SYM() {
             _classCallCheck(this, SYM);
-            if (_TextToken14 != null) {
-                _TextToken14.apply(this, arguments);
-            }
+            _TextToken14.apply(this, arguments);
         }
-        _inherits(SYM, _TextToken14);
         return SYM;
     }(TextToken);
     var TLD = function (_TextToken15) {
+        _inherits(TLD, _TextToken15);
         function TLD() {
             _classCallCheck(this, TLD);
-            if (_TextToken15 != null) {
-                _TextToken15.apply(this, arguments);
-            }
+            _TextToken15.apply(this, arguments);
         }
-        _inherits(TLD, _TextToken15);
         return TLD;
     }(TextToken);
     var WS = function (_TextToken16) {
+        _inherits(WS, _TextToken16);
         function WS() {
             _classCallCheck(this, WS);
-            if (_TextToken16 != null) {
-                _TextToken16.apply(this, arguments);
-            }
+            _TextToken16.apply(this, arguments);
         }
-        _inherits(WS, _TextToken16);
         return WS;
     }(TextToken);
     var text = {
@@ -249,7 +233,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
             return this.toString();
         };
         MultiToken.prototype.toObject = function toObject() {
-            var protocol = arguments[0] === undefined ? 'http' : arguments[0];
+            var protocol = arguments.length <= 0 || arguments[0] === undefined ? 'http' : arguments[0];
             return {
                 type: this.type,
                 value: this.toString(),
@@ -259,46 +243,46 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         return MultiToken;
     }();
     var EMAIL = function (_MultiToken) {
+        _inherits(EMAIL, _MultiToken);
         function EMAIL(value) {
             _classCallCheck(this, EMAIL);
             _MultiToken.call(this, value);
             this.type = 'email';
             this.isLink = true;
         }
-        _inherits(EMAIL, _MultiToken);
         EMAIL.prototype.toHref = function toHref() {
             return 'mailto:' + this.toString();
         };
         return EMAIL;
     }(MultiToken);
     var TEXT = function (_MultiToken2) {
+        _inherits(TEXT, _MultiToken2);
         function TEXT(value) {
             _classCallCheck(this, TEXT);
             _MultiToken2.call(this, value);
             this.type = 'text';
         }
-        _inherits(TEXT, _MultiToken2);
         return TEXT;
     }(MultiToken);
     var MNL = function (_MultiToken3) {
+        _inherits(MNL, _MultiToken3);
         function MNL(value) {
             _classCallCheck(this, MNL);
             _MultiToken3.call(this, value);
             this.type = 'nl';
         }
-        _inherits(MNL, _MultiToken3);
         return MNL;
     }(MultiToken);
     var URL = function (_MultiToken4) {
+        _inherits(URL, _MultiToken4);
         function URL(value) {
             _classCallCheck(this, URL);
             _MultiToken4.call(this, value);
             this.type = 'url';
             this.isLink = true;
         }
-        _inherits(URL, _MultiToken4);
         URL.prototype.toHref = function toHref() {
-            var protocol = arguments[0] === undefined ? 'http' : arguments[0];
+            var protocol = arguments.length <= 0 || arguments[0] === undefined ? 'http' : arguments[0];
             var hasProtocol = false, hasSlashSlash = false, tokens = this.v, result = [], i = 0;
             while (tokens[i] instanceof PROTOCOL) {
                 hasProtocol = true;
@@ -354,7 +338,7 @@ define('linkify/core/state', ['exports'], function (exports) {
             }
         });
         if (superClass)
-            subClass.__proto__ = superClass;
+            Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -402,26 +386,22 @@ define('linkify/core/state', ['exports'], function (exports) {
         return BaseState;
     }();
     var CharacterState = function (_BaseState) {
+        _inherits(CharacterState, _BaseState);
         function CharacterState() {
             _classCallCheck(this, CharacterState);
-            if (_BaseState != null) {
-                _BaseState.apply(this, arguments);
-            }
+            _BaseState.apply(this, arguments);
         }
-        _inherits(CharacterState, _BaseState);
         CharacterState.prototype.test = function test(character, charOrRegExp) {
             return character === charOrRegExp || charOrRegExp instanceof RegExp && charOrRegExp.test(character);
         };
         return CharacterState;
     }(BaseState);
     var TokenState = function (_BaseState2) {
+        _inherits(TokenState, _BaseState2);
         function TokenState() {
             _classCallCheck(this, TokenState);
-            if (_BaseState2 != null) {
-                _BaseState2.apply(this, arguments);
-            }
+            _BaseState2.apply(this, arguments);
         }
-        _inherits(TokenState, _BaseState2);
         TokenState.prototype.test = function test(token, tokenClass) {
             return token instanceof tokenClass;
         };
@@ -477,10 +457,10 @@ define('linkify/core/scanner', [
     S_START.on(/\s/, S_WS);
     S_WS.on(/[^\S\n]/, S_WS);
     for (var i = 0; i < tlds.length; i++) {
-        var newStates = (0, _state.stateify)(tlds[i], S_START, T_TLD, T_DOMAIN);
+        var newStates = _state.stateify(tlds[i], S_START, T_TLD, T_DOMAIN);
         domainStates.push.apply(domainStates, newStates);
     }
-    var partialProtocolFileStates = (0, _state.stateify)('file', S_START, T_DOMAIN, T_DOMAIN), partialProtocolFtpStates = (0, _state.stateify)('ftp', S_START, T_DOMAIN, T_DOMAIN), partialProtocolHttpStates = (0, _state.stateify)('http', S_START, T_DOMAIN, T_DOMAIN);
+    var partialProtocolFileStates = _state.stateify('file', S_START, T_DOMAIN, T_DOMAIN), partialProtocolFtpStates = _state.stateify('ftp', S_START, T_DOMAIN, T_DOMAIN), partialProtocolHttpStates = _state.stateify('http', S_START, T_DOMAIN, T_DOMAIN);
     domainStates.push.apply(domainStates, partialProtocolFileStates);
     domainStates.push.apply(domainStates, partialProtocolFtpStates);
     domainStates.push.apply(domainStates, partialProtocolHttpStates);
@@ -492,7 +472,7 @@ define('linkify/core/scanner', [
     S_PROTOCOL_FTP.on(COLON, S_FULL_PROTOCOL);
     S_PROTOCOL_HTTP.on(COLON, S_FULL_PROTOCOL);
     S_PROTOCOL_SECURE.on(COLON, S_FULL_PROTOCOL);
-    var partialLocalhostStates = (0, _state.stateify)('localhost', S_START, T_LOCALHOST, T_DOMAIN);
+    var partialLocalhostStates = _state.stateify('localhost', S_START, T_LOCALHOST, T_DOMAIN);
     domainStates.push.apply(domainStates, partialLocalhostStates);
     S_START.on(REGEXP_NUM, S_NUM);
     S_NUM.on('-', S_DOMAIN_HYPHEN);
@@ -509,7 +489,12 @@ define('linkify/core/scanner', [
     S_DOMAIN_HYPHEN.on(REGEXP_ALPHANUM, S_DOMAIN);
     S_START.on(/./, makeState(_tokens.text.SYM));
     var run = function run(str) {
-        var lowerStr = str.toLowerCase(), len = str.length, cursor = 0, tokens = [];
+        var lowerStr = str.replace(/[A-Z]/g, function (c) {
+            return c.toLowerCase();
+        });
+        var len = str.length;
+        var tokens = [];
+        var cursor = 0;
         while (cursor < len) {
             var state = S_START, secondState = null, nextState = null, tokenLength = 0, latestAccepting = null, sinceAccepts = -1;
             while (cursor < len && (nextState = state.next(lowerStr[cursor]))) {
@@ -699,7 +684,7 @@ define('linkify', [
         return _linkifyCoreParser.run(_linkifyCoreScanner.run(str));
     };
     var find = function find(str) {
-        var type = arguments[1] === undefined ? null : arguments[1];
+        var type = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
         var tokens = tokenize(str), filtered = [];
         for (var i = 0; i < tokens.length; i++) {
             if (tokens[i].isLink && (!type || tokens[i].type === type)) {
@@ -709,7 +694,7 @@ define('linkify', [
         return filtered;
     };
     var test = function test(str) {
-        var type = arguments[1] === undefined ? null : arguments[1];
+        var type = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
         var tokens = tokenize(str);
         return tokens.length === 1 && tokens[0].isLink && (!type || tokens[0].type === type);
     };

@@ -95,9 +95,9 @@ function linkifyElementHelper(element, opts, doc) {
 
 	// Is this element already a link?
 	if (element.tagName === 'A' /*|| element.hasClass('linkified')*/) {
-		// No need to linkify
-		return element;
-	}
+			// No need to linkify
+			return element;
+		}
 
 	var childElement = element.firstChild;
 
@@ -129,11 +129,11 @@ function linkifyElementHelper(element, opts, doc) {
 }
 
 function linkifyElement(element, opts) {
-	var doc = arguments[2] === undefined ? null : arguments[2];
+	var doc = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
 
 	try {
 		doc = doc || window && window.document || global && global.document;
-	} catch (e) {}
+	} catch (e) {/* do nothing for now */}
 
 	if (!doc) {
 		throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
@@ -146,8 +146,6 @@ function linkifyElement(element, opts) {
 // Maintain reference to the recursive helper to cache option-normalization
 linkifyElement.helper = linkifyElementHelper;
 linkifyElement.normalize = options.normalize;
-
-/* do nothing for now */
 'use strict';
 
 var doc = undefined;
@@ -160,13 +158,13 @@ try {
 
 // Applies the plugin to jQuery
 function apply($) {
-	var doc = arguments[1] === undefined ? null : arguments[1];
+	var doc = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
 
 	$.fn = $.fn || {};
 
 	try {
 		doc = doc || window && window.document || global && global.document;
-	} catch (e) {}
+	} catch (e) {/* do nothing for now */}
 
 	if (!doc) {
 		throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
@@ -215,7 +213,5 @@ function apply($) {
 if (typeof jQuery !== 'undefined' && doc) {
 	apply(jQuery, doc);
 }
-
-/* do nothing for now */
 window.linkifyElement = linkifyElement;
 })(window.jQuery, window.linkify);

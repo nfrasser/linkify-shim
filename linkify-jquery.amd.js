@@ -93,9 +93,9 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 
 		// Is this element already a link?
 		if (element.tagName === 'A' /*|| element.hasClass('linkified')*/) {
-			// No need to linkify
-			return element;
-		}
+				// No need to linkify
+				return element;
+			}
 
 		var childElement = element.firstChild;
 
@@ -108,7 +108,7 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 				case TXT_NODE:
 
 					var str = childElement.nodeValue,
-					    tokens = (0, _linkify.tokenize)(str),
+					    tokens = _linkify.tokenize(str),
 					    nodes = tokensToNodes(tokens, opts, doc);
 
 					// Swap out the current child for the set of nodes
@@ -127,11 +127,11 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 	}
 
 	function linkifyElement(element, opts) {
-		var doc = arguments[2] === undefined ? null : arguments[2];
+		var doc = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
 
 		try {
 			doc = doc || window && window.document || global && global.document;
-		} catch (e) {}
+		} catch (e) {/* do nothing for now */}
 
 		if (!doc) {
 			throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
@@ -147,7 +147,6 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 
 	module.exports = linkifyElement;
 });
-/* do nothing for now */
 define('linkify-jquery', ['exports', 'module', 'jquery', './linkify-element'], function (exports, module, _jquery, _linkifyElement) {
 	'use strict';
 
@@ -167,13 +166,13 @@ define('linkify-jquery', ['exports', 'module', 'jquery', './linkify-element'], f
 
 	// Applies the plugin to jQuery
 	function apply($) {
-		var doc = arguments[1] === undefined ? null : arguments[1];
+		var doc = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
 
 		$.fn = $.fn || {};
 
 		try {
 			doc = doc || window && window.document || global && global.document;
-		} catch (e) {}
+		} catch (e) {/* do nothing for now */}
 
 		if (!doc) {
 			throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
@@ -225,7 +224,6 @@ define('linkify-jquery', ['exports', 'module', 'jquery', './linkify-element'], f
 
 	module.exports = apply;
 });
-/* do nothing for now */
 require(['jquery', 'linkify-jquery'], function ($, apply) {
 	if (typeof $.fn.linkify !== 'function') {
 		apply($);

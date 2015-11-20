@@ -8,7 +8,7 @@ function _inherits$$module$lib$linkify$core$state(a, b) {
     throw new TypeError("Super expression must either be null or a function, not " + typeof b);
   }
   a.prototype = Object.create(b && b.prototype, {constructor:{value:a, enumerable:!1, writable:!0, configurable:!0}});
-  b && (a.__proto__ = b);
+  b && (Object.setPrototypeOf ? Object.setPrototypeOf(a, b) : a.__proto__ = b);
 }
 function _classCallCheck$$module$lib$linkify$core$state(a, b) {
   if (!(a instanceof b)) {
@@ -21,20 +21,20 @@ var BaseState$$module$lib$linkify$core$state = function() {
     this.j = [];
     this.T = b || null;
   }
-  a.prototype.on = function(a, c) {
-    if (a instanceof Array) {
-      for (var d = 0;d < a.length;d++) {
-        this.j.push([a[d], c]);
+  a.prototype.on = function(b, a) {
+    if (b instanceof Array) {
+      for (var g = 0;g < b.length;g++) {
+        this.j.push([b[g], a]);
       }
     } else {
-      this.j.push([a, c]);
+      this.j.push([b, a]);
     }
   };
   a.prototype.next = function(a) {
     for (var c = 0;c < this.j.length;c++) {
-      var d = this.j[c], g = d[1];
-      if (this.test(a, d[0])) {
-        return g;
+      var g = this.j[c], d = g[1];
+      if (this.test(a, g[0])) {
+        return d;
       }
     }
     return!1;
@@ -52,7 +52,7 @@ var BaseState$$module$lib$linkify$core$state = function() {
 }(), CharacterState$$module$lib$linkify$core$state = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$state(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$state(b, a);
   b.prototype.test = function(a, b) {
@@ -62,7 +62,7 @@ var BaseState$$module$lib$linkify$core$state = function() {
 }(BaseState$$module$lib$linkify$core$state), TokenState$$module$lib$linkify$core$state = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$state(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$state(b, a);
   b.prototype.test = function(a, b) {
@@ -70,19 +70,19 @@ var BaseState$$module$lib$linkify$core$state = function() {
   };
   return b;
 }(BaseState$$module$lib$linkify$core$state);
-function stateify$$module$lib$linkify$core$state(a, b, c, d) {
-  for (var g = 0, e = a.length, h = [], f = void 0;g < e && (f = b.next(a[g]));) {
-    b = f, g++;
+function stateify$$module$lib$linkify$core$state(a, b, c, g) {
+  for (var d = 0, f = a.length, h = [], e = void 0;d < f && (e = b.next(a[d]));) {
+    b = e, d++;
   }
-  if (g >= e) {
+  if (d >= f) {
     return[];
   }
-  for (;g < e - 1;) {
-    f = new CharacterState$$module$lib$linkify$core$state(d), h.push(f), b.on(a[g], f), b = f, g++;
+  for (;d < f - 1;) {
+    e = new CharacterState$$module$lib$linkify$core$state(g), h.push(e), b.on(a[d], e), b = e, d++;
   }
-  f = new CharacterState$$module$lib$linkify$core$state(c);
-  h.push(f);
-  b.on(a[e - 1], f);
+  e = new CharacterState$$module$lib$linkify$core$state(c);
+  h.push(e);
+  b.on(a[f - 1], e);
   return h;
 }
 module$lib$linkify$core$state.CharacterState = CharacterState$$module$lib$linkify$core$state;
@@ -94,7 +94,7 @@ function _inherits$$module$lib$linkify$core$tokens(a, b) {
     throw new TypeError("Super expression must either be null or a function, not " + typeof b);
   }
   a.prototype = Object.create(b && b.prototype, {constructor:{value:a, enumerable:!1, writable:!0, configurable:!0}});
-  b && (a.__proto__ = b);
+  b && (Object.setPrototypeOf ? Object.setPrototypeOf(a, b) : a.__proto__ = b);
 }
 function _classCallCheck$$module$lib$linkify$core$tokens(a, b) {
   if (!(a instanceof b)) {
@@ -113,7 +113,7 @@ var TextToken$$module$lib$linkify$core$tokens = function() {
 }(), DOMAIN$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
@@ -141,14 +141,14 @@ var TextToken$$module$lib$linkify$core$tokens = function() {
 }(TextToken$$module$lib$linkify$core$tokens), PUNCTUATION$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
 }(TextToken$$module$lib$linkify$core$tokens), LOCALHOST$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
@@ -162,7 +162,7 @@ var TextToken$$module$lib$linkify$core$tokens = function() {
 }(TextToken$$module$lib$linkify$core$tokens), NUM$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
@@ -183,7 +183,7 @@ var TextToken$$module$lib$linkify$core$tokens = function() {
 }(TextToken$$module$lib$linkify$core$tokens), PROTOCOL$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
@@ -204,21 +204,21 @@ var TextToken$$module$lib$linkify$core$tokens = function() {
 }(TextToken$$module$lib$linkify$core$tokens), SYM$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
 }(TextToken$$module$lib$linkify$core$tokens), TLD$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
 }(TextToken$$module$lib$linkify$core$tokens), WS$$module$lib$linkify$core$tokens = function(a) {
   function b() {
     _classCallCheck$$module$lib$linkify$core$tokens(this, b);
-    null != a && a.apply(this, arguments);
+    a.apply(this, arguments);
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
   return b;
@@ -243,8 +243,8 @@ var MultiToken$$module$lib$linkify$core$tokens = function() {
   a.prototype.toHref = function() {
     return this.toString();
   };
-  a.prototype.toObject = function(a) {
-    return{type:this.type, value:this.toString(), href:this.toHref(void 0 === a ? "http" : a)};
+  a.prototype.toObject = function() {
+    return{type:this.type, value:this.toString(), href:this.toHref(0 >= arguments.length || void 0 === arguments[0] ? "http" : arguments[0])};
   };
   return a;
 }(), EMAIL$$module$lib$linkify$core$tokens = function(a) {
@@ -283,22 +283,21 @@ var MultiToken$$module$lib$linkify$core$tokens = function() {
     this.isLink = !0;
   }
   _inherits$$module$lib$linkify$core$tokens(b, a);
-  b.prototype.toHref = function(a) {
-    a = void 0 === a ? "http" : a;
-    for (var b = !1, g = !1, e = this.v, h = [], f = 0;e[f] instanceof PROTOCOL$$module$lib$linkify$core$tokens;) {
-      b = !0, h.push(e[f].toString().toLowerCase()), f++;
+  b.prototype.toHref = function() {
+    for (var a = 0 >= arguments.length || void 0 === arguments[0] ? "http" : arguments[0], b = !1, d = !1, f = this.v, h = [], e = 0;f[e] instanceof PROTOCOL$$module$lib$linkify$core$tokens;) {
+      b = !0, h.push(f[e].toString().toLowerCase()), e++;
     }
-    for (;e[f] instanceof SLASH$$module$lib$linkify$core$tokens;) {
-      g = !0, h.push(e[f].toString()), f++;
+    for (;f[e] instanceof SLASH$$module$lib$linkify$core$tokens;) {
+      d = !0, h.push(f[e].toString()), e++;
     }
-    for (;isDomainToken$$module$lib$linkify$core$tokens(e[f]);) {
-      h.push(e[f].toString().toLowerCase()), f++;
+    for (;isDomainToken$$module$lib$linkify$core$tokens(f[e]);) {
+      h.push(f[e].toString().toLowerCase()), e++;
     }
-    for (;f < e.length;f++) {
-      h.push(e[f].toString());
+    for (;e < f.length;e++) {
+      h.push(f[e].toString());
     }
     h = h.join("");
-    b || g || (h = a + "://" + h);
+    b || d || (h = a + "://" + h);
     return h;
   };
   b.prototype.hasProtocol = function() {
@@ -380,23 +379,23 @@ S_LOCALPART_AT$$module$lib$linkify$core$parser.on(TT_TLD$$module$lib$linkify$cor
 S_LOCALPART_AT$$module$lib$linkify$core$parser.on(TT_DOMAIN$$module$lib$linkify$core$parser, S_EMAIL_DOMAIN$$module$lib$linkify$core$parser);
 S_LOCALPART_AT$$module$lib$linkify$core$parser.on(TT_LOCALHOST$$module$lib$linkify$core$parser, S_EMAIL$$module$lib$linkify$core$parser);
 var run$$module$lib$linkify$core$parser = function(a) {
-  for (var b = a.length, c = 0, d = [], g = [];c < b;) {
-    for (var e = S_START$$module$lib$linkify$core$parser, h = null, f = null, k = 0, l = null, m = -1;c < b && !(h = e.next(a[c]));) {
-      g.push(a[c++]);
+  for (var b = a.length, c = 0, g = [], d = [];c < b;) {
+    for (var f = S_START$$module$lib$linkify$core$parser, h = null, e = null, k = 0, l = null, m = -1;c < b && !(h = f.next(a[c]));) {
+      d.push(a[c++]);
     }
-    for (;c < b && (f = h || e.next(a[c]));) {
-      h = null, e = f, e.accepts() ? (m = 0, l = e) : 0 <= m && m++, c++, k++;
+    for (;c < b && (e = h || f.next(a[c]));) {
+      h = null, f = e, f.accepts() ? (m = 0, l = f) : 0 <= m && m++, c++, k++;
     }
     if (0 > m) {
       for (k = c - k;k < c;k++) {
-        g.push(a[k]);
+        d.push(a[k]);
       }
     } else {
-      0 < g.length && (d.push(new T_TEXT$$module$lib$linkify$core$parser(g)), g = []), c -= m, k -= m, e = l.emit(), d.push(new e(a.slice(c - k, c)));
+      0 < d.length && (g.push(new T_TEXT$$module$lib$linkify$core$parser(d)), d = []), c -= m, k -= m, f = l.emit(), g.push(new f(a.slice(c - k, c)));
     }
   }
-  0 < g.length && d.push(new T_TEXT$$module$lib$linkify$core$parser(g));
-  return d;
+  0 < d.length && g.push(new T_TEXT$$module$lib$linkify$core$parser(d));
+  return g;
 }, TOKENS$$module$lib$linkify$core$parser = _tokens$$module$lib$linkify$core$parser.multi, start$$module$lib$linkify$core$parser = S_START$$module$lib$linkify$core$parser;
 module$lib$linkify$core$parser.State = _state$$module$lib$linkify$core$parser.TokenState;
 module$lib$linkify$core$parser.TOKENS = TOKENS$$module$lib$linkify$core$parser;
@@ -420,11 +419,11 @@ S_START$$module$lib$linkify$core$scanner.on(/\n/, makeState$$module$lib$linkify$
 S_START$$module$lib$linkify$core$scanner.on(/\s/, S_WS$$module$lib$linkify$core$scanner);
 S_WS$$module$lib$linkify$core$scanner.on(/[^\S\n]/, S_WS$$module$lib$linkify$core$scanner);
 for (var i$$module$lib$linkify$core$scanner = 0;i$$module$lib$linkify$core$scanner < tlds$$module$lib$linkify$core$scanner.length;i$$module$lib$linkify$core$scanner++) {
-  var newStates$$module$lib$linkify$core$scanner = (0, _state$$module$lib$linkify$core$scanner.stateify)(tlds$$module$lib$linkify$core$scanner[i$$module$lib$linkify$core$scanner], S_START$$module$lib$linkify$core$scanner, T_TLD$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner);
+  var newStates$$module$lib$linkify$core$scanner = _state$$module$lib$linkify$core$scanner.stateify(tlds$$module$lib$linkify$core$scanner[i$$module$lib$linkify$core$scanner], S_START$$module$lib$linkify$core$scanner, T_TLD$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner);
   domainStates$$module$lib$linkify$core$scanner.push.apply(domainStates$$module$lib$linkify$core$scanner, newStates$$module$lib$linkify$core$scanner);
 }
-var partialProtocolFileStates$$module$lib$linkify$core$scanner = (0, _state$$module$lib$linkify$core$scanner.stateify)("file", S_START$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner), partialProtocolFtpStates$$module$lib$linkify$core$scanner = (0, _state$$module$lib$linkify$core$scanner.stateify)("ftp", S_START$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner), 
-partialProtocolHttpStates$$module$lib$linkify$core$scanner = (0, _state$$module$lib$linkify$core$scanner.stateify)("http", S_START$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner);
+var partialProtocolFileStates$$module$lib$linkify$core$scanner = _state$$module$lib$linkify$core$scanner.stateify("file", S_START$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner), partialProtocolFtpStates$$module$lib$linkify$core$scanner = _state$$module$lib$linkify$core$scanner.stateify("ftp", S_START$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner), partialProtocolHttpStates$$module$lib$linkify$core$scanner = 
+_state$$module$lib$linkify$core$scanner.stateify("http", S_START$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner);
 domainStates$$module$lib$linkify$core$scanner.push.apply(domainStates$$module$lib$linkify$core$scanner, partialProtocolFileStates$$module$lib$linkify$core$scanner);
 domainStates$$module$lib$linkify$core$scanner.push.apply(domainStates$$module$lib$linkify$core$scanner, partialProtocolFtpStates$$module$lib$linkify$core$scanner);
 domainStates$$module$lib$linkify$core$scanner.push.apply(domainStates$$module$lib$linkify$core$scanner, partialProtocolHttpStates$$module$lib$linkify$core$scanner);
@@ -437,7 +436,7 @@ S_PROTOCOL_FILE$$module$lib$linkify$core$scanner.on(COLON$$module$lib$linkify$co
 S_PROTOCOL_FTP$$module$lib$linkify$core$scanner.on(COLON$$module$lib$linkify$core$scanner, S_FULL_PROTOCOL$$module$lib$linkify$core$scanner);
 S_PROTOCOL_HTTP$$module$lib$linkify$core$scanner.on(COLON$$module$lib$linkify$core$scanner, S_FULL_PROTOCOL$$module$lib$linkify$core$scanner);
 S_PROTOCOL_SECURE$$module$lib$linkify$core$scanner.on(COLON$$module$lib$linkify$core$scanner, S_FULL_PROTOCOL$$module$lib$linkify$core$scanner);
-var partialLocalhostStates$$module$lib$linkify$core$scanner = (0, _state$$module$lib$linkify$core$scanner.stateify)("localhost", S_START$$module$lib$linkify$core$scanner, T_LOCALHOST$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner);
+var partialLocalhostStates$$module$lib$linkify$core$scanner = _state$$module$lib$linkify$core$scanner.stateify("localhost", S_START$$module$lib$linkify$core$scanner, T_LOCALHOST$$module$lib$linkify$core$scanner, T_DOMAIN$$module$lib$linkify$core$scanner);
 domainStates$$module$lib$linkify$core$scanner.push.apply(domainStates$$module$lib$linkify$core$scanner, partialLocalhostStates$$module$lib$linkify$core$scanner);
 S_START$$module$lib$linkify$core$scanner.on(REGEXP_NUM$$module$lib$linkify$core$scanner, S_NUM$$module$lib$linkify$core$scanner);
 S_NUM$$module$lib$linkify$core$scanner.on("-", S_DOMAIN_HYPHEN$$module$lib$linkify$core$scanner);
@@ -453,11 +452,13 @@ S_DOMAIN_HYPHEN$$module$lib$linkify$core$scanner.on(REGEXP_NUM$$module$lib$linki
 S_DOMAIN_HYPHEN$$module$lib$linkify$core$scanner.on(REGEXP_ALPHANUM$$module$lib$linkify$core$scanner, S_DOMAIN$$module$lib$linkify$core$scanner);
 S_START$$module$lib$linkify$core$scanner.on(/./, makeState$$module$lib$linkify$core$scanner(_tokens$$module$lib$linkify$core$scanner.text.SYM));
 var run$$module$lib$linkify$core$scanner = function(a) {
-  for (var b = a.toLowerCase(), c = a.length, d = 0, g = [];d < c;) {
-    for (var e = S_START$$module$lib$linkify$core$scanner, h = null, f = 0, k = null, l = -1;d < c && (h = e.next(b[d]));) {
-      e = h, e.accepts() ? (l = 0, k = e) : 0 <= l && l++, f++, d++;
+  for (var b = a.replace(/[A-Z]/g, function(a) {
+    return a.toLowerCase();
+  }), c = a.length, g = [], d = 0;d < c;) {
+    for (var f = S_START$$module$lib$linkify$core$scanner, h = null, e = 0, k = null, l = -1;d < c && (h = f.next(b[d]));) {
+      f = h, f.accepts() ? (l = 0, k = f) : 0 <= l && l++, e++, d++;
     }
-    0 > l || (d -= l, f -= l, e = k.emit(), g.push(new e(a.substr(d - f, f))));
+    0 > l || (d -= l, e -= l, f = k.emit(), g.push(new f(a.substr(d - e, e))));
   }
   return g;
 }, start$$module$lib$linkify$core$scanner = S_START$$module$lib$linkify$core$scanner;
@@ -477,8 +478,8 @@ function normalize$$module$lib$linkify$utils$options(a) {
   return{attributes:a.linkAttributes || null, defaultProtocol:a.defaultProtocol || "http", events:a.events || null, format:a.format || noop$$module$lib$linkify$utils$options, formatHref:a.formatHref || noop$$module$lib$linkify$utils$options, newLine:a.newLine || !1, nl2br:!!a.newLine || a.nl2br || !1, tagName:a.tagName || "a", target:a.target || typeToTarget$$module$lib$linkify$utils$options, linkClass:a.linkClass || "linkified"};
 }
 function resolve$$module$lib$linkify$utils$options(a) {
-  for (var b = arguments.length, c = Array(1 < b ? b - 1 : 0), d = 1;d < b;d++) {
-    c[d - 1] = arguments[d];
+  for (var b = arguments.length, c = Array(1 < b ? b - 1 : 0), g = 1;g < b;g++) {
+    c[g - 1] = arguments[g];
   }
   return "function" === typeof a ? a.apply(void 0, c) : a;
 }
@@ -504,14 +505,14 @@ Array.isArray || (Array.isArray = function(a) {
 });
 var tokenize$$module$lib$linkify = function(a) {
   return parser$$module$lib$linkify.run(scanner$$module$lib$linkify.run(a));
-}, find$$module$lib$linkify = function(a, b) {
-  for (var c = void 0 === b ? null : b, d = tokenize$$module$lib$linkify(a), g = [], e = 0;e < d.length;e++) {
-    !d[e].isLink || c && d[e].type !== c || g.push(d[e].toObject());
+}, find$$module$lib$linkify = function(a) {
+  for (var b = 1 >= arguments.length || void 0 === arguments[1] ? null : arguments[1], c = tokenize$$module$lib$linkify(a), g = [], d = 0;d < c.length;d++) {
+    !c[d].isLink || b && c[d].type !== b || g.push(c[d].toObject());
   }
   return g;
-}, test$$module$lib$linkify = function(a, b) {
-  var c = void 0 === b ? null : b, d = tokenize$$module$lib$linkify(a);
-  return 1 === d.length && d[0].isLink && (!c || d[0].type === c);
+}, test$$module$lib$linkify = function(a) {
+  var b = 1 >= arguments.length || void 0 === arguments[1] ? null : arguments[1], c = tokenize$$module$lib$linkify(a);
+  return 1 === c.length && c[0].isLink && (!b || c[0].type === b);
 };
 module$lib$linkify.find = find$$module$lib$linkify;
 module$lib$linkify.options = options$$module$lib$linkify;
@@ -620,9 +621,9 @@ function linkifyElementHelper(element, opts, doc) {
 
 	// Is this element already a link?
 	if (element.tagName === 'A' /*|| element.hasClass('linkified')*/) {
-		// No need to linkify
-		return element;
-	}
+			// No need to linkify
+			return element;
+		}
 
 	var childElement = element.firstChild;
 
@@ -654,11 +655,11 @@ function linkifyElementHelper(element, opts, doc) {
 }
 
 function linkifyElement(element, opts) {
-	var doc = arguments[2] === undefined ? null : arguments[2];
+	var doc = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
 
 	try {
 		doc = doc || window && window.document || global && global.document;
-	} catch (e) {}
+	} catch (e) {/* do nothing for now */}
 
 	if (!doc) {
 		throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
@@ -671,8 +672,6 @@ function linkifyElement(element, opts) {
 // Maintain reference to the recursive helper to cache option-normalization
 linkifyElement.helper = linkifyElementHelper;
 linkifyElement.normalize = options.normalize;
-
-/* do nothing for now */
 'use strict';
 
 var doc = undefined;
@@ -685,13 +684,13 @@ try {
 
 // Applies the plugin to jQuery
 function apply($) {
-	var doc = arguments[1] === undefined ? null : arguments[1];
+	var doc = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
 
 	$.fn = $.fn || {};
 
 	try {
 		doc = doc || window && window.document || global && global.document;
-	} catch (e) {}
+	} catch (e) {/* do nothing for now */}
 
 	if (!doc) {
 		throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
@@ -740,7 +739,5 @@ function apply($) {
 if (typeof jQuery !== 'undefined' && doc) {
 	apply(jQuery, doc);
 }
-
-/* do nothing for now */
 window.linkifyElement = linkifyElement;
 })(window.jQuery, window.linkify);

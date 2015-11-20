@@ -6,7 +6,7 @@
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function hashtag(linkify) {
 	var TT = linkify.scanner.TOKENS,
@@ -19,6 +19,8 @@ function hashtag(linkify) {
 	    S_HASHTAG = undefined;
 
 	var HASHTAG = (function (_MultiToken) {
+		_inherits(HASHTAG, _MultiToken);
+
 		function HASHTAG(value) {
 			_classCallCheck(this, HASHTAG);
 
@@ -26,8 +28,6 @@ function hashtag(linkify) {
 			this.type = 'hashtag';
 			this.isLink = true;
 		}
-
-		_inherits(HASHTAG, _MultiToken);
 
 		return HASHTAG;
 	})(MultiToken);

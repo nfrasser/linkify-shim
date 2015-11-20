@@ -20,17 +20,17 @@ define('linkify-string', ['exports', 'module', './linkify'], function (exports, 
 
 		for (var attr in attributes) {
 			var val = (attributes[attr] + '').replace(/"/g, '&quot;');
-			result.push('' + attr + '="' + cleanAttr(val) + '"');
+			result.push(attr + '="' + cleanAttr(val) + '"');
 		}
 		return result.join(' ');
 	}
 
 	function linkifyStr(str) {
-		var opts = arguments[1] === undefined ? {} : arguments[1];
+		var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
 		opts = _linkify.options.normalize(opts);
 
-		var tokens = (0, _linkify.tokenize)(str),
+		var tokens = _linkify.tokenize(str),
 		    result = [];
 
 		for (var i = 0; i < tokens.length; i++) {
