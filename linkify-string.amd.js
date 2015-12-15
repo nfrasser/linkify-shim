@@ -5,11 +5,11 @@ define('linkify-string', ['exports', 'module', './linkify'], function (exports, 
 
 	'use strict';
 
-	function cleanText(text) {
+	function escapeText(text) {
 		return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	}
 
-	function cleanAttr(href) {
+	function escapeAttr(href) {
 		return href.replace(/"/g, '&quot;');
 	}
 
@@ -20,7 +20,7 @@ define('linkify-string', ['exports', 'module', './linkify'], function (exports, 
 
 		for (var attr in attributes) {
 			var val = (attributes[attr] + '').replace(/"/g, '&quot;');
-			result.push(attr + '="' + cleanAttr(val) + '"');
+			result.push(attr + '="' + escapeAttr(val) + '"');
 		}
 		return result.join(' ');
 	}
@@ -45,16 +45,16 @@ define('linkify-string', ['exports', 'module', './linkify'], function (exports, 
 				    linkClass = _linkify.options.resolve(opts.linkClass, href, token.type),
 				    target = _linkify.options.resolve(opts.target, href, token.type);
 
-				var link = '<' + tagName + ' href="' + cleanAttr(formattedHref) + '" class="' + cleanAttr(linkClass) + '"';
+				var link = '<' + tagName + ' href="' + escapeAttr(formattedHref) + '" class="' + escapeAttr(linkClass) + '"';
 				if (target) {
-					link += ' target="' + cleanAttr(target) + '"';
+					link += ' target="' + escapeAttr(target) + '"';
 				}
 
 				if (attributesHash) {
 					link += ' ' + attributesToString(attributesHash);
 				}
 
-				link += '>' + cleanText(formatted) + '</' + tagName + '>';
+				link += '>' + escapeText(formatted) + '</' + tagName + '>';
 				result.push(link);
 			} else if (token.type === 'nl' && opts.nl2br) {
 				if (opts.newLine) {
@@ -63,7 +63,7 @@ define('linkify-string', ['exports', 'module', './linkify'], function (exports, 
 					result.push('<br>\n');
 				}
 			} else {
-				result.push(cleanText(token.toString()));
+				result.push(escapeText(token.toString()));
 			}
 		}
 

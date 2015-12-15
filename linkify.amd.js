@@ -193,6 +193,54 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         }
         return WS;
     }(TextToken);
+    var OPENBRACE = function (_TextToken17) {
+        _inherits(OPENBRACE, _TextToken17);
+        function OPENBRACE() {
+            _classCallCheck(this, OPENBRACE);
+            _TextToken17.call(this, '{');
+        }
+        return OPENBRACE;
+    }(TextToken);
+    var OPENBRACKET = function (_TextToken18) {
+        _inherits(OPENBRACKET, _TextToken18);
+        function OPENBRACKET() {
+            _classCallCheck(this, OPENBRACKET);
+            _TextToken18.call(this, '[');
+        }
+        return OPENBRACKET;
+    }(TextToken);
+    var OPENPAREN = function (_TextToken19) {
+        _inherits(OPENPAREN, _TextToken19);
+        function OPENPAREN() {
+            _classCallCheck(this, OPENPAREN);
+            _TextToken19.call(this, '(');
+        }
+        return OPENPAREN;
+    }(TextToken);
+    var CLOSEBRACE = function (_TextToken20) {
+        _inherits(CLOSEBRACE, _TextToken20);
+        function CLOSEBRACE() {
+            _classCallCheck(this, CLOSEBRACE);
+            _TextToken20.call(this, '}');
+        }
+        return CLOSEBRACE;
+    }(TextToken);
+    var CLOSEBRACKET = function (_TextToken21) {
+        _inherits(CLOSEBRACKET, _TextToken21);
+        function CLOSEBRACKET() {
+            _classCallCheck(this, CLOSEBRACKET);
+            _TextToken21.call(this, ']');
+        }
+        return CLOSEBRACKET;
+    }(TextToken);
+    var CLOSEPAREN = function (_TextToken22) {
+        _inherits(CLOSEPAREN, _TextToken22);
+        function CLOSEPAREN() {
+            _classCallCheck(this, CLOSEPAREN);
+            _TextToken22.call(this, ')');
+        }
+        return CLOSEPAREN;
+    }(TextToken);
     var text = {
         Base: TextToken,
         DOMAIN: DOMAIN,
@@ -210,7 +258,13 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         SLASH: SLASH,
         SYM: SYM,
         TLD: TLD,
-        WS: WS
+        WS: WS,
+        OPENBRACE: OPENBRACE,
+        OPENBRACKET: OPENBRACKET,
+        OPENPAREN: OPENPAREN,
+        CLOSEBRACE: CLOSEBRACE,
+        CLOSEBRACKET: CLOSEBRACKET,
+        CLOSEPAREN: CLOSEPAREN
     };
     function isDomainToken(token) {
         return token instanceof DOMAIN || token instanceof TLD;
@@ -452,6 +506,12 @@ define('linkify/core/scanner', [
     S_START.on('?', makeState(_tokens.text.QUERY));
     S_START.on('/', makeState(_tokens.text.SLASH));
     S_START.on(COLON, makeState(_tokens.text.COLON));
+    S_START.on('{', makeState(_tokens.text.OPENBRACE));
+    S_START.on('[', makeState(_tokens.text.OPENBRACKET));
+    S_START.on('(', makeState(_tokens.text.OPENPAREN));
+    S_START.on('}', makeState(_tokens.text.CLOSEBRACE));
+    S_START.on(']', makeState(_tokens.text.CLOSEBRACKET));
+    S_START.on(')', makeState(_tokens.text.CLOSEPAREN));
     S_START.on(/[,;!]/, makeState(_tokens.text.PUNCTUATION));
     S_START.on(/\n/, makeState(_tokens.text.NL));
     S_START.on(/\s/, S_WS);
@@ -534,10 +594,10 @@ define('linkify/core/parser', [
     var makeState = function makeState(tokenClass) {
         return new _state.TokenState(tokenClass);
     };
-    var TT_DOMAIN = _tokens.text.DOMAIN, TT_AT = _tokens.text.AT, TT_COLON = _tokens.text.COLON, TT_DOT = _tokens.text.DOT, TT_PUNCTUATION = _tokens.text.PUNCTUATION, TT_LOCALHOST = _tokens.text.LOCALHOST, TT_NL = _tokens.text.NL, TT_NUM = _tokens.text.NUM, TT_PLUS = _tokens.text.PLUS, TT_POUND = _tokens.text.POUND, TT_PROTOCOL = _tokens.text.PROTOCOL, TT_QUERY = _tokens.text.QUERY, TT_SLASH = _tokens.text.SLASH, TT_SYM = _tokens.text.SYM, TT_TLD = _tokens.text.TLD;
+    var TT_DOMAIN = _tokens.text.DOMAIN, TT_AT = _tokens.text.AT, TT_COLON = _tokens.text.COLON, TT_DOT = _tokens.text.DOT, TT_PUNCTUATION = _tokens.text.PUNCTUATION, TT_LOCALHOST = _tokens.text.LOCALHOST, TT_NL = _tokens.text.NL, TT_NUM = _tokens.text.NUM, TT_PLUS = _tokens.text.PLUS, TT_POUND = _tokens.text.POUND, TT_PROTOCOL = _tokens.text.PROTOCOL, TT_QUERY = _tokens.text.QUERY, TT_SLASH = _tokens.text.SLASH, TT_SYM = _tokens.text.SYM, TT_TLD = _tokens.text.TLD, TT_OPENBRACE = _tokens.text.OPENBRACE, TT_OPENBRACKET = _tokens.text.OPENBRACKET, TT_OPENPAREN = _tokens.text.OPENPAREN, TT_CLOSEBRACE = _tokens.text.CLOSEBRACE, TT_CLOSEBRACKET = _tokens.text.CLOSEBRACKET, TT_CLOSEPAREN = _tokens.text.CLOSEPAREN;
     var T_EMAIL = _tokens.multi.EMAIL, T_NL = _tokens.multi.NL, T_TEXT = _tokens.multi.TEXT, T_URL = _tokens.multi.URL;
     var S_START = makeState();
-    var S_PROTOCOL = makeState(), S_PROTOCOL_SLASH = makeState(), S_PROTOCOL_SLASH_SLASH = makeState(), S_DOMAIN = makeState(), S_DOMAIN_DOT = makeState(), S_TLD = makeState(T_URL), S_TLD_COLON = makeState(), S_TLD_PORT = makeState(T_URL), S_PSS_DOMAIN = makeState(), S_PSS_DOMAIN_DOT = makeState(), S_PSS_TLD = makeState(T_URL), S_PSS_TLD_COLON = makeState(), S_PSS_TLD_PORT = makeState(T_URL), S_URL = makeState(T_URL), S_URL_SYMS = makeState(), S_EMAIL_DOMAIN = makeState(), S_EMAIL_DOMAIN_DOT = makeState(), S_EMAIL = makeState(T_EMAIL), S_EMAIL_COLON = makeState(), S_EMAIL_PORT = makeState(T_EMAIL), S_LOCALPART = makeState(), S_LOCALPART_AT = makeState(), S_LOCALPART_DOT = makeState(), S_NL = makeState(T_NL);
+    var S_PROTOCOL = makeState(), S_PROTOCOL_SLASH = makeState(), S_PROTOCOL_SLASH_SLASH = makeState(), S_DOMAIN = makeState(), S_DOMAIN_DOT = makeState(), S_TLD = makeState(T_URL), S_TLD_COLON = makeState(), S_TLD_PORT = makeState(T_URL), S_PSS_DOMAIN = makeState(), S_PSS_DOMAIN_DOT = makeState(), S_PSS_TLD = makeState(T_URL), S_PSS_TLD_COLON = makeState(), S_PSS_TLD_PORT = makeState(T_URL), S_URL = makeState(T_URL), S_URL_SYMS = makeState(), S_URL_OPENBRACE = makeState(), S_URL_OPENBRACKET = makeState(), S_URL_OPENPAREN = makeState(), S_URL_OPENBRACE_Q = makeState(T_URL), S_URL_OPENBRACKET_Q = makeState(T_URL), S_URL_OPENPAREN_Q = makeState(T_URL), S_URL_OPENBRACE_SYMS = makeState(), S_URL_OPENBRACKET_SYMS = makeState(), S_URL_OPENPAREN_SYMS = makeState(), S_EMAIL_DOMAIN = makeState(), S_EMAIL_DOMAIN_DOT = makeState(), S_EMAIL = makeState(T_EMAIL), S_EMAIL_COLON = makeState(), S_EMAIL_PORT = makeState(T_EMAIL), S_LOCALPART = makeState(), S_LOCALPART_AT = makeState(), S_LOCALPART_DOT = makeState(), S_NL = makeState(T_NL);
     S_START.on(TT_NL, S_NL);
     S_START.on(TT_PROTOCOL, S_PROTOCOL);
     S_START.on(TT_SLASH, S_PROTOCOL_SLASH);
@@ -588,15 +648,54 @@ define('linkify/core/parser', [
         TT_POUND,
         TT_PROTOCOL,
         TT_SLASH,
-        TT_TLD,
-        TT_SYM
+        TT_TLD
     ];
     var qsNonAccepting = [
         TT_COLON,
         TT_DOT,
         TT_QUERY,
-        TT_PUNCTUATION
+        TT_PUNCTUATION,
+        TT_CLOSEBRACE,
+        TT_CLOSEBRACKET,
+        TT_CLOSEPAREN,
+        TT_OPENBRACE,
+        TT_OPENBRACKET,
+        TT_OPENPAREN,
+        TT_SYM
     ];
+    S_URL.on(TT_OPENBRACE, S_URL_OPENBRACE);
+    S_URL.on(TT_OPENBRACKET, S_URL_OPENBRACKET);
+    S_URL.on(TT_OPENPAREN, S_URL_OPENPAREN);
+    S_URL_SYMS.on(TT_OPENBRACE, S_URL_OPENBRACE);
+    S_URL_SYMS.on(TT_OPENBRACKET, S_URL_OPENBRACKET);
+    S_URL_SYMS.on(TT_OPENPAREN, S_URL_OPENPAREN);
+    S_URL_OPENBRACE.on(TT_CLOSEBRACE, S_URL);
+    S_URL_OPENBRACKET.on(TT_CLOSEBRACKET, S_URL);
+    S_URL_OPENPAREN.on(TT_CLOSEPAREN, S_URL);
+    S_URL_OPENBRACE_Q.on(TT_CLOSEBRACE, S_URL);
+    S_URL_OPENBRACKET_Q.on(TT_CLOSEBRACKET, S_URL);
+    S_URL_OPENPAREN_Q.on(TT_CLOSEPAREN, S_URL);
+    S_URL_OPENBRACE_SYMS.on(TT_CLOSEBRACE, S_URL);
+    S_URL_OPENBRACKET_SYMS.on(TT_CLOSEBRACKET, S_URL);
+    S_URL_OPENPAREN_SYMS.on(TT_CLOSEPAREN, S_URL);
+    S_URL_OPENBRACE.on(qsAccepting, S_URL_OPENBRACE_Q);
+    S_URL_OPENBRACKET.on(qsAccepting, S_URL_OPENBRACKET_Q);
+    S_URL_OPENPAREN.on(qsAccepting, S_URL_OPENPAREN_Q);
+    S_URL_OPENBRACE.on(qsNonAccepting, S_URL_OPENBRACE_SYMS);
+    S_URL_OPENBRACKET.on(qsNonAccepting, S_URL_OPENBRACKET_SYMS);
+    S_URL_OPENPAREN.on(qsNonAccepting, S_URL_OPENPAREN_SYMS);
+    S_URL_OPENBRACE_Q.on(qsAccepting, S_URL_OPENBRACE_Q);
+    S_URL_OPENBRACKET_Q.on(qsAccepting, S_URL_OPENBRACKET_Q);
+    S_URL_OPENPAREN_Q.on(qsAccepting, S_URL_OPENPAREN_Q);
+    S_URL_OPENBRACE_Q.on(qsNonAccepting, S_URL_OPENBRACE_Q);
+    S_URL_OPENBRACKET_Q.on(qsNonAccepting, S_URL_OPENBRACKET_Q);
+    S_URL_OPENPAREN_Q.on(qsNonAccepting, S_URL_OPENPAREN_Q);
+    S_URL_OPENBRACE_SYMS.on(qsAccepting, S_URL_OPENBRACE_Q);
+    S_URL_OPENBRACKET_SYMS.on(qsAccepting, S_URL_OPENBRACKET_Q);
+    S_URL_OPENPAREN_SYMS.on(qsAccepting, S_URL_OPENPAREN_Q);
+    S_URL_OPENBRACE_SYMS.on(qsNonAccepting, S_URL_OPENBRACE_SYMS);
+    S_URL_OPENBRACKET_SYMS.on(qsNonAccepting, S_URL_OPENBRACKET_SYMS);
+    S_URL_OPENPAREN_SYMS.on(qsNonAccepting, S_URL_OPENPAREN_SYMS);
     S_URL.on(qsAccepting, S_URL);
     S_URL_SYMS.on(qsAccepting, S_URL);
     S_URL.on(qsNonAccepting, S_URL_SYMS);
