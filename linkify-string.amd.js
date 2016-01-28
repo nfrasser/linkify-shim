@@ -35,7 +35,9 @@ define('linkify-string', ['exports', 'module', './linkify'], function (exports, 
 
 		for (var i = 0; i < tokens.length; i++) {
 			var token = tokens[i];
-			if (token.isLink) {
+			var validated = token.isLink && _linkify.options.resolve(opts.validate, token.toString(), token.type);
+
+			if (token.isLink && validated) {
 
 				var href = token.toHref(opts.defaultProtocol),
 				    formatted = _linkify.options.resolve(opts.format, token.toString(), token.type),

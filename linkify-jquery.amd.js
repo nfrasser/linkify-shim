@@ -34,8 +34,9 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 
 		for (var i = 0; i < tokens.length; i++) {
 			var token = tokens[i];
+			var validated = token.isLink && _linkify.options.resolve(opts.validate, token.toString(), token.type);
 
-			if (token.isLink) {
+			if (token.isLink && validated) {
 
 				var href = token.toHref(opts.defaultProtocol),
 				    formatted = _linkify.options.resolve(opts.format, token.toString(), token.type),
@@ -209,7 +210,8 @@ define('linkify-jquery', ['exports', 'module', 'jquery', './linkify-element'], f
 					nl2br: !!nl2br && nl2br !== 0 && nl2br !== 'false',
 					tagName: data.linkifyTagname,
 					target: data.linkifyTarget,
-					linkClass: data.linkifyLinkclass
+					linkClass: data.linkifyLinkclass,
+					validate: data.linkifyValidate
 				};
 				var $target = target === 'this' ? $this : $this.find(target);
 				$target.linkify(options);

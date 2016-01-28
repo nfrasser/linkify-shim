@@ -4,6 +4,9 @@ define('linkify/utils/options', ['exports'], function (exports) {
     function noop(val) {
         return val;
     }
+    function yes(val) {
+        return true;
+    }
     function typeToTarget(href, type) {
         return type === 'url' ? '_blank' : null;
     }
@@ -15,6 +18,7 @@ define('linkify/utils/options', ['exports'], function (exports) {
             defaultProtocol: opts.defaultProtocol || 'http',
             events: opts.events || null,
             format: opts.format || noop,
+            validate: opts.validate || yes,
             formatHref: opts.formatHref || noop,
             newLine: opts.newLine || false,
             nl2br: !!newLine || opts.nl2br || false,

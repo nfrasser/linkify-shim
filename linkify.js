@@ -41,8 +41,8 @@ var BaseState$$module$lib$linkify$core$state = function() {
   a.prototype.accepts = function() {
     return!!this.T;
   };
-  a.prototype.test = function(b, a) {
-    return b === a;
+  a.prototype.test = function(a, c) {
+    return a === c;
   };
   a.prototype.emit = function() {
     return this.T;
@@ -554,12 +554,15 @@ var module$lib$linkify$utils$options = {__esModule:!0};
 function noop$$module$lib$linkify$utils$options(a) {
   return a;
 }
+function yes$$module$lib$linkify$utils$options(a) {
+  return!0;
+}
 function typeToTarget$$module$lib$linkify$utils$options(a, b) {
   return "url" === b ? "_blank" : null;
 }
 function normalize$$module$lib$linkify$utils$options(a) {
   a = a || {};
-  return{attributes:a.linkAttributes || null, defaultProtocol:a.defaultProtocol || "http", events:a.events || null, format:a.format || noop$$module$lib$linkify$utils$options, formatHref:a.formatHref || noop$$module$lib$linkify$utils$options, newLine:a.newLine || !1, nl2br:!!a.newLine || a.nl2br || !1, tagName:a.tagName || "a", target:a.target || typeToTarget$$module$lib$linkify$utils$options, linkClass:a.linkClass || "linkified"};
+  return{attributes:a.linkAttributes || null, defaultProtocol:a.defaultProtocol || "http", events:a.events || null, format:a.format || noop$$module$lib$linkify$utils$options, validate:a.validate || yes$$module$lib$linkify$utils$options, formatHref:a.formatHref || noop$$module$lib$linkify$utils$options, newLine:a.newLine || !1, nl2br:!!a.newLine || a.nl2br || !1, tagName:a.tagName || "a", target:a.target || typeToTarget$$module$lib$linkify$utils$options, linkClass:a.linkClass || "linkified"};
 }
 function resolve$$module$lib$linkify$utils$options(a) {
   for (var b = arguments.length, c = Array(1 < b ? b - 1 : 0), g = 1;g < b;g++) {

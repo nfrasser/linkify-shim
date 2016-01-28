@@ -684,6 +684,8 @@ function linkifyChars(str, opts) {
 
 	for (var i = 0; i < tokens.length; i++) {
 		var token = tokens[i];
+		var validated = token.isLink && linkify.options.resolve(opts.validate, token.toString(), token.type);
+
 		if (token.type === 'nl' && opts.nl2br) {
 			result.push({
 				type: StartTag,
@@ -692,7 +694,7 @@ function linkifyChars(str, opts) {
 				selfClosing: true
 			});
 			continue;
-		} else if (!token.isLink) {
+		} else if (!token.isLink || !validated) {
 			result.push({ type: Chars, chars: token.toString() });
 			continue;
 		}

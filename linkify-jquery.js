@@ -36,8 +36,9 @@ function tokensToNodes(tokens, opts, doc) {
 
 	for (var i = 0; i < tokens.length; i++) {
 		var token = tokens[i];
+		var validated = token.isLink && options.resolve(opts.validate, token.toString(), token.type);
 
-		if (token.isLink) {
+		if (token.isLink && validated) {
 
 			var href = token.toHref(opts.defaultProtocol),
 			    formatted = options.resolve(opts.format, token.toString(), token.type),
@@ -201,7 +202,8 @@ function apply($) {
 				nl2br: !!nl2br && nl2br !== 0 && nl2br !== 'false',
 				tagName: data.linkifyTagname,
 				target: data.linkifyTarget,
-				linkClass: data.linkifyLinkclass
+				linkClass: data.linkifyLinkclass,
+				validate: data.linkifyValidate
 			};
 			var $target = target === 'this' ? $this : $this.find(target);
 			$target.linkify(options);
