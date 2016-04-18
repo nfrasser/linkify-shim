@@ -13,6 +13,10 @@ define('linkify/utils/options', ['exports'], function (exports) {
     function normalize(opts) {
         opts = opts || {};
         var newLine = opts.newLine || false;
+        var ignoreTags = opts.ignoreTags || [];
+        for (var i = 0; i < ignoreTags.length; i++) {
+            ignoreTags[i] = ignoreTags[i].toUpperCase();
+        }
         return {
             attributes: opts.linkAttributes || null,
             defaultProtocol: opts.defaultProtocol || 'http',
@@ -24,7 +28,8 @@ define('linkify/utils/options', ['exports'], function (exports) {
             nl2br: !!newLine || opts.nl2br || false,
             tagName: opts.tagName || 'a',
             target: opts.target || typeToTarget,
-            linkClass: opts.linkClass || 'linkified'
+            linkClass: opts.linkClass || 'linkified',
+            ignoreTags: ignoreTags
         };
     }
     function resolve(value) {
@@ -601,7 +606,7 @@ define('linkify/core/parser', [
     var TT_DOMAIN = _tokens.text.DOMAIN, TT_AT = _tokens.text.AT, TT_COLON = _tokens.text.COLON, TT_DOT = _tokens.text.DOT, TT_PUNCTUATION = _tokens.text.PUNCTUATION, TT_LOCALHOST = _tokens.text.LOCALHOST, TT_NL = _tokens.text.NL, TT_NUM = _tokens.text.NUM, TT_PLUS = _tokens.text.PLUS, TT_POUND = _tokens.text.POUND, TT_PROTOCOL = _tokens.text.PROTOCOL, TT_QUERY = _tokens.text.QUERY, TT_SLASH = _tokens.text.SLASH, TT_SYM = _tokens.text.SYM, TT_TLD = _tokens.text.TLD, TT_OPENBRACE = _tokens.text.OPENBRACE, TT_OPENBRACKET = _tokens.text.OPENBRACKET, TT_OPENPAREN = _tokens.text.OPENPAREN, TT_CLOSEBRACE = _tokens.text.CLOSEBRACE, TT_CLOSEBRACKET = _tokens.text.CLOSEBRACKET, TT_CLOSEPAREN = _tokens.text.CLOSEPAREN;
     var T_EMAIL = _tokens.multi.EMAIL, T_NL = _tokens.multi.NL, T_TEXT = _tokens.multi.TEXT, T_URL = _tokens.multi.URL;
     var S_START = makeState();
-    var S_PROTOCOL = makeState(), S_PROTOCOL_SLASH = makeState(), S_PROTOCOL_SLASH_SLASH = makeState(), S_DOMAIN = makeState(), S_DOMAIN_DOT = makeState(), S_TLD = makeState(T_URL), S_TLD_COLON = makeState(), S_TLD_PORT = makeState(T_URL), S_PSS_DOMAIN = makeState(), S_PSS_DOMAIN_DOT = makeState(), S_PSS_TLD = makeState(T_URL), S_PSS_TLD_COLON = makeState(), S_PSS_TLD_PORT = makeState(T_URL), S_URL = makeState(T_URL), S_URL_SYMS = makeState(), S_URL_OPENBRACE = makeState(), S_URL_OPENBRACKET = makeState(), S_URL_OPENPAREN = makeState(), S_URL_OPENBRACE_Q = makeState(T_URL), S_URL_OPENBRACKET_Q = makeState(T_URL), S_URL_OPENPAREN_Q = makeState(T_URL), S_URL_OPENBRACE_SYMS = makeState(), S_URL_OPENBRACKET_SYMS = makeState(), S_URL_OPENPAREN_SYMS = makeState(), S_EMAIL_DOMAIN = makeState(), S_EMAIL_DOMAIN_DOT = makeState(), S_EMAIL = makeState(T_EMAIL), S_EMAIL_COLON = makeState(), S_EMAIL_PORT = makeState(T_EMAIL), S_LOCALPART = makeState(), S_LOCALPART_AT = makeState(), S_LOCALPART_DOT = makeState(), S_NL = makeState(T_NL);
+    var S_PROTOCOL = makeState(), S_PROTOCOL_SLASH = makeState(), S_PROTOCOL_SLASH_SLASH = makeState(), S_DOMAIN = makeState(), S_DOMAIN_DOT = makeState(), S_TLD = makeState(T_URL), S_TLD_COLON = makeState(), S_TLD_PORT = makeState(T_URL), S_URL = makeState(T_URL), S_URL_SYMS = makeState(), S_URL_OPENBRACE = makeState(), S_URL_OPENBRACKET = makeState(), S_URL_OPENPAREN = makeState(), S_URL_OPENBRACE_Q = makeState(T_URL), S_URL_OPENBRACKET_Q = makeState(T_URL), S_URL_OPENPAREN_Q = makeState(T_URL), S_URL_OPENBRACE_SYMS = makeState(), S_URL_OPENBRACKET_SYMS = makeState(), S_URL_OPENPAREN_SYMS = makeState(), S_EMAIL_DOMAIN = makeState(), S_EMAIL_DOMAIN_DOT = makeState(), S_EMAIL = makeState(T_EMAIL), S_EMAIL_COLON = makeState(), S_EMAIL_PORT = makeState(T_EMAIL), S_LOCALPART = makeState(), S_LOCALPART_AT = makeState(), S_LOCALPART_DOT = makeState(), S_NL = makeState(T_NL);
     S_START.on(TT_NL, S_NL);
     S_START.on(TT_PROTOCOL, S_PROTOCOL);
     S_START.on(TT_SLASH, S_PROTOCOL_SLASH);
@@ -611,36 +616,26 @@ define('linkify/core/parser', [
     S_START.on(TT_DOMAIN, S_DOMAIN);
     S_START.on(TT_LOCALHOST, S_TLD);
     S_START.on(TT_NUM, S_DOMAIN);
-    S_PROTOCOL_SLASH_SLASH.on(TT_TLD, S_PSS_DOMAIN);
-    S_PROTOCOL_SLASH_SLASH.on(TT_DOMAIN, S_PSS_DOMAIN);
-    S_PROTOCOL_SLASH_SLASH.on(TT_NUM, S_PSS_DOMAIN);
-    S_PROTOCOL_SLASH_SLASH.on(TT_LOCALHOST, S_PSS_TLD);
+    S_PROTOCOL_SLASH_SLASH.on(TT_TLD, S_URL);
+    S_PROTOCOL_SLASH_SLASH.on(TT_DOMAIN, S_URL);
+    S_PROTOCOL_SLASH_SLASH.on(TT_NUM, S_URL);
+    S_PROTOCOL_SLASH_SLASH.on(TT_LOCALHOST, S_URL);
     S_DOMAIN.on(TT_DOT, S_DOMAIN_DOT);
-    S_PSS_DOMAIN.on(TT_DOT, S_PSS_DOMAIN_DOT);
     S_EMAIL_DOMAIN.on(TT_DOT, S_EMAIL_DOMAIN_DOT);
     S_DOMAIN_DOT.on(TT_TLD, S_TLD);
     S_DOMAIN_DOT.on(TT_DOMAIN, S_DOMAIN);
     S_DOMAIN_DOT.on(TT_NUM, S_DOMAIN);
     S_DOMAIN_DOT.on(TT_LOCALHOST, S_DOMAIN);
-    S_PSS_DOMAIN_DOT.on(TT_TLD, S_PSS_TLD);
-    S_PSS_DOMAIN_DOT.on(TT_DOMAIN, S_PSS_DOMAIN);
-    S_PSS_DOMAIN_DOT.on(TT_NUM, S_PSS_DOMAIN);
-    S_PSS_DOMAIN_DOT.on(TT_LOCALHOST, S_PSS_DOMAIN);
     S_EMAIL_DOMAIN_DOT.on(TT_TLD, S_EMAIL);
     S_EMAIL_DOMAIN_DOT.on(TT_DOMAIN, S_EMAIL_DOMAIN);
     S_EMAIL_DOMAIN_DOT.on(TT_NUM, S_EMAIL_DOMAIN);
     S_EMAIL_DOMAIN_DOT.on(TT_LOCALHOST, S_EMAIL_DOMAIN);
     S_TLD.on(TT_DOT, S_DOMAIN_DOT);
-    S_PSS_TLD.on(TT_DOT, S_PSS_DOMAIN_DOT);
     S_EMAIL.on(TT_DOT, S_EMAIL_DOMAIN_DOT);
     S_TLD.on(TT_COLON, S_TLD_COLON);
     S_TLD.on(TT_SLASH, S_URL);
     S_TLD_COLON.on(TT_NUM, S_TLD_PORT);
     S_TLD_PORT.on(TT_SLASH, S_URL);
-    S_PSS_TLD.on(TT_COLON, S_PSS_TLD_COLON);
-    S_PSS_TLD.on(TT_SLASH, S_URL);
-    S_PSS_TLD_COLON.on(TT_NUM, S_PSS_TLD_PORT);
-    S_PSS_TLD_PORT.on(TT_SLASH, S_URL);
     S_EMAIL.on(TT_COLON, S_EMAIL_COLON);
     S_EMAIL_COLON.on(TT_NUM, S_EMAIL_PORT);
     var qsAccepting = [

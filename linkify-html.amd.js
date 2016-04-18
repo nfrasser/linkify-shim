@@ -698,11 +698,16 @@ define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linki
 		for (i = 0; i < tokens.length; i++) {
 			var token = tokens[i];
 
-			if (token.type === StartTag && token.tagName.toUpperCase() === 'A') {
-				// Ignore all the contents of an anchor tag
+			if (token.type === StartTag) {
 				linkifiedTokens.push(token);
+
+				// Ignore all the contents of ignored tags
+				var tagName = token.tagName.toUpperCase();
+				var isIgnored = tagName === 'A' || opts.ignoreTags.indexOf(tagName) >= 0;
+				if (!isIgnored) continue;
+
 				var preskipLen = linkifiedTokens.length;
-				skipTagTokens('A', tokens, ++i, linkifiedTokens);
+				skipTagTokens(tagName, tokens, ++i, linkifiedTokens);
 				i += linkifiedTokens.length - preskipLen - 1;
 				continue;
 			} else if (token.type !== Chars) {

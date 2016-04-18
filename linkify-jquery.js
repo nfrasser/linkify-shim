@@ -94,11 +94,13 @@ function linkifyElementHelper(element, opts, doc) {
 		throw new Error('Cannot linkify ' + element + ' - Invalid DOM Node type');
 	}
 
+	var ignoreTags = opts.ignoreTags;
+
 	// Is this element already a link?
-	if (element.tagName === 'A' /*|| element.hasClass('linkified')*/) {
-			// No need to linkify
-			return element;
-		}
+	if (element.tagName === 'A' || ignoreTags.indexOf(element.tagName) >= 0) {
+		// No need to linkify
+		return element;
+	}
 
 	var childElement = element.firstChild;
 
@@ -203,7 +205,8 @@ function apply($) {
 				tagName: data.linkifyTagname,
 				target: data.linkifyTarget,
 				linkClass: data.linkifyLinkclass,
-				validate: data.linkifyValidate
+				validate: data.linkifyValidate,
+				ignoreTags: data.linkifyIgnoreTags
 			};
 			var $target = target === 'this' ? $this : $this.find(target);
 			$target.linkify(options);
