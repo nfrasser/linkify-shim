@@ -1,9 +1,34 @@
-define('linkify-string', ['exports', 'module', './linkify'], function (exports, module, _linkify) {
-	/**
- 	Convert strings of text into linkable HTML text
- */
-
+define('linkify-string', ['module', 'exports', './linkify'], function (module, exports, _linkify) {
 	'use strict';
+
+	try { Object.defineProperty(exports, "__esModule", {
+		value: true
+	}); } catch (e) { exports['__esModule'] = true; }
+
+	var linkify = _interopRequireWildcard(_linkify);
+
+	function _interopRequireWildcard(obj) {
+		if (obj && obj.__esModule) {
+			return obj;
+		} else {
+			var newObj = {};
+
+			if (obj != null) {
+				for (var key in obj) {
+					if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+				}
+			}
+
+			newObj['default'] = obj;
+			return newObj;
+		}
+	}
+
+	var tokenize = linkify.tokenize; /**
+                                  	Convert strings of text into linkable HTML text
+                                  */
+
+	var options = linkify.options;
 
 	function escapeText(text) {
 		return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -28,24 +53,25 @@ define('linkify-string', ['exports', 'module', './linkify'], function (exports, 
 	function linkifyStr(str) {
 		var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-		opts = _linkify.options.normalize(opts);
 
-		var tokens = _linkify.tokenize(str),
+		opts = options.normalize(opts);
+
+		var tokens = tokenize(str),
 		    result = [];
 
 		for (var i = 0; i < tokens.length; i++) {
 			var token = tokens[i];
-			var validated = token.isLink && _linkify.options.resolve(opts.validate, token.toString(), token.type);
+			var validated = token.isLink && options.resolve(opts.validate, token.toString(), token.type);
 
 			if (token.isLink && validated) {
 
 				var href = token.toHref(opts.defaultProtocol),
-				    formatted = _linkify.options.resolve(opts.format, token.toString(), token.type),
-				    formattedHref = _linkify.options.resolve(opts.formatHref, href, token.type),
-				    attributesHash = _linkify.options.resolve(opts.attributes, href, token.type),
-				    tagName = _linkify.options.resolve(opts.tagName, href, token.type),
-				    linkClass = _linkify.options.resolve(opts.linkClass, href, token.type),
-				    target = _linkify.options.resolve(opts.target, href, token.type);
+				    formatted = options.resolve(opts.format, token.toString(), token.type),
+				    formattedHref = options.resolve(opts.formatHref, href, token.type),
+				    attributesHash = options.resolve(opts.attributes, href, token.type),
+				    tagName = options.resolve(opts.tagName, href, token.type),
+				    linkClass = options.resolve(opts.linkClass, href, token.type),
+				    target = options.resolve(opts.target, href, token.type);
 
 				var link = '<' + tagName + ' href="' + escapeAttr(formattedHref) + '" class="' + escapeAttr(linkClass) + '"';
 				if (target) {
@@ -78,5 +104,6 @@ define('linkify-string', ['exports', 'module', './linkify'], function (exports, 
 		};
 	}
 
-	module.exports = linkifyStr;
+	exports['default'] = linkifyStr;
+	module.exports = exports['default'];
 });

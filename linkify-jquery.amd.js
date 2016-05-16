@@ -1,9 +1,37 @@
-define('linkify-element', ['exports', 'module', './linkify'], function (exports, module, _linkify) {
-	/**
- 	Linkify a HTML DOM node
- */
-
+define('linkify-element', ['module', 'exports', './linkify'], function (module, exports, _linkify) {
 	'use strict';
+
+	try { Object.defineProperty(exports, "__esModule", {
+		value: true
+	}); } catch (e) { exports['__esModule'] = true; }
+
+	var linkify = _interopRequireWildcard(_linkify);
+
+	function _interopRequireWildcard(obj) {
+		if (obj && obj.__esModule) {
+			return obj;
+		} else {
+			var newObj = {};
+
+			if (obj != null) {
+				for (var key in obj) {
+					if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+				}
+			}
+
+			newObj['default'] = obj;
+			return newObj;
+		}
+	}
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+		return typeof obj;
+	} : function (obj) {
+		return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+	};
+
+	var tokenize = linkify.tokenize;
+	var options = linkify.options;
 
 	var HTML_NODE = 1,
 	    TXT_NODE = 3;
@@ -34,18 +62,18 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 
 		for (var i = 0; i < tokens.length; i++) {
 			var token = tokens[i];
-			var validated = token.isLink && _linkify.options.resolve(opts.validate, token.toString(), token.type);
+			var validated = token.isLink && options.resolve(opts.validate, token.toString(), token.type);
 
 			if (token.isLink && validated) {
 
 				var href = token.toHref(opts.defaultProtocol),
-				    formatted = _linkify.options.resolve(opts.format, token.toString(), token.type),
-				    formattedHref = _linkify.options.resolve(opts.formatHref, href, token.type),
-				    attributesHash = _linkify.options.resolve(opts.attributes, href, token.type),
-				    tagName = _linkify.options.resolve(opts.tagName, href, token.type),
-				    linkClass = _linkify.options.resolve(opts.linkClass, href, token.type),
-				    target = _linkify.options.resolve(opts.target, href, token.type),
-				    events = _linkify.options.resolve(opts.events, href, token.type);
+				    formatted = options.resolve(opts.format, token.toString(), token.type),
+				    formattedHref = options.resolve(opts.formatHref, href, token.type),
+				    attributesHash = options.resolve(opts.attributes, href, token.type),
+				    tagName = options.resolve(opts.tagName, href, token.type),
+				    linkClass = options.resolve(opts.linkClass, href, token.type),
+				    target = options.resolve(opts.target, href, token.type),
+				    events = options.resolve(opts.events, href, token.type);
 
 				// Build the link
 				var link = doc.createElement(tagName);
@@ -88,14 +116,14 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 	function linkifyElementHelper(element, opts, doc) {
 
 		// Can the element be linkified?
-		if (!element || typeof element !== 'object' || element.nodeType !== HTML_NODE) {
+		if (!element || (typeof element === 'undefined' ? 'undefined' : _typeof(element)) !== 'object' || element.nodeType !== HTML_NODE) {
 			throw new Error('Cannot linkify ' + element + ' - Invalid DOM Node type');
 		}
 
 		var ignoreTags = opts.ignoreTags;
 
 		// Is this element already a link?
-		if (element.tagName === 'A' || ignoreTags.indexOf(element.tagName) >= 0) {
+		if (element.tagName === 'A' || options.contains(ignoreTags, element.tagName)) {
 			// No need to linkify
 			return element;
 		}
@@ -111,7 +139,7 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 				case TXT_NODE:
 
 					var str = childElement.nodeValue,
-					    tokens = _linkify.tokenize(str),
+					    tokens = tokenize(str),
 					    nodes = tokensToNodes(tokens, opts, doc);
 
 					// Swap out the current child for the set of nodes
@@ -132,6 +160,7 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 	function linkifyElement(element, opts) {
 		var doc = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
 
+
 		try {
 			doc = doc || window && window.document || global && global.document;
 		} catch (e) {/* do nothing for now */}
@@ -140,36 +169,27 @@ define('linkify-element', ['exports', 'module', './linkify'], function (exports,
 			throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
 		}
 
-		opts = _linkify.options.normalize(opts);
+		opts = options.normalize(opts);
 		return linkifyElementHelper(element, opts, doc);
 	}
 
 	// Maintain reference to the recursive helper to cache option-normalization
 	linkifyElement.helper = linkifyElementHelper;
-	linkifyElement.normalize = _linkify.options.normalize;
+	linkifyElement.normalize = options.normalize;
 
-	module.exports = linkifyElement;
+	exports['default'] = linkifyElement;
+	module.exports = exports['default'];
 });
-define('linkify-jquery', ['exports', 'module', 'jquery', './linkify-element'], function (exports, module, _jquery, _linkifyElement) {
+define('linkify-jquery', ['module', 'exports', 'jquery', './linkify-element'], function (module, exports, _jquery, _linkifyElement) {
 	'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	try { Object.defineProperty(exports, "__esModule", {
+		value: true
+	}); } catch (e) { exports['__esModule'] = true; }
 
-	var _jQuery = _interopRequireDefault(_jquery);
-
-	var _linkifyElement2 = _interopRequireDefault(_linkifyElement);
-
-	var doc = undefined;
-
-	try {
-		doc = document;
-	} catch (e) {
-		doc = null;
-	}
-
-	// Applies the plugin to jQuery
-	function apply($) {
+	exports['default'] = function ($) {
 		var doc = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
 
 		$.fn = $.fn || {};
 
@@ -178,7 +198,7 @@ define('linkify-jquery', ['exports', 'module', 'jquery', './linkify-element'], f
 		} catch (e) {/* do nothing for now */}
 
 		if (!doc) {
-			throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
+			throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the second argument to linkify/jquery');
 		}
 
 		if (typeof $.fn.linkify === 'function') {
@@ -220,14 +240,26 @@ define('linkify-jquery', ['exports', 'module', 'jquery', './linkify-element'], f
 				$target.linkify(options);
 			});
 		});
+	};
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _linkifyElement2 = _interopRequireDefault(_linkifyElement);
+
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : {
+			'default': obj
+		};
 	}
 
-	// Apply it right away if possible
-	if (typeof _jQuery['default'] !== 'undefined' && doc) {
-		apply(_jQuery['default'], doc);
-	}
+	// Try assigning linkifyElement to the browser scope
+	try {
+		window.linkifyElement = _linkifyElement2['default'];
+	} catch (e) {}
 
-	module.exports = apply;
+	// Applies the plugin to jQuery
+
+	module.exports = exports['default'];
 });
 require(['jquery', 'linkify-jquery'], function ($, apply) {
 	if (typeof $.fn.linkify !== 'function') {

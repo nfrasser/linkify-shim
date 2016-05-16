@@ -1,15 +1,9 @@
 define('linkify/utils/options', ['exports'], function (exports) {
     'use strict';
-    exports.__esModule = true;
-    function noop(val) {
-        return val;
-    }
-    function yes(val) {
-        return true;
-    }
-    function typeToTarget(href, type) {
-        return type === 'url' ? '_blank' : null;
-    }
+    try { Object.defineProperty(exports, '__esModule', { value: true }); } catch (e) { exports['__esModule'] = true; }
+    exports.normalize = normalize;
+    exports.resolve = resolve;
+    exports.contains = contains;
     function normalize(opts) {
         opts = opts || {};
         var newLine = opts.newLine || false;
@@ -38,12 +32,33 @@ define('linkify/utils/options', ['exports'], function (exports) {
         }
         return typeof value === 'function' ? value.apply(undefined, params) : value;
     }
-    exports.normalize = normalize;
-    exports.resolve = resolve;
+    function contains(arr, value) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+    function noop(val) {
+        return val;
+    }
+    function yes(val) {
+        return true;
+    }
+    function typeToTarget(href, type) {
+        return type === 'url' ? '_blank' : null;
+    }
 });
 define('linkify/core/tokens', ['exports'], function (exports) {
     'use strict';
-    exports.__esModule = true;
+    try { Object.defineProperty(exports, '__esModule', { value: true }); } catch (e) { exports['__esModule'] = true; }
+    function _possibleConstructorReturn(self, call) {
+        if (!self) {
+            throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');
+        }
+        return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
+    }
     function _inherits(subClass, superClass) {
         if (typeof superClass !== 'function' && superClass !== null) {
             throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
@@ -78,7 +93,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(DOMAIN, _TextToken);
         function DOMAIN() {
             _classCallCheck(this, DOMAIN);
-            _TextToken.apply(this, arguments);
+            return _possibleConstructorReturn(this, _TextToken.apply(this, arguments));
         }
         return DOMAIN;
     }(TextToken);
@@ -86,7 +101,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(AT, _TextToken2);
         function AT() {
             _classCallCheck(this, AT);
-            _TextToken2.call(this, '@');
+            return _possibleConstructorReturn(this, _TextToken2.call(this, '@'));
         }
         return AT;
     }(TextToken);
@@ -94,7 +109,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(COLON, _TextToken3);
         function COLON() {
             _classCallCheck(this, COLON);
-            _TextToken3.call(this, ':');
+            return _possibleConstructorReturn(this, _TextToken3.call(this, ':'));
         }
         return COLON;
     }(TextToken);
@@ -102,7 +117,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(DOT, _TextToken4);
         function DOT() {
             _classCallCheck(this, DOT);
-            _TextToken4.call(this, '.');
+            return _possibleConstructorReturn(this, _TextToken4.call(this, '.'));
         }
         return DOT;
     }(TextToken);
@@ -110,7 +125,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(PUNCTUATION, _TextToken5);
         function PUNCTUATION() {
             _classCallCheck(this, PUNCTUATION);
-            _TextToken5.apply(this, arguments);
+            return _possibleConstructorReturn(this, _TextToken5.apply(this, arguments));
         }
         return PUNCTUATION;
     }(TextToken);
@@ -118,7 +133,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(LOCALHOST, _TextToken6);
         function LOCALHOST() {
             _classCallCheck(this, LOCALHOST);
-            _TextToken6.apply(this, arguments);
+            return _possibleConstructorReturn(this, _TextToken6.apply(this, arguments));
         }
         return LOCALHOST;
     }(TextToken);
@@ -126,7 +141,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(TNL, _TextToken7);
         function TNL() {
             _classCallCheck(this, TNL);
-            _TextToken7.call(this, '\n');
+            return _possibleConstructorReturn(this, _TextToken7.call(this, '\n'));
         }
         return TNL;
     }(TextToken);
@@ -134,7 +149,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(NUM, _TextToken8);
         function NUM() {
             _classCallCheck(this, NUM);
-            _TextToken8.apply(this, arguments);
+            return _possibleConstructorReturn(this, _TextToken8.apply(this, arguments));
         }
         return NUM;
     }(TextToken);
@@ -142,7 +157,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(PLUS, _TextToken9);
         function PLUS() {
             _classCallCheck(this, PLUS);
-            _TextToken9.call(this, '+');
+            return _possibleConstructorReturn(this, _TextToken9.call(this, '+'));
         }
         return PLUS;
     }(TextToken);
@@ -150,7 +165,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(POUND, _TextToken10);
         function POUND() {
             _classCallCheck(this, POUND);
-            _TextToken10.call(this, '#');
+            return _possibleConstructorReturn(this, _TextToken10.call(this, '#'));
         }
         return POUND;
     }(TextToken);
@@ -158,7 +173,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(PROTOCOL, _TextToken11);
         function PROTOCOL() {
             _classCallCheck(this, PROTOCOL);
-            _TextToken11.apply(this, arguments);
+            return _possibleConstructorReturn(this, _TextToken11.apply(this, arguments));
         }
         return PROTOCOL;
     }(TextToken);
@@ -166,7 +181,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(QUERY, _TextToken12);
         function QUERY() {
             _classCallCheck(this, QUERY);
-            _TextToken12.call(this, '?');
+            return _possibleConstructorReturn(this, _TextToken12.call(this, '?'));
         }
         return QUERY;
     }(TextToken);
@@ -174,7 +189,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(SLASH, _TextToken13);
         function SLASH() {
             _classCallCheck(this, SLASH);
-            _TextToken13.call(this, '/');
+            return _possibleConstructorReturn(this, _TextToken13.call(this, '/'));
         }
         return SLASH;
     }(TextToken);
@@ -182,7 +197,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(SYM, _TextToken14);
         function SYM() {
             _classCallCheck(this, SYM);
-            _TextToken14.apply(this, arguments);
+            return _possibleConstructorReturn(this, _TextToken14.apply(this, arguments));
         }
         return SYM;
     }(TextToken);
@@ -190,7 +205,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(TLD, _TextToken15);
         function TLD() {
             _classCallCheck(this, TLD);
-            _TextToken15.apply(this, arguments);
+            return _possibleConstructorReturn(this, _TextToken15.apply(this, arguments));
         }
         return TLD;
     }(TextToken);
@@ -198,7 +213,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(WS, _TextToken16);
         function WS() {
             _classCallCheck(this, WS);
-            _TextToken16.apply(this, arguments);
+            return _possibleConstructorReturn(this, _TextToken16.apply(this, arguments));
         }
         return WS;
     }(TextToken);
@@ -206,7 +221,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(OPENBRACE, _TextToken17);
         function OPENBRACE() {
             _classCallCheck(this, OPENBRACE);
-            _TextToken17.call(this, '{');
+            return _possibleConstructorReturn(this, _TextToken17.call(this, '{'));
         }
         return OPENBRACE;
     }(TextToken);
@@ -214,7 +229,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(OPENBRACKET, _TextToken18);
         function OPENBRACKET() {
             _classCallCheck(this, OPENBRACKET);
-            _TextToken18.call(this, '[');
+            return _possibleConstructorReturn(this, _TextToken18.call(this, '['));
         }
         return OPENBRACKET;
     }(TextToken);
@@ -222,7 +237,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(OPENPAREN, _TextToken19);
         function OPENPAREN() {
             _classCallCheck(this, OPENPAREN);
-            _TextToken19.call(this, '(');
+            return _possibleConstructorReturn(this, _TextToken19.call(this, '('));
         }
         return OPENPAREN;
     }(TextToken);
@@ -230,7 +245,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(CLOSEBRACE, _TextToken20);
         function CLOSEBRACE() {
             _classCallCheck(this, CLOSEBRACE);
-            _TextToken20.call(this, '}');
+            return _possibleConstructorReturn(this, _TextToken20.call(this, '}'));
         }
         return CLOSEBRACE;
     }(TextToken);
@@ -238,7 +253,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(CLOSEBRACKET, _TextToken21);
         function CLOSEBRACKET() {
             _classCallCheck(this, CLOSEBRACKET);
-            _TextToken21.call(this, ']');
+            return _possibleConstructorReturn(this, _TextToken21.call(this, ']'));
         }
         return CLOSEBRACKET;
     }(TextToken);
@@ -246,7 +261,7 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(CLOSEPAREN, _TextToken22);
         function CLOSEPAREN() {
             _classCallCheck(this, CLOSEPAREN);
-            _TextToken22.call(this, ')');
+            return _possibleConstructorReturn(this, _TextToken22.call(this, ')'));
         }
         return CLOSEPAREN;
     }(TextToken);
@@ -309,9 +324,10 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(EMAIL, _MultiToken);
         function EMAIL(value) {
             _classCallCheck(this, EMAIL);
-            _MultiToken.call(this, value);
-            this.type = 'email';
-            this.isLink = true;
+            var _this23 = _possibleConstructorReturn(this, _MultiToken.call(this, value));
+            _this23.type = 'email';
+            _this23.isLink = true;
+            return _this23;
         }
         EMAIL.prototype.toHref = function toHref() {
             return 'mailto:' + this.toString();
@@ -322,8 +338,9 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(TEXT, _MultiToken2);
         function TEXT(value) {
             _classCallCheck(this, TEXT);
-            _MultiToken2.call(this, value);
-            this.type = 'text';
+            var _this24 = _possibleConstructorReturn(this, _MultiToken2.call(this, value));
+            _this24.type = 'text';
+            return _this24;
         }
         return TEXT;
     }(MultiToken);
@@ -331,8 +348,9 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(MNL, _MultiToken3);
         function MNL(value) {
             _classCallCheck(this, MNL);
-            _MultiToken3.call(this, value);
-            this.type = 'nl';
+            var _this25 = _possibleConstructorReturn(this, _MultiToken3.call(this, value));
+            _this25.type = 'nl';
+            return _this25;
         }
         return MNL;
     }(MultiToken);
@@ -340,9 +358,10 @@ define('linkify/core/tokens', ['exports'], function (exports) {
         _inherits(URL, _MultiToken4);
         function URL(value) {
             _classCallCheck(this, URL);
-            _MultiToken4.call(this, value);
-            this.type = 'url';
-            this.isLink = true;
+            var _this26 = _possibleConstructorReturn(this, _MultiToken4.call(this, value));
+            _this26.type = 'url';
+            _this26.isLink = true;
+            return _this26;
         }
         URL.prototype.toHref = function toHref() {
             var protocol = arguments.length <= 0 || arguments[0] === undefined ? 'http' : arguments[0];
@@ -387,7 +406,13 @@ define('linkify/core/tokens', ['exports'], function (exports) {
 });
 define('linkify/core/state', ['exports'], function (exports) {
     'use strict';
-    exports.__esModule = true;
+    try { Object.defineProperty(exports, '__esModule', { value: true }); } catch (e) { exports['__esModule'] = true; }
+    function _possibleConstructorReturn(self, call) {
+        if (!self) {
+            throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');
+        }
+        return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
+    }
     function _inherits(subClass, superClass) {
         if (typeof superClass !== 'function' && superClass !== null) {
             throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
@@ -422,12 +447,13 @@ define('linkify/core/state', ['exports'], function (exports) {
                         state
                     ]);
                 }
-                return;
+                return this;
             }
             this.j.push([
                 symbol,
                 state
             ]);
+            return this;
         };
         BaseState.prototype.next = function next(item) {
             for (var i = 0; i < this.j.length; i++) {
@@ -452,7 +478,7 @@ define('linkify/core/state', ['exports'], function (exports) {
         _inherits(CharacterState, _BaseState);
         function CharacterState() {
             _classCallCheck(this, CharacterState);
-            _BaseState.apply(this, arguments);
+            return _possibleConstructorReturn(this, _BaseState.apply(this, arguments));
         }
         CharacterState.prototype.test = function test(character, charOrRegExp) {
             return character === charOrRegExp || charOrRegExp instanceof RegExp && charOrRegExp.test(character);
@@ -463,7 +489,7 @@ define('linkify/core/state', ['exports'], function (exports) {
         _inherits(TokenState, _BaseState2);
         function TokenState() {
             _classCallCheck(this, TokenState);
-            _BaseState2.apply(this, arguments);
+            return _possibleConstructorReturn(this, _BaseState2.apply(this, arguments));
         }
         TokenState.prototype.test = function test(token, tokenClass) {
             return token instanceof tokenClass;
@@ -471,7 +497,7 @@ define('linkify/core/state', ['exports'], function (exports) {
         return TokenState;
     }(BaseState);
     function stateify(str, start, endToken, defaultToken) {
-        var i = 0, len = str.length, state = start, newStates = [], nextState = undefined;
+        var i = 0, len = str.length, state = start, newStates = [], nextState = void 0;
         while (i < len && (nextState = state.next(str[i]))) {
             state = nextState;
             i++;
@@ -500,7 +526,8 @@ define('linkify/core/scanner', [
     './state'
 ], function (exports, _tokens, _state) {
     'use strict';
-    exports.__esModule = true;
+    try { Object.defineProperty(exports, '__esModule', { value: true }); } catch (e) { exports['__esModule'] = true; }
+    exports.start = exports.run = exports.TOKENS = exports.State = undefined;
     var tlds = 'abogado|ac|academy|accountants|active|actor|ad|adult|ae|aero|af|ag|agency|ai|airforce|al|allfinanz|alsace|am|an|android|ao|aq|aquarelle|ar|archi|army|arpa|as|asia|associates|at|attorney|au|auction|audio|autos|aw|ax|axa|az|ba|band|bar|bargains|bayern|bb|bd|be|beer|berlin|best|bf|bg|bh|bi|bid|bike|bio|biz|bj|black|blackfriday|bloomberg|blue|bm|bmw|bn|bnpparibas|bo|boo|boutique|br|brussels|bs|bt|budapest|build|builders|business|buzz|bv|bw|by|bz|bzh|ca|cab|cal|camera|camp|cancerresearch|capetown|capital|caravan|cards|care|career|careers|casa|cash|cat|catering|cc|cd|center|ceo|cern|cf|cg|ch|channel|cheap|christmas|chrome|church|ci|citic|city|ck|cl|claims|cleaning|click|clinic|clothing|club|cm|cn|co|coach|codes|coffee|college|cologne|com|community|company|computer|condos|construction|consulting|contractors|cooking|cool|coop|country|cr|credit|creditcard|cricket|crs|cruises|cu|cuisinella|cv|cw|cx|cy|cymru|cz|dad|dance|dating|day|de|deals|degree|delivery|democrat|dental|dentist|desi|diamonds|diet|digital|direct|directory|discount|dj|dk|dm|dnp|do|domains|durban|dvag|dz|eat|ec|edu|education|ee|eg|email|emerck|energy|engineer|engineering|enterprises|equipment|er|es|esq|estate|et|eu|eurovision|eus|events|everbank|exchange|expert|exposed|fail|farm|fashion|feedback|fi|finance|financial|firmdale|fish|fishing|fitness|fj|fk|flights|florist|flsmidth|fly|fm|fo|foo|forsale|foundation|fr|frl|frogans|fund|furniture|futbol|ga|gal|gallery|gb|gbiz|gd|ge|gent|gf|gg|gh|gi|gift|gifts|gives|gl|glass|gle|global|globo|gm|gmail|gmo|gmx|gn|google|gop|gov|gp|gq|gr|graphics|gratis|green|gripe|gs|gt|gu|guide|guitars|guru|gw|gy|hamburg|haus|healthcare|help|here|hiphop|hiv|hk|hm|hn|holdings|holiday|homes|horse|host|hosting|house|how|hr|ht|hu|ibm|id|ie|il|im|immo|immobilien|in|industries|info|ing|ink|institute|insure|int|international|investments|io|iq|ir|irish|is|it|je|jetzt|jm|jo|jobs|joburg|jp|juegos|kaufen|ke|kg|kh|ki|kim|kitchen|kiwi|km|kn|koeln|kp|kr|krd|kred|kw|ky|kz|la|lacaixa|land|latrobe|lawyer|lb|lc|lds|lease|legal|lgbt|li|life|lighting|limited|limo|link|lk|loans|local|london|lotto|lr|ls|lt|ltda|lu|luxe|luxury|lv|ly|ma|madrid|maison|management|mango|market|marketing|mc|md|me|media|meet|melbourne|meme|memorial|menu|mg|mh|miami|mil|mini|mk|ml|mm|mn|mo|mobi|moda|moe|monash|money|mormon|mortgage|moscow|motorcycles|mov|mp|mq|mr|ms|mt|mu|museum|mv|mw|mx|my|mz|na|nagoya|name|navy|nc|ne|net|network|neustar|new|nexus|nf|ng|ngo|nhk|ni|ninja|nl|no|np|nr|nra|nrw|nu|nyc|nz|okinawa|om|ong|onl|ooo|org|organic|otsuka|ovh|pa|paris|partners|parts|party|pe|pf|pg|ph|pharmacy|photo|photography|photos|physio|pics|pictures|pink|pizza|pk|pl|place|plumbing|pm|pn|pohl|poker|porn|post|pr|praxi|press|pro|prod|productions|prof|properties|property|ps|pt|pub|pw|py|qa|qpon|quebec|re|realtor|recipes|red|rehab|reise|reisen|reit|ren|rentals|repair|report|republican|rest|restaurant|reviews|rich|rio|rip|ro|rocks|rodeo|rs|rsvp|ru|ruhr|rw|ryukyu|sa|saarland|sarl|sb|sc|sca|scb|schmidt|schule|science|scot|sd|se|services|sexy|sg|sh|shiksha|shoes|si|singles|sj|sk|sl|sm|sn|so|social|software|sohu|solar|solutions|soy|space|spiegel|sr|st|su|supplies|supply|support|surf|surgery|suzuki|sv|sx|sy|sydney|systems|sz|taipei|tatar|tattoo|tax|tc|td|technology|tel|tf|tg|th|tienda|tips|tirol|tj|tk|tl|tm|tn|to|today|tokyo|tools|top|town|toys|tp|tr|trade|training|travel|trust|tt|tui|tv|tw|tz|ua|ug|uk|university|uno|uol|us|uy|uz|va|vacations|vc|ve|vegas|ventures|versicherung|vet|vg|vi|viajes|villas|vision|vlaanderen|vn|vodka|vote|voting|voto|voyage|vu|wales|wang|watch|webcam|website|wed|wedding|wf|whoswho|wien|wiki|williamhill|wme|work|works|world|ws|wtc|wtf|xxx|xyz|yachts|yandex|ye|yoga|yokohama|youtube|yt|za|zip|zm|zone|zw'.split('|');
     var REGEXP_NUM = /[0-9]/, REGEXP_ALPHANUM = /[a-z0-9]/, COLON = ':';
     var domainStates = [], makeState = function makeState(tokenClass) {
@@ -508,54 +535,32 @@ define('linkify/core/scanner', [
         };
     var T_DOMAIN = _tokens.text.DOMAIN, T_LOCALHOST = _tokens.text.LOCALHOST, T_NUM = _tokens.text.NUM, T_PROTOCOL = _tokens.text.PROTOCOL, T_TLD = _tokens.text.TLD, T_WS = _tokens.text.WS;
     var S_START = makeState(), S_NUM = makeState(T_NUM), S_DOMAIN = makeState(T_DOMAIN), S_DOMAIN_HYPHEN = makeState(), S_WS = makeState(T_WS);
-    S_START.on('@', makeState(_tokens.text.AT));
-    S_START.on('.', makeState(_tokens.text.DOT));
-    S_START.on('+', makeState(_tokens.text.PLUS));
-    S_START.on('#', makeState(_tokens.text.POUND));
-    S_START.on('?', makeState(_tokens.text.QUERY));
-    S_START.on('/', makeState(_tokens.text.SLASH));
-    S_START.on(COLON, makeState(_tokens.text.COLON));
-    S_START.on('{', makeState(_tokens.text.OPENBRACE));
-    S_START.on('[', makeState(_tokens.text.OPENBRACKET));
-    S_START.on('(', makeState(_tokens.text.OPENPAREN));
-    S_START.on('}', makeState(_tokens.text.CLOSEBRACE));
-    S_START.on(']', makeState(_tokens.text.CLOSEBRACKET));
-    S_START.on(')', makeState(_tokens.text.CLOSEPAREN));
-    S_START.on(/[,;!]/, makeState(_tokens.text.PUNCTUATION));
-    S_START.on(/\n/, makeState(_tokens.text.NL));
-    S_START.on(/\s/, S_WS);
+    S_START.on('@', makeState(_tokens.text.AT)).on('.', makeState(_tokens.text.DOT)).on('+', makeState(_tokens.text.PLUS)).on('#', makeState(_tokens.text.POUND)).on('?', makeState(_tokens.text.QUERY)).on('/', makeState(_tokens.text.SLASH)).on(COLON, makeState(_tokens.text.COLON)).on('{', makeState(_tokens.text.OPENBRACE)).on('[', makeState(_tokens.text.OPENBRACKET)).on('(', makeState(_tokens.text.OPENPAREN)).on('}', makeState(_tokens.text.CLOSEBRACE)).on(']', makeState(_tokens.text.CLOSEBRACKET)).on(')', makeState(_tokens.text.CLOSEPAREN)).on(/[,;!]/, makeState(_tokens.text.PUNCTUATION));
+    S_START.on(/\n/, makeState(_tokens.text.NL)).on(/\s/, S_WS);
     S_WS.on(/[^\S\n]/, S_WS);
     for (var i = 0; i < tlds.length; i++) {
-        var newStates = _state.stateify(tlds[i], S_START, T_TLD, T_DOMAIN);
+        var newStates = (0, _state.stateify)(tlds[i], S_START, T_TLD, T_DOMAIN);
         domainStates.push.apply(domainStates, newStates);
     }
-    var partialProtocolFileStates = _state.stateify('file', S_START, T_DOMAIN, T_DOMAIN), partialProtocolFtpStates = _state.stateify('ftp', S_START, T_DOMAIN, T_DOMAIN), partialProtocolHttpStates = _state.stateify('http', S_START, T_DOMAIN, T_DOMAIN);
+    var partialProtocolFileStates = (0, _state.stateify)('file', S_START, T_DOMAIN, T_DOMAIN), partialProtocolFtpStates = (0, _state.stateify)('ftp', S_START, T_DOMAIN, T_DOMAIN), partialProtocolHttpStates = (0, _state.stateify)('http', S_START, T_DOMAIN, T_DOMAIN);
     domainStates.push.apply(domainStates, partialProtocolFileStates);
     domainStates.push.apply(domainStates, partialProtocolFtpStates);
     domainStates.push.apply(domainStates, partialProtocolHttpStates);
     var S_PROTOCOL_FILE = partialProtocolFileStates.pop(), S_PROTOCOL_FTP = partialProtocolFtpStates.pop(), S_PROTOCOL_HTTP = partialProtocolHttpStates.pop(), S_PROTOCOL_SECURE = makeState(T_DOMAIN), S_FULL_PROTOCOL = makeState(T_PROTOCOL);
-    S_PROTOCOL_FTP.on('s', S_PROTOCOL_SECURE);
-    S_PROTOCOL_HTTP.on('s', S_PROTOCOL_SECURE);
+    S_PROTOCOL_FTP.on('s', S_PROTOCOL_SECURE).on(COLON, S_FULL_PROTOCOL);
+    S_PROTOCOL_HTTP.on('s', S_PROTOCOL_SECURE).on(COLON, S_FULL_PROTOCOL);
     domainStates.push(S_PROTOCOL_SECURE);
     S_PROTOCOL_FILE.on(COLON, S_FULL_PROTOCOL);
-    S_PROTOCOL_FTP.on(COLON, S_FULL_PROTOCOL);
-    S_PROTOCOL_HTTP.on(COLON, S_FULL_PROTOCOL);
     S_PROTOCOL_SECURE.on(COLON, S_FULL_PROTOCOL);
-    var partialLocalhostStates = _state.stateify('localhost', S_START, T_LOCALHOST, T_DOMAIN);
+    var partialLocalhostStates = (0, _state.stateify)('localhost', S_START, T_LOCALHOST, T_DOMAIN);
     domainStates.push.apply(domainStates, partialLocalhostStates);
     S_START.on(REGEXP_NUM, S_NUM);
-    S_NUM.on('-', S_DOMAIN_HYPHEN);
-    S_NUM.on(REGEXP_NUM, S_NUM);
-    S_NUM.on(REGEXP_ALPHANUM, S_DOMAIN);
-    S_DOMAIN.on('-', S_DOMAIN_HYPHEN);
-    S_DOMAIN.on(REGEXP_ALPHANUM, S_DOMAIN);
-    for (var i = 0; i < domainStates.length; i++) {
-        domainStates[i].on('-', S_DOMAIN_HYPHEN);
-        domainStates[i].on(REGEXP_ALPHANUM, S_DOMAIN);
+    S_NUM.on('-', S_DOMAIN_HYPHEN).on(REGEXP_NUM, S_NUM).on(REGEXP_ALPHANUM, S_DOMAIN);
+    S_DOMAIN.on('-', S_DOMAIN_HYPHEN).on(REGEXP_ALPHANUM, S_DOMAIN);
+    for (var _i = 0; _i < domainStates.length; _i++) {
+        domainStates[_i].on('-', S_DOMAIN_HYPHEN).on(REGEXP_ALPHANUM, S_DOMAIN);
     }
-    S_DOMAIN_HYPHEN.on('-', S_DOMAIN_HYPHEN);
-    S_DOMAIN_HYPHEN.on(REGEXP_NUM, S_DOMAIN);
-    S_DOMAIN_HYPHEN.on(REGEXP_ALPHANUM, S_DOMAIN);
+    S_DOMAIN_HYPHEN.on('-', S_DOMAIN_HYPHEN).on(REGEXP_NUM, S_DOMAIN).on(REGEXP_ALPHANUM, S_DOMAIN);
     S_START.on(/./, makeState(_tokens.text.SYM));
     var run = function run(str) {
         var lowerStr = str.replace(/[A-Z]/g, function (c) {
@@ -599,7 +604,8 @@ define('linkify/core/parser', [
     './state'
 ], function (exports, _tokens, _state) {
     'use strict';
-    exports.__esModule = true;
+    try { Object.defineProperty(exports, '__esModule', { value: true }); } catch (e) { exports['__esModule'] = true; }
+    exports.start = exports.run = exports.TOKENS = exports.State = undefined;
     var makeState = function makeState(tokenClass) {
         return new _state.TokenState(tokenClass);
     };
@@ -607,33 +613,18 @@ define('linkify/core/parser', [
     var T_EMAIL = _tokens.multi.EMAIL, T_NL = _tokens.multi.NL, T_TEXT = _tokens.multi.TEXT, T_URL = _tokens.multi.URL;
     var S_START = makeState();
     var S_PROTOCOL = makeState(), S_PROTOCOL_SLASH = makeState(), S_PROTOCOL_SLASH_SLASH = makeState(), S_DOMAIN = makeState(), S_DOMAIN_DOT = makeState(), S_TLD = makeState(T_URL), S_TLD_COLON = makeState(), S_TLD_PORT = makeState(T_URL), S_URL = makeState(T_URL), S_URL_SYMS = makeState(), S_URL_OPENBRACE = makeState(), S_URL_OPENBRACKET = makeState(), S_URL_OPENPAREN = makeState(), S_URL_OPENBRACE_Q = makeState(T_URL), S_URL_OPENBRACKET_Q = makeState(T_URL), S_URL_OPENPAREN_Q = makeState(T_URL), S_URL_OPENBRACE_SYMS = makeState(), S_URL_OPENBRACKET_SYMS = makeState(), S_URL_OPENPAREN_SYMS = makeState(), S_EMAIL_DOMAIN = makeState(), S_EMAIL_DOMAIN_DOT = makeState(), S_EMAIL = makeState(T_EMAIL), S_EMAIL_COLON = makeState(), S_EMAIL_PORT = makeState(T_EMAIL), S_LOCALPART = makeState(), S_LOCALPART_AT = makeState(), S_LOCALPART_DOT = makeState(), S_NL = makeState(T_NL);
-    S_START.on(TT_NL, S_NL);
-    S_START.on(TT_PROTOCOL, S_PROTOCOL);
-    S_START.on(TT_SLASH, S_PROTOCOL_SLASH);
+    S_START.on(TT_NL, S_NL).on(TT_PROTOCOL, S_PROTOCOL).on(TT_SLASH, S_PROTOCOL_SLASH);
     S_PROTOCOL.on(TT_SLASH, S_PROTOCOL_SLASH);
     S_PROTOCOL_SLASH.on(TT_SLASH, S_PROTOCOL_SLASH_SLASH);
-    S_START.on(TT_TLD, S_DOMAIN);
-    S_START.on(TT_DOMAIN, S_DOMAIN);
-    S_START.on(TT_LOCALHOST, S_TLD);
-    S_START.on(TT_NUM, S_DOMAIN);
-    S_PROTOCOL_SLASH_SLASH.on(TT_TLD, S_URL);
-    S_PROTOCOL_SLASH_SLASH.on(TT_DOMAIN, S_URL);
-    S_PROTOCOL_SLASH_SLASH.on(TT_NUM, S_URL);
-    S_PROTOCOL_SLASH_SLASH.on(TT_LOCALHOST, S_URL);
+    S_START.on(TT_TLD, S_DOMAIN).on(TT_DOMAIN, S_DOMAIN).on(TT_LOCALHOST, S_TLD).on(TT_NUM, S_DOMAIN);
+    S_PROTOCOL_SLASH_SLASH.on(TT_TLD, S_URL).on(TT_DOMAIN, S_URL).on(TT_NUM, S_URL).on(TT_LOCALHOST, S_URL);
     S_DOMAIN.on(TT_DOT, S_DOMAIN_DOT);
     S_EMAIL_DOMAIN.on(TT_DOT, S_EMAIL_DOMAIN_DOT);
-    S_DOMAIN_DOT.on(TT_TLD, S_TLD);
-    S_DOMAIN_DOT.on(TT_DOMAIN, S_DOMAIN);
-    S_DOMAIN_DOT.on(TT_NUM, S_DOMAIN);
-    S_DOMAIN_DOT.on(TT_LOCALHOST, S_DOMAIN);
-    S_EMAIL_DOMAIN_DOT.on(TT_TLD, S_EMAIL);
-    S_EMAIL_DOMAIN_DOT.on(TT_DOMAIN, S_EMAIL_DOMAIN);
-    S_EMAIL_DOMAIN_DOT.on(TT_NUM, S_EMAIL_DOMAIN);
-    S_EMAIL_DOMAIN_DOT.on(TT_LOCALHOST, S_EMAIL_DOMAIN);
+    S_DOMAIN_DOT.on(TT_TLD, S_TLD).on(TT_DOMAIN, S_DOMAIN).on(TT_NUM, S_DOMAIN).on(TT_LOCALHOST, S_DOMAIN);
+    S_EMAIL_DOMAIN_DOT.on(TT_TLD, S_EMAIL).on(TT_DOMAIN, S_EMAIL_DOMAIN).on(TT_NUM, S_EMAIL_DOMAIN).on(TT_LOCALHOST, S_EMAIL_DOMAIN);
     S_TLD.on(TT_DOT, S_DOMAIN_DOT);
     S_EMAIL.on(TT_DOT, S_EMAIL_DOMAIN_DOT);
-    S_TLD.on(TT_COLON, S_TLD_COLON);
-    S_TLD.on(TT_SLASH, S_URL);
+    S_TLD.on(TT_COLON, S_TLD_COLON).on(TT_SLASH, S_URL);
     S_TLD_COLON.on(TT_NUM, S_TLD_PORT);
     S_TLD_PORT.on(TT_SLASH, S_URL);
     S_EMAIL.on(TT_COLON, S_EMAIL_COLON);
@@ -662,12 +653,8 @@ define('linkify/core/parser', [
         TT_OPENPAREN,
         TT_SYM
     ];
-    S_URL.on(TT_OPENBRACE, S_URL_OPENBRACE);
-    S_URL.on(TT_OPENBRACKET, S_URL_OPENBRACKET);
-    S_URL.on(TT_OPENPAREN, S_URL_OPENPAREN);
-    S_URL_SYMS.on(TT_OPENBRACE, S_URL_OPENBRACE);
-    S_URL_SYMS.on(TT_OPENBRACKET, S_URL_OPENBRACKET);
-    S_URL_SYMS.on(TT_OPENPAREN, S_URL_OPENPAREN);
+    S_URL.on(TT_OPENBRACE, S_URL_OPENBRACE).on(TT_OPENBRACKET, S_URL_OPENBRACKET).on(TT_OPENPAREN, S_URL_OPENPAREN);
+    S_URL_SYMS.on(TT_OPENBRACE, S_URL_OPENBRACE).on(TT_OPENBRACKET, S_URL_OPENBRACKET).on(TT_OPENPAREN, S_URL_OPENPAREN);
     S_URL_OPENBRACE.on(TT_CLOSEBRACE, S_URL);
     S_URL_OPENBRACKET.on(TT_CLOSEBRACKET, S_URL);
     S_URL_OPENPAREN.on(TT_CLOSEPAREN, S_URL);
@@ -708,18 +695,12 @@ define('linkify/core/parser', [
         TT_SYM,
         TT_TLD
     ];
-    S_DOMAIN.on(localpartAccepting, S_LOCALPART);
-    S_DOMAIN.on(TT_AT, S_LOCALPART_AT);
+    S_DOMAIN.on(localpartAccepting, S_LOCALPART).on(TT_AT, S_LOCALPART_AT);
+    S_TLD.on(localpartAccepting, S_LOCALPART).on(TT_AT, S_LOCALPART_AT);
     S_DOMAIN_DOT.on(localpartAccepting, S_LOCALPART);
-    S_TLD.on(localpartAccepting, S_LOCALPART);
-    S_TLD.on(TT_AT, S_LOCALPART_AT);
-    S_LOCALPART.on(localpartAccepting, S_LOCALPART);
-    S_LOCALPART.on(TT_AT, S_LOCALPART_AT);
-    S_LOCALPART.on(TT_DOT, S_LOCALPART_DOT);
+    S_LOCALPART.on(localpartAccepting, S_LOCALPART).on(TT_AT, S_LOCALPART_AT).on(TT_DOT, S_LOCALPART_DOT);
     S_LOCALPART_DOT.on(localpartAccepting, S_LOCALPART);
-    S_LOCALPART_AT.on(TT_TLD, S_EMAIL_DOMAIN);
-    S_LOCALPART_AT.on(TT_DOMAIN, S_EMAIL_DOMAIN);
-    S_LOCALPART_AT.on(TT_LOCALHOST, S_EMAIL);
+    S_LOCALPART_AT.on(TT_TLD, S_EMAIL_DOMAIN).on(TT_DOMAIN, S_EMAIL_DOMAIN).on(TT_LOCALHOST, S_EMAIL);
     var run = function run(tokens) {
         var len = tokens.length, cursor = 0, multis = [], textTokens = [];
         while (cursor < len) {
@@ -770,16 +751,35 @@ define('linkify', [
     './linkify/utils/options',
     './linkify/core/scanner',
     './linkify/core/parser'
-], function (exports, _linkifyUtilsOptions, _linkifyCoreScanner, _linkifyCoreParser) {
+], function (exports, _options, _scanner, _parser) {
     'use strict';
-    exports.__esModule = true;
+    try { Object.defineProperty(exports, '__esModule', { value: true }); } catch (e) { exports['__esModule'] = true; }
+    exports.tokenize = exports.test = exports.scanner = exports.parser = exports.options = exports.find = undefined;
+    var options = _interopRequireWildcard(_options);
+    var scanner = _interopRequireWildcard(_scanner);
+    var parser = _interopRequireWildcard(_parser);
+    function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+            return obj;
+        } else {
+            var newObj = {};
+            if (obj != null) {
+                for (var key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key))
+                        newObj[key] = obj[key];
+                }
+            }
+            newObj['default'] = obj;
+            return newObj;
+        }
+    }
     if (!Array.isArray) {
         Array.isArray = function (arg) {
             return Object.prototype.toString.call(arg) === '[object Array]';
         };
     }
     var tokenize = function tokenize(str) {
-        return _linkifyCoreParser.run(_linkifyCoreScanner.run(str));
+        return parser.run(scanner.run(str));
     };
     var find = function find(str) {
         var type = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
@@ -797,9 +797,9 @@ define('linkify', [
         return tokens.length === 1 && tokens[0].isLink && (!type || tokens[0].type === type);
     };
     exports.find = find;
-    exports.options = _linkifyUtilsOptions;
-    exports.parser = _linkifyCoreParser;
-    exports.scanner = _linkifyCoreScanner;
+    exports.options = options;
+    exports.parser = parser;
+    exports.scanner = scanner;
     exports.test = test;
     exports.tokenize = tokenize;
 });

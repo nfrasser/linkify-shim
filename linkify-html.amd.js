@@ -1,6 +1,9 @@
-define("simple-html-tokenizer/entity-parser", ["exports", "module"], function (exports, module) {
+define("simple-html-tokenizer/entity-parser", ["module", "exports"], function (module, exports) {
   "use strict";
 
+  try { Object.defineProperty(exports, "__esModule", {
+    value: true
+  }); } catch (e) { exports['__esModule'] = true; }
   function EntityParser(named) {
     this.named = named;
   }
@@ -27,10 +30,16 @@ define("simple-html-tokenizer/entity-parser", ["exports", "module"], function (e
     }
   };
 
-  module.exports = EntityParser;
+  exports['default'] = EntityParser;
+  module.exports = exports['default'];
 });
-define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils'], function (exports, module, _utils) {
+define('simple-html-tokenizer/evented-tokenizer', ['module', 'exports', './utils'], function (module, exports, _utils) {
   'use strict';
+
+  try { Object.defineProperty(exports, "__esModule", {
+    value: true
+  }); } catch (e) { exports['__esModule'] = true; }
+
 
   function EventedTokenizer(delegate, entityParser) {
     this.delegate = delegate;
@@ -70,7 +79,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
     },
 
     tokenizePart: function tokenizePart(input) {
-      this.input += _utils.preprocessInput(input);
+      this.input += (0, _utils.preprocessInput)(input);
 
       while (this.index < this.input.length) {
         this.states[this.state].call(this);
@@ -163,7 +172,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
           this.state = 'markupDeclaration';
         } else if (char === "/") {
           this.state = 'endTagOpen';
-        } else if (_utils.isAlpha(char)) {
+        } else if ((0, _utils.isAlpha)(char)) {
           this.state = 'tagName';
           this.delegate.beginStartTag();
           this.delegate.appendToTagName(char.toLowerCase());
@@ -244,7 +253,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
       tagName: function tagName() {
         var char = this.consume();
 
-        if (_utils.isSpace(char)) {
+        if ((0, _utils.isSpace)(char)) {
           this.state = 'beforeAttributeName';
         } else if (char === "/") {
           this.state = 'selfClosingStartTag';
@@ -259,7 +268,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
       beforeAttributeName: function beforeAttributeName() {
         var char = this.consume();
 
-        if (_utils.isSpace(char)) {
+        if ((0, _utils.isSpace)(char)) {
           return;
         } else if (char === "/") {
           this.state = 'selfClosingStartTag';
@@ -276,7 +285,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
       attributeName: function attributeName() {
         var char = this.consume();
 
-        if (_utils.isSpace(char)) {
+        if ((0, _utils.isSpace)(char)) {
           this.state = 'afterAttributeName';
         } else if (char === "/") {
           this.delegate.beginAttributeValue(false);
@@ -297,7 +306,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
       afterAttributeName: function afterAttributeName() {
         var char = this.consume();
 
-        if (_utils.isSpace(char)) {
+        if ((0, _utils.isSpace)(char)) {
           return;
         } else if (char === "/") {
           this.delegate.beginAttributeValue(false);
@@ -322,7 +331,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
       beforeAttributeValue: function beforeAttributeValue() {
         var char = this.consume();
 
-        if (_utils.isSpace(char)) {} else if (char === '"') {
+        if ((0, _utils.isSpace)(char)) {} else if (char === '"') {
           this.state = 'attributeValueDoubleQuoted';
           this.delegate.beginAttributeValue(true);
         } else if (char === "'") {
@@ -369,7 +378,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
       attributeValueUnquoted: function attributeValueUnquoted() {
         var char = this.consume();
 
-        if (_utils.isSpace(char)) {
+        if ((0, _utils.isSpace)(char)) {
           this.delegate.finishAttributeValue();
           this.state = 'beforeAttributeName';
         } else if (char === "&") {
@@ -386,7 +395,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
       afterAttributeValueQuoted: function afterAttributeValueQuoted() {
         var char = this.peek();
 
-        if (_utils.isSpace(char)) {
+        if ((0, _utils.isSpace)(char)) {
           this.consume();
           this.state = 'beforeAttributeName';
         } else if (char === "/") {
@@ -417,7 +426,7 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
       endTagOpen: function endTagOpen() {
         var char = this.consume();
 
-        if (_utils.isAlpha(char)) {
+        if ((0, _utils.isAlpha)(char)) {
           this.state = 'tagName';
           this.delegate.beginEndTag();
           this.delegate.appendToTagName(char.toLowerCase());
@@ -426,58 +435,109 @@ define('simple-html-tokenizer/evented-tokenizer', ['exports', 'module', './utils
     }
   };
 
-  module.exports = EventedTokenizer;
+  exports['default'] = EventedTokenizer;
+  module.exports = exports['default'];
 });
-define("simple-html-tokenizer/html5-named-char-refs", ["exports", "module"], function (exports, module) {
+define("simple-html-tokenizer/html5-named-char-refs", ["module", "exports"], function (module, exports) {
   "use strict";
 
+  try { Object.defineProperty(exports, "__esModule", {
+    value: true
+  }); } catch (e) { exports['__esModule'] = true; }
   var HTML5NamedCharRefs = {};
-  module.exports = HTML5NamedCharRefs;
+  exports['default'] = HTML5NamedCharRefs;
+  module.exports = exports['default'];
 });
 define('simple-html-tokenizer/index', ['exports', './html5-named-char-refs', './entity-parser', './evented-tokenizer', './tokenizer', './tokenize'], function (exports, _html5NamedCharRefs, _entityParser, _eventedTokenizer, _tokenizer, _tokenize) {
   'use strict';
 
-  exports.__esModule = true;
+  try { Object.defineProperty(exports, "__esModule", {
+    value: true
+  }); } catch (e) { exports['__esModule'] = true; }
+  Object.defineProperty(exports, 'HTML5NamedCharRefs', {
+    enumerable: true,
+    get: function () {
+      return _interopRequireDefault(_html5NamedCharRefs)['default'];
+    }
+  });
+  Object.defineProperty(exports, 'EntityParser', {
+    enumerable: true,
+    get: function () {
+      return _interopRequireDefault(_entityParser)['default'];
+    }
+  });
+  Object.defineProperty(exports, 'EventedTokenizer', {
+    enumerable: true,
+    get: function () {
+      return _interopRequireDefault(_eventedTokenizer)['default'];
+    }
+  });
+  Object.defineProperty(exports, 'Tokenizer', {
+    enumerable: true,
+    get: function () {
+      return _interopRequireDefault(_tokenizer)['default'];
+    }
+  });
+  Object.defineProperty(exports, 'tokenize', {
+    enumerable: true,
+    get: function () {
+      return _interopRequireDefault(_tokenize)['default'];
+    }
+  });
 
-  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-
-  exports.HTML5NamedCharRefs = _interopRequire(_html5NamedCharRefs);
-  exports.EntityParser = _interopRequire(_entityParser);
-  exports.EventedTokenizer = _interopRequire(_eventedTokenizer);
-  exports.Tokenizer = _interopRequire(_tokenizer);
-  exports.tokenize = _interopRequire(_tokenize);
-});
-define('simple-html-tokenizer/tokenize', ['exports', 'module', './tokenizer', './entity-parser', './html5-named-char-refs'], function (exports, module, _tokenizer, _entityParser, _html5NamedCharRefs) {
-  'use strict';
-
-  module.exports = tokenize;
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-  var _Tokenizer = _interopRequireDefault(_tokenizer);
-
-  var _EntityParser = _interopRequireDefault(_entityParser);
-
-  var _HTML5NamedCharRefs = _interopRequireDefault(_html5NamedCharRefs);
-
-  function tokenize(input, options) {
-    var tokenizer = new _Tokenizer['default'](new _EntityParser['default'](_HTML5NamedCharRefs['default']), options);
-    return tokenizer.tokenize(input);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      'default': obj
+    };
   }
 });
-define('simple-html-tokenizer/tokenizer', ['exports', 'module', './evented-tokenizer'], function (exports, module, _eventedTokenizer) {
+define('simple-html-tokenizer/tokenize', ['module', 'exports', './tokenizer', './entity-parser', './html5-named-char-refs'], function (module, exports, _tokenizer, _entityParser, _html5NamedCharRefs) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  try { Object.defineProperty(exports, "__esModule", {
+    value: true
+  }); } catch (e) { exports['__esModule'] = true; }
+  exports['default'] = tokenize;
 
-  var _EventedTokenizer = _interopRequireDefault(_eventedTokenizer);
+  var _tokenizer2 = _interopRequireDefault(_tokenizer);
+
+  var _entityParser2 = _interopRequireDefault(_entityParser);
+
+  var _html5NamedCharRefs2 = _interopRequireDefault(_html5NamedCharRefs);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      'default': obj
+    };
+  }
+
+  function tokenize(input, options) {
+    var tokenizer = new _tokenizer2['default'](new _entityParser2['default'](_html5NamedCharRefs2['default']), options);
+    return tokenizer.tokenize(input);
+  }
+  module.exports = exports['default'];
+});
+define('simple-html-tokenizer/tokenizer', ['module', 'exports', './evented-tokenizer'], function (module, exports, _eventedTokenizer) {
+  'use strict';
+
+  try { Object.defineProperty(exports, "__esModule", {
+    value: true
+  }); } catch (e) { exports['__esModule'] = true; }
+
+  var _eventedTokenizer2 = _interopRequireDefault(_eventedTokenizer);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      'default': obj
+    };
+  }
 
   function Tokenizer(entityParser, options) {
     this.token = null;
     this.startLine = 1;
     this.startColumn = 0;
     this.options = options || {};
-    this.tokenizer = new _EventedTokenizer['default'](this, entityParser);
+    this.tokenizer = new _eventedTokenizer2['default'](this, entityParser);
   }
 
   Tokenizer.prototype = {
@@ -615,12 +675,15 @@ define('simple-html-tokenizer/tokenizer', ['exports', 'module', './evented-token
     finishAttributeValue: function finishAttributeValue() {}
   };
 
-  module.exports = Tokenizer;
+  exports['default'] = Tokenizer;
+  module.exports = exports['default'];
 });
 define("simple-html-tokenizer/utils", ["exports"], function (exports) {
   "use strict";
 
-  exports.__esModule = true;
+  try { Object.defineProperty(exports, "__esModule", {
+    value: true
+  }); } catch (e) { exports['__esModule'] = true; }
   exports.isSpace = isSpace;
   exports.isAlpha = isAlpha;
   exports.preprocessInput = preprocessInput;
@@ -640,40 +703,76 @@ define("simple-html-tokenizer/utils", ["exports"], function (exports) {
     return input.replace(CRLF, "\n");
   }
 });
-define('simple-html-tokenizer', ['exports', 'module', './simple-html-tokenizer/html5-named-char-refs', './simple-html-tokenizer/entity-parser', './simple-html-tokenizer/evented-tokenizer', './simple-html-tokenizer/tokenizer', './simple-html-tokenizer/tokenize'], function (exports, module, _simpleHtmlTokenizerHtml5NamedCharRefs, _simpleHtmlTokenizerEntityParser, _simpleHtmlTokenizerEventedTokenizer, _simpleHtmlTokenizerTokenizer, _simpleHtmlTokenizerTokenize) {
+define('simple-html-tokenizer', ['module', 'exports', './simple-html-tokenizer/html5-named-char-refs', './simple-html-tokenizer/entity-parser', './simple-html-tokenizer/evented-tokenizer', './simple-html-tokenizer/tokenizer', './simple-html-tokenizer/tokenize'], function (module, exports, _html5NamedCharRefs, _entityParser, _eventedTokenizer, _tokenizer, _tokenize) {
 	'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	try { Object.defineProperty(exports, "__esModule", {
+		value: true
+	}); } catch (e) { exports['__esModule'] = true; }
 
-	var _HTML5NamedCharRefs = _interopRequireDefault(_simpleHtmlTokenizerHtml5NamedCharRefs);
+	var _html5NamedCharRefs2 = _interopRequireDefault(_html5NamedCharRefs);
 
-	var _EntityParser = _interopRequireDefault(_simpleHtmlTokenizerEntityParser);
+	var _entityParser2 = _interopRequireDefault(_entityParser);
 
-	var _EventedTokenizer = _interopRequireDefault(_simpleHtmlTokenizerEventedTokenizer);
+	var _eventedTokenizer2 = _interopRequireDefault(_eventedTokenizer);
 
-	var _Tokenizer = _interopRequireDefault(_simpleHtmlTokenizerTokenizer);
+	var _tokenizer2 = _interopRequireDefault(_tokenizer);
 
-	var _tokenize = _interopRequireDefault(_simpleHtmlTokenizerTokenize);
+	var _tokenize2 = _interopRequireDefault(_tokenize);
+
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : {
+			'default': obj
+		};
+	}
 
 	var HTML5Tokenizer = {
-		HTML5NamedCharRefs: _HTML5NamedCharRefs['default'],
-		EntityParser: _EntityParser['default'],
-		EventedTokenizer: _EventedTokenizer['default'],
-		Tokenizer: _Tokenizer['default'],
-		tokenize: _tokenize['default']
+		HTML5NamedCharRefs: _html5NamedCharRefs2['default'],
+		EntityParser: _entityParser2['default'],
+		EventedTokenizer: _eventedTokenizer2['default'],
+		Tokenizer: _tokenizer2['default'],
+		tokenize: _tokenize2['default']
 	};
 
-	module.exports = HTML5Tokenizer;
+	exports['default'] = HTML5Tokenizer;
+	module.exports = exports['default'];
 });
-define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linkify'], function (exports, module, _simpleHtmlTokenizer, _linkify) {
+define('linkify-html', ['module', 'exports', './simple-html-tokenizer', './linkify'], function (module, exports, _simpleHtmlTokenizer, _linkify) {
 	'use strict';
 
-	module.exports = linkifyHtml;
+	try { Object.defineProperty(exports, "__esModule", {
+		value: true
+	}); } catch (e) { exports['__esModule'] = true; }
+	exports['default'] = linkifyHtml;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _simpleHtmlTokenizer2 = _interopRequireDefault(_simpleHtmlTokenizer);
 
-	var _HTML5Tokenizer = _interopRequireDefault(_simpleHtmlTokenizer);
+	var linkify = _interopRequireWildcard(_linkify);
 
+	function _interopRequireWildcard(obj) {
+		if (obj && obj.__esModule) {
+			return obj;
+		} else {
+			var newObj = {};
+
+			if (obj != null) {
+				for (var key in obj) {
+					if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+				}
+			}
+
+			newObj['default'] = obj;
+			return newObj;
+		}
+	}
+
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : {
+			'default': obj
+		};
+	}
+
+	var options = linkify.options;
 	var StartTag = 'StartTag';
 	var EndTag = 'EndTag';
 	var Chars = 'Chars';
@@ -683,16 +782,15 @@ define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linki
  	`tokens` and `token` in this section refer to tokens generated by the HTML
  	parser.
  */
-
 	function linkifyHtml(str) {
 		var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-		var tokens = _HTML5Tokenizer['default'].tokenize(str);
+		var tokens = _simpleHtmlTokenizer2['default'].tokenize(str);
 		var linkifiedTokens = [];
 		var linkified = [];
 		var i;
 
-		opts = _linkify.options.normalize(opts);
+		opts = linkify.options.normalize(opts);
 
 		// Linkify the tokens given by the parser
 		for (i = 0; i < tokens.length; i++) {
@@ -703,7 +801,7 @@ define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linki
 
 				// Ignore all the contents of ignored tags
 				var tagName = token.tagName.toUpperCase();
-				var isIgnored = tagName === 'A' || opts.ignoreTags.indexOf(tagName) >= 0;
+				var isIgnored = tagName === 'A' || options.contains(opts.ignoreTags, tagName);
 				if (!isIgnored) continue;
 
 				var preskipLen = linkifiedTokens.length;
@@ -723,11 +821,11 @@ define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linki
 
 		// Convert the tokens back into a string
 		for (i = 0; i < linkifiedTokens.length; i++) {
-			var token = linkifiedTokens[i];
-			switch (token.type) {
+			var _token = linkifiedTokens[i];
+			switch (_token.type) {
 				case StartTag:
-					var attrs = attrsToStrings(token.attributes);
-					var link = '<' + token.tagName;
+					var attrs = attrsToStrings(_token.attributes);
+					var link = '<' + _token.tagName;
 					if (attrs.length > 0) {
 						link += ' ' + attrs.join(' ');
 					}
@@ -735,13 +833,13 @@ define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linki
 					linkified.push(link);
 					break;
 				case EndTag:
-					linkified.push('</' + token.tagName + '>');
+					linkified.push('</' + _token.tagName + '>');
 					break;
 				case Chars:
-					linkified.push(escapeText(token.chars));
+					linkified.push(escapeText(_token.chars));
 					break;
 				case Comment:
-					linkified.push('<!--' + escapeText(token.chars) + '-->');
+					linkified.push('<!--' + escapeText(_token.chars) + '-->');
 					break;
 			}
 		}
@@ -754,12 +852,12 @@ define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linki
  	`linkify.tokenize`. `linkified` will contain HTML Parser-style tokens
  */
 	function linkifyChars(str, opts) {
-		var tokens = _linkify.tokenize(str);
+		var tokens = linkify.tokenize(str);
 		var result = [];
 
 		for (var i = 0; i < tokens.length; i++) {
 			var token = tokens[i];
-			var validated = token.isLink && _linkify.options.resolve(opts.validate, token.toString(), token.type);
+			var validated = token.isLink && linkify.options.resolve(opts.validate, token.toString(), token.type);
 
 			if (token.type === 'nl' && opts.nl2br) {
 				result.push({
@@ -775,12 +873,12 @@ define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linki
 			}
 
 			var href = token.toHref(opts.defaultProtocol);
-			var formatted = _linkify.options.resolve(opts.format, token.toString(), token.type);
-			var formattedHref = _linkify.options.resolve(opts.formatHref, href, token.type);
-			var attributesHash = _linkify.options.resolve(opts.attributes, href, token.type);
-			var tagName = _linkify.options.resolve(opts.tagName, href, token.type);
-			var linkClass = _linkify.options.resolve(opts.linkClass, href, token.type);
-			var target = _linkify.options.resolve(opts.target, href, token.type);
+			var formatted = linkify.options.resolve(opts.format, token.toString(), token.type);
+			var formattedHref = linkify.options.resolve(opts.formatHref, href, token.type);
+			var attributesHash = linkify.options.resolve(opts.attributes, href, token.type);
+			var tagName = linkify.options.resolve(opts.tagName, href, token.type);
+			var linkClass = linkify.options.resolve(opts.linkClass, href, token.type);
+			var target = linkify.options.resolve(opts.target, href, token.type);
 
 			// Build up attributes
 			var attributes = [['href', formattedHref], ['class', linkClass]];
@@ -856,11 +954,12 @@ define('linkify-html', ['exports', 'module', './simple-html-tokenizer', './linki
 		var attrStrs = [];
 		for (var i = 0; i < attrs.length; i++) {
 			var _attrs$i = attrs[i];
-			var _name = _attrs$i[0];
+			var name = _attrs$i[0];
 			var value = _attrs$i[1];
 
-			attrStrs.push(_name + '="' + escapeAttr(value) + '"');
+			attrStrs.push(name + '="' + escapeAttr(value) + '"');
 		}
 		return attrStrs;
 	}
+	module.exports = exports['default'];
 });
