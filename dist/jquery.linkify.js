@@ -1500,8 +1500,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 })();
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 ;(function (window, linkify, $) {
 	var linkifyJquery = function (jquery, linkify) {
 		'use strict';
@@ -1590,7 +1588,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		function linkifyElementHelper(element, opts, doc) {
 
 			// Can the element be linkified?
-			if (!element || (typeof element === 'undefined' ? 'undefined' : _typeof(element)) !== 'object' || element.nodeType !== HTML_NODE) {
+			if (!element || element.nodeType !== HTML_NODE) {
 				throw new Error('Cannot linkify ' + element + ' - Invalid DOM Node type');
 			}
 
