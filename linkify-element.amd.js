@@ -24,13 +24,10 @@ define('linkify-element', ['module', 'exports', './linkify'], function (module, 
 		}
 	}
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-		return typeof obj;
-	} : function (obj) {
-		return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-	};
+	var tokenize = linkify.tokenize; /**
+                                  	Linkify a HTML DOM node
+                                  */
 
-	var tokenize = linkify.tokenize;
 	var options = linkify.options;
 
 	var HTML_NODE = 1,
@@ -116,7 +113,7 @@ define('linkify-element', ['module', 'exports', './linkify'], function (module, 
 	function linkifyElementHelper(element, opts, doc) {
 
 		// Can the element be linkified?
-		if (!element || (typeof element === 'undefined' ? 'undefined' : _typeof(element)) !== 'object' || element.nodeType !== HTML_NODE) {
+		if (!element || element.nodeType !== HTML_NODE) {
 			throw new Error('Cannot linkify ' + element + ' - Invalid DOM Node type');
 		}
 

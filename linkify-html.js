@@ -650,9 +650,9 @@
 				var _token = linkifiedTokens[i];
 				switch (_token.type) {
 					case StartTag:
-						var attrs = attrsToStrings(_token.attributes);
 						var link = '<' + _token.tagName;
-						if (attrs.length > 0) {
+						if (_token.attributes.length > 0) {
+							var attrs = attrsToStrings(_token.attributes);
 							link += ' ' + attrs.join(' ');
 						}
 						link += '>';

@@ -31,7 +31,7 @@ define("simple-html-tokenizer/entity-parser", ["module", "exports"], function (m
   };
 
   exports['default'] = EntityParser;
-  module.exports = exports['default'];
+  module.exports = exports["default"];
 });
 define('simple-html-tokenizer/evented-tokenizer', ['module', 'exports', './utils'], function (module, exports, _utils) {
   'use strict';
@@ -446,7 +446,7 @@ define("simple-html-tokenizer/html5-named-char-refs", ["module", "exports"], fun
   }); } catch (e) { exports['__esModule'] = true; }
   var HTML5NamedCharRefs = {};
   exports['default'] = HTML5NamedCharRefs;
-  module.exports = exports['default'];
+  module.exports = exports["default"];
 });
 define('simple-html-tokenizer/index', ['exports', './html5-named-char-refs', './entity-parser', './evented-tokenizer', './tokenizer', './tokenize'], function (exports, _html5NamedCharRefs, _entityParser, _eventedTokenizer, _tokenizer, _tokenize) {
   'use strict';
@@ -824,9 +824,9 @@ define('linkify-html', ['module', 'exports', './simple-html-tokenizer', './linki
 			var _token = linkifiedTokens[i];
 			switch (_token.type) {
 				case StartTag:
-					var attrs = attrsToStrings(_token.attributes);
 					var link = '<' + _token.tagName;
-					if (attrs.length > 0) {
+					if (_token.attributes.length > 0) {
+						var attrs = attrsToStrings(_token.attributes);
 						link += ' ' + attrs.join(' ');
 					}
 					link += '>';

@@ -1,19 +1,24 @@
 ;(function () {
 'use strict';
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 (function (exports) {
 	'use strict';
+
+	function inherits(parent, child) {
+		var props = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+		var extended = Object.create(parent.prototype);
+		for (var p in props) {
+			extended[p] = props[p];
+		}
+		extended.constructor = child;
+		child.prototype = extended;
+		return child;
+	}
 
 	/**
   * Convert set of options into objects including all the defaults
   */
-
 	function normalize(opts) {
 		opts = opts || {};
 		var newLine = opts.newLine || false; // deprecated
@@ -82,6 +87,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 		contains: contains
 	});
 
+	function createTokenClass() {
+		return function (value) {
+			if (value) {
+				this.v = value;
+			}
+		};
+	}
+
 	/******************************************************************************
  	Text Tokens
  	Tokens composed of strings
@@ -94,104 +107,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  	@abstract
  */
 
-	var TextToken = function () {
-		/**
-  	@method constructor
-  	@param {String} value The string of characters representing this particular Token
-  */
+	var TextToken = createTokenClass();
 
-		function TextToken(value) {
-			_classCallCheck(this, TextToken);
-
-			this.v = value;
-		}
-
-		/**
-  	String representing the type for this token
-  	@property type
-  	@default 'TOKEN'
-  */
-
-		TextToken.prototype.toString = function toString() {
+	TextToken.prototype = {
+		toString: function toString() {
 			return this.v + '';
-		};
+		}
+	};
 
-		return TextToken;
-	}();
+	function inheritsToken(value) {
+		var props = value ? { v: value } : {};
+		return inherits(TextToken, createTokenClass(), props);
+	}
 
 	/**
  	A valid domain token
  	@class DOMAIN
  	@extends TextToken
  */
-
-
-	var DOMAIN = function (_TextToken) {
-		_inherits(DOMAIN, _TextToken);
-
-		function DOMAIN() {
-			_classCallCheck(this, DOMAIN);
-
-			return _possibleConstructorReturn(this, _TextToken.apply(this, arguments));
-		}
-
-		return DOMAIN;
-	}(TextToken);
+	var DOMAIN = inheritsToken();
 
 	/**
  	@class AT
  	@extends TextToken
  */
-
-
-	var AT = function (_TextToken2) {
-		_inherits(AT, _TextToken2);
-
-		function AT() {
-			_classCallCheck(this, AT);
-
-			return _possibleConstructorReturn(this, _TextToken2.call(this, '@'));
-		}
-
-		return AT;
-	}(TextToken);
+	var AT = inheritsToken('@');
 
 	/**
  	Represents a single colon `:` character
  		@class COLON
  	@extends TextToken
  */
-
-
-	var COLON$1 = function (_TextToken3) {
-		_inherits(COLON$1, _TextToken3);
-
-		function COLON$1() {
-			_classCallCheck(this, COLON$1);
-
-			return _possibleConstructorReturn(this, _TextToken3.call(this, ':'));
-		}
-
-		return COLON$1;
-	}(TextToken);
+	var COLON$1 = inheritsToken(':');
 
 	/**
  	@class DOT
  	@extends TextToken
  */
-
-
-	var DOT = function (_TextToken4) {
-		_inherits(DOT, _TextToken4);
-
-		function DOT() {
-			_classCallCheck(this, DOT);
-
-			return _possibleConstructorReturn(this, _TextToken4.call(this, '.'));
-		}
-
-		return DOT;
-	}(TextToken);
+	var DOT = inheritsToken('.');
 
 	/**
  	A character class that can surround the URL, but which the URL cannot begin
@@ -199,111 +152,39 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  		@class PUNCTUATION
  	@extends TextToken
  */
-
-
-	var PUNCTUATION = function (_TextToken5) {
-		_inherits(PUNCTUATION, _TextToken5);
-
-		function PUNCTUATION() {
-			_classCallCheck(this, PUNCTUATION);
-
-			return _possibleConstructorReturn(this, _TextToken5.apply(this, arguments));
-		}
-
-		return PUNCTUATION;
-	}(TextToken);
+	var PUNCTUATION = inheritsToken();
 
 	/**
  	The word localhost (by itself)
  	@class LOCALHOST
  	@extends TextToken
  */
-
-
-	var LOCALHOST = function (_TextToken6) {
-		_inherits(LOCALHOST, _TextToken6);
-
-		function LOCALHOST() {
-			_classCallCheck(this, LOCALHOST);
-
-			return _possibleConstructorReturn(this, _TextToken6.apply(this, arguments));
-		}
-
-		return LOCALHOST;
-	}(TextToken);
+	var LOCALHOST = inheritsToken();
 
 	/**
  	Newline token
  	@class TNL
  	@extends TextToken
  */
-
-
-	var TNL = function (_TextToken7) {
-		_inherits(TNL, _TextToken7);
-
-		function TNL() {
-			_classCallCheck(this, TNL);
-
-			return _possibleConstructorReturn(this, _TextToken7.call(this, '\n'));
-		}
-
-		return TNL;
-	}(TextToken);
+	var TNL = inheritsToken('\n');
 
 	/**
  	@class NUM
  	@extends TextToken
  */
-
-
-	var NUM = function (_TextToken8) {
-		_inherits(NUM, _TextToken8);
-
-		function NUM() {
-			_classCallCheck(this, NUM);
-
-			return _possibleConstructorReturn(this, _TextToken8.apply(this, arguments));
-		}
-
-		return NUM;
-	}(TextToken);
+	var NUM = inheritsToken();
 
 	/**
  	@class PLUS
  	@extends TextToken
  */
-
-
-	var PLUS = function (_TextToken9) {
-		_inherits(PLUS, _TextToken9);
-
-		function PLUS() {
-			_classCallCheck(this, PLUS);
-
-			return _possibleConstructorReturn(this, _TextToken9.call(this, '+'));
-		}
-
-		return PLUS;
-	}(TextToken);
+	var PLUS = inheritsToken('+');
 
 	/**
  	@class POUND
  	@extends TextToken
  */
-
-
-	var POUND = function (_TextToken10) {
-		_inherits(POUND, _TextToken10);
-
-		function POUND() {
-			_classCallCheck(this, POUND);
-
-			return _possibleConstructorReturn(this, _TextToken10.call(this, '#'));
-		}
-
-		return POUND;
-	}(TextToken);
+	var POUND = inheritsToken('#');
 
 	/**
  	Represents a web URL protocol. Supported types include
@@ -315,187 +196,50 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  		@class PROTOCOL
  	@extends TextToken
  */
-
-
-	var PROTOCOL = function (_TextToken11) {
-		_inherits(PROTOCOL, _TextToken11);
-
-		function PROTOCOL() {
-			_classCallCheck(this, PROTOCOL);
-
-			return _possibleConstructorReturn(this, _TextToken11.apply(this, arguments));
-		}
-
-		return PROTOCOL;
-	}(TextToken);
+	var PROTOCOL = inheritsToken();
 
 	/**
  	@class QUERY
  	@extends TextToken
  */
-
-
-	var QUERY = function (_TextToken12) {
-		_inherits(QUERY, _TextToken12);
-
-		function QUERY() {
-			_classCallCheck(this, QUERY);
-
-			return _possibleConstructorReturn(this, _TextToken12.call(this, '?'));
-		}
-
-		return QUERY;
-	}(TextToken);
+	var QUERY = inheritsToken('?');
 
 	/**
  	@class SLASH
  	@extends TextToken
  */
-
-
-	var SLASH = function (_TextToken13) {
-		_inherits(SLASH, _TextToken13);
-
-		function SLASH() {
-			_classCallCheck(this, SLASH);
-
-			return _possibleConstructorReturn(this, _TextToken13.call(this, '/'));
-		}
-
-		return SLASH;
-	}(TextToken);
+	var SLASH = inheritsToken('/');
 
 	/**
  	One ore more non-whitespace symbol.
  	@class SYM
  	@extends TextToken
  */
-
-
-	var SYM = function (_TextToken14) {
-		_inherits(SYM, _TextToken14);
-
-		function SYM() {
-			_classCallCheck(this, SYM);
-
-			return _possibleConstructorReturn(this, _TextToken14.apply(this, arguments));
-		}
-
-		return SYM;
-	}(TextToken);
+	var SYM = inheritsToken();
 
 	/**
  	@class TLD
  	@extends TextToken
  */
-
-
-	var TLD = function (_TextToken15) {
-		_inherits(TLD, _TextToken15);
-
-		function TLD() {
-			_classCallCheck(this, TLD);
-
-			return _possibleConstructorReturn(this, _TextToken15.apply(this, arguments));
-		}
-
-		return TLD;
-	}(TextToken);
+	var TLD = inheritsToken();
 
 	/**
  	Represents a string of consecutive whitespace characters
  		@class WS
  	@extends TextToken
  */
-
-
-	var WS = function (_TextToken16) {
-		_inherits(WS, _TextToken16);
-
-		function WS() {
-			_classCallCheck(this, WS);
-
-			return _possibleConstructorReturn(this, _TextToken16.apply(this, arguments));
-		}
-
-		return WS;
-	}(TextToken);
+	var WS = inheritsToken();
 
 	/**
  	Opening/closing bracket classes
  */
 
-	var OPENBRACE = function (_TextToken17) {
-		_inherits(OPENBRACE, _TextToken17);
-
-		function OPENBRACE() {
-			_classCallCheck(this, OPENBRACE);
-
-			return _possibleConstructorReturn(this, _TextToken17.call(this, '{'));
-		}
-
-		return OPENBRACE;
-	}(TextToken);
-
-	var OPENBRACKET = function (_TextToken18) {
-		_inherits(OPENBRACKET, _TextToken18);
-
-		function OPENBRACKET() {
-			_classCallCheck(this, OPENBRACKET);
-
-			return _possibleConstructorReturn(this, _TextToken18.call(this, '['));
-		}
-
-		return OPENBRACKET;
-	}(TextToken);
-
-	var OPENPAREN = function (_TextToken19) {
-		_inherits(OPENPAREN, _TextToken19);
-
-		function OPENPAREN() {
-			_classCallCheck(this, OPENPAREN);
-
-			return _possibleConstructorReturn(this, _TextToken19.call(this, '('));
-		}
-
-		return OPENPAREN;
-	}(TextToken);
-
-	var CLOSEBRACE = function (_TextToken20) {
-		_inherits(CLOSEBRACE, _TextToken20);
-
-		function CLOSEBRACE() {
-			_classCallCheck(this, CLOSEBRACE);
-
-			return _possibleConstructorReturn(this, _TextToken20.call(this, '}'));
-		}
-
-		return CLOSEBRACE;
-	}(TextToken);
-
-	var CLOSEBRACKET = function (_TextToken21) {
-		_inherits(CLOSEBRACKET, _TextToken21);
-
-		function CLOSEBRACKET() {
-			_classCallCheck(this, CLOSEBRACKET);
-
-			return _possibleConstructorReturn(this, _TextToken21.call(this, ']'));
-		}
-
-		return CLOSEBRACKET;
-	}(TextToken);
-
-	var CLOSEPAREN = function (_TextToken22) {
-		_inherits(CLOSEPAREN, _TextToken22);
-
-		function CLOSEPAREN() {
-			_classCallCheck(this, CLOSEPAREN);
-
-			return _possibleConstructorReturn(this, _TextToken22.call(this, ')'));
-		}
-
-		return CLOSEPAREN;
-	}(TextToken);
+	var OPENBRACE = inheritsToken('{');
+	var OPENBRACKET = inheritsToken('[');
+	var OPENPAREN = inheritsToken('(');
+	var CLOSEBRACE = inheritsToken('}');
+	var CLOSEBRACKET = inheritsToken(']');
+	var CLOSEPAREN = inheritsToken(')');
 
 	var TEXT_TOKENS = {
 		Base: TextToken,
@@ -543,48 +287,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  		@class MultiToken
  	@abstract
  */
+	var MultiToken = createTokenClass();
 
-	var MultiToken = function () {
+	MultiToken.prototype = {
 		/**
-  	@method constructor
-  	@param {Array} value The array of `TextToken`s representing this
-  	particular MultiToken
+  	String representing the type for this token
+  	@property type
+  	@default 'TOKEN'
   */
+		type: 'token',
 
-		function MultiToken(value) {
-			_classCallCheck(this, MultiToken);
-
-			this.v = value;
-
-			/**
-   	String representing the type for this token
-   	@property type
-   	@default 'TOKEN'
-   */
-			this.type = 'token';
-
-			/**
-   	Is this multitoken a link?
-   	@property isLink
-   	@default false
-   */
-			this.isLink = false;
-		}
+		/**
+  	Is this multitoken a link?
+  	@property isLink
+  	@default false
+  */
+		isLink: false,
 
 		/**
   	Return the string this token represents.
   	@method toString
   	@return {String}
   */
-
-
-		MultiToken.prototype.toString = function toString() {
+		toString: function toString() {
 			var result = [];
 			for (var i = 0; i < this.v.length; i++) {
 				result.push(this.v[i].toString());
 			}
 			return result.join('');
-		};
+		},
+
 
 		/**
   	What should the value for this token be in the `href` HTML attribute?
@@ -592,11 +324,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   		@method toHref
   	@return {String}
   */
-
-
-		MultiToken.prototype.toHref = function toHref() {
+		toHref: function toHref() {
 			return this.toString();
-		};
+		},
+
 
 		/**
   	Returns a hash of relevant values for this token, which includes keys
@@ -608,9 +339,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   	@param {String} [protocol] `'http'` by default
   	@return {Object}
   */
-
-
-		MultiToken.prototype.toObject = function toObject() {
+		toObject: function toObject() {
 			var protocol = arguments.length <= 0 || arguments[0] === undefined ? 'http' : arguments[0];
 
 			return {
@@ -618,101 +347,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 				value: this.toString(),
 				href: this.toHref(protocol)
 			};
-		};
-
-		return MultiToken;
-	}();
+		}
+	};
 
 	/**
  	Represents a list of tokens making up a valid email address
  	@class EMAIL
  	@extends MultiToken
  */
-
-
-	var EMAIL = function (_MultiToken) {
-		_inherits(EMAIL, _MultiToken);
-
-		function EMAIL(value) {
-			_classCallCheck(this, EMAIL);
-
-			var _this23 = _possibleConstructorReturn(this, _MultiToken.call(this, value));
-
-			_this23.type = 'email';
-			_this23.isLink = true;
-			return _this23;
-		}
-
-		EMAIL.prototype.toHref = function toHref() {
+	var EMAIL = inherits(MultiToken, createTokenClass(), {
+		type: 'email',
+		isLink: true,
+		toHref: function toHref() {
 			return 'mailto:' + this.toString();
-		};
-
-		return EMAIL;
-	}(MultiToken);
+		}
+	});
 
 	/**
  	Represents some plain text
  	@class TEXT
  	@extends MultiToken
  */
-
-
-	var TEXT = function (_MultiToken2) {
-		_inherits(TEXT, _MultiToken2);
-
-		function TEXT(value) {
-			_classCallCheck(this, TEXT);
-
-			var _this24 = _possibleConstructorReturn(this, _MultiToken2.call(this, value));
-
-			_this24.type = 'text';
-			return _this24;
-		}
-
-		return TEXT;
-	}(MultiToken);
+	var TEXT = inherits(MultiToken, createTokenClass(), { type: 'text' });
 
 	/**
  	Multi-linebreak token - represents a line break
  	@class MNL
  	@extends MultiToken
  */
-
-
-	var MNL = function (_MultiToken3) {
-		_inherits(MNL, _MultiToken3);
-
-		function MNL(value) {
-			_classCallCheck(this, MNL);
-
-			var _this25 = _possibleConstructorReturn(this, _MultiToken3.call(this, value));
-
-			_this25.type = 'nl';
-			return _this25;
-		}
-
-		return MNL;
-	}(MultiToken);
+	var MNL = inherits(MultiToken, createTokenClass(), { type: 'nl' });
 
 	/**
  	Represents a list of tokens making up a valid URL
  	@class URL
  	@extends MultiToken
  */
-
-
-	var URL = function (_MultiToken4) {
-		_inherits(URL, _MultiToken4);
-
-		function URL(value) {
-			_classCallCheck(this, URL);
-
-			var _this26 = _possibleConstructorReturn(this, _MultiToken4.call(this, value));
-
-			_this26.type = 'url';
-			_this26.isLink = true;
-			return _this26;
-		}
+	var URL = inherits(MultiToken, createTokenClass(), {
+		type: 'url',
+		isLink: true,
 
 		/**
   	Lowercases relevant parts of the domain and adds the protocol if
@@ -722,9 +394,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   	@param {String} protocol
   	@return {String}
   */
-
-
-		URL.prototype.toHref = function toHref() {
+		toHref: function toHref() {
 			var protocol = arguments.length <= 0 || arguments[0] === undefined ? 'http' : arguments[0];
 
 			var hasProtocol = false,
@@ -766,14 +436,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 			}
 
 			return result;
-		};
-
-		URL.prototype.hasProtocol = function hasProtocol() {
+		},
+		hasProtocol: function hasProtocol() {
 			return this.v[0] instanceof PROTOCOL;
-		};
-
-		return URL;
-	}(MultiToken);
+		}
+	});
 
 	var MULTI_TOKENS = {
 		Base: MultiToken,
@@ -782,6 +449,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 		TEXT: TEXT,
 		URL: URL
 	};
+
+	function createStateClass() {
+		return function (tClass) {
+			this.j = [];
+			this.T = tClass || null;
+		};
+	}
 
 	/**
  	A simple state machine that can emit token classes
@@ -796,21 +470,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  		TODO: Can the `on` and `next` methods be combined?
  		@class BaseState
  */
-
-	var BaseState = function () {
-
+	var BaseState = createStateClass();
+	BaseState.prototype = {
 		/**
   	@method constructor
   	@param {Class} tClass Pass in the kind of token to emit if there are
   		no jumps after this state and the state is accepting.
   */
-
-		function BaseState(tClass) {
-			_classCallCheck(this, BaseState);
-
-			this.j = [];
-			this.T = tClass || null;
-		}
 
 		/**
   	On the given symbol(s), this machine should go to the given state
@@ -821,8 +487,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   		subclass)
   */
 
-
-		BaseState.prototype.on = function on(symbol, state) {
+		on: function on(symbol, state) {
 			if (symbol instanceof Array) {
 				for (var i = 0; i < symbol.length; i++) {
 					this.j.push([symbol[i], state]);
@@ -831,7 +496,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 			}
 			this.j.push([symbol, state]);
 			return this;
-		};
+		},
+
 
 		/**
   	Given the next item, returns next state for that item
@@ -840,9 +506,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   		this particular machine.
   	@return {State} state Returns false if no jumps are available
   */
-
-
-		BaseState.prototype.next = function next(item) {
+		next: function next(item) {
 
 			for (var i = 0; i < this.j.length; i++) {
 
@@ -857,7 +521,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 			// Nowhere left to jump!
 			return false;
-		};
+		},
+
 
 		/**
   	Does this state accept?
@@ -865,11 +530,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   		@method accepts
   	@return {Boolean}
   */
-
-
-		BaseState.prototype.accepts = function accepts() {
+		accepts: function accepts() {
 			return !!this.T;
-		};
+		},
+
 
 		/**
   	Determine whether a given item "symbolizes" the symbol, where symbol is
@@ -880,11 +544,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   	@param {Mixed} symbol
   	@return {Boolean}
   */
-
-
-		BaseState.prototype.test = function test(item, symbol) {
+		test: function test(item, symbol) {
 			return item === symbol;
-		};
+		},
+
 
 		/**
   	Emit the token for this State (just return it in this case)
@@ -892,31 +555,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   	@method emit
   	@return {Class} T
   */
-
-
-		BaseState.prototype.emit = function emit() {
+		emit: function emit() {
 			return this.T;
-		};
-
-		return BaseState;
-	}();
+		}
+	};
 
 	/**
  	State machine for string-based input
  		@class CharacterState
  	@extends BaseState
  */
-
-
-	var CharacterState = function (_BaseState) {
-		_inherits(CharacterState, _BaseState);
-
-		function CharacterState() {
-			_classCallCheck(this, CharacterState);
-
-			return _possibleConstructorReturn(this, _BaseState.apply(this, arguments));
-		}
-
+	var CharacterState = inherits(BaseState, createStateClass(), {
 		/**
   	Does the given character match the given character or regular
   	expression?
@@ -926,28 +575,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   	@return {Boolean}
   */
 
-		CharacterState.prototype.test = function test(character, charOrRegExp) {
+		test: function test(character, charOrRegExp) {
 			return character === charOrRegExp || charOrRegExp instanceof RegExp && charOrRegExp.test(character);
-		};
-
-		return CharacterState;
-	}(BaseState);
+		}
+	});
 
 	/**
  	State machine for input in the form of TextTokens
  		@class TokenState
  	@extends BaseState
  */
-
-
-	var State = function (_BaseState2) {
-		_inherits(State, _BaseState2);
-
-		function State() {
-			_classCallCheck(this, State);
-
-			return _possibleConstructorReturn(this, _BaseState2.apply(this, arguments));
-		}
+	var State = inherits(BaseState, createStateClass(), {
 
 		/**
   	Is the given token an instance of the given token class?
@@ -957,12 +595,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   	@return {Boolean}
   */
 
-		State.prototype.test = function test(token, tokenClass) {
+		test: function test(token, tokenClass) {
 			return token instanceof tokenClass;
-		};
-
-		return State;
-	}(BaseState);
+		}
+	});
 
 	/**
  	Given a non-empty target string, generates states (if required) for each
@@ -981,8 +617,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  		we don't have a full match
  	@return {Array} list of newly-created states
  */
-
-
 	function stateify(str, start, endToken, defaultToken) {
 
 		var i = 0,
@@ -1014,7 +648,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 		return newStates;
 	}
 
-	var tlds = 'abogado|ac|academy|accountants|active|actor|ad|adult|ae|aero|af|ag|agency|ai|airforce|al|allfinanz|alsace|am|an|android|ao|aq|aquarelle|ar|archi|army|arpa|as|asia|associates|at|attorney|au|auction|audio|autos|aw|ax|axa|az|ba|band|bar|bargains|bayern|bb|bd|be|beer|berlin|best|bf|bg|bh|bi|bid|bike|bio|biz|bj|black|blackfriday|bloomberg|blue|bm|bmw|bn|bnpparibas|bo|boo|boutique|br|brussels|bs|bt|budapest|build|builders|business|buzz|bv|bw|by|bz|bzh|ca|cab|cal|camera|camp|cancerresearch|capetown|capital|caravan|cards|care|career|careers|casa|cash|cat|catering|cc|cd|center|ceo|cern|cf|cg|ch|channel|cheap|christmas|chrome|church|ci|citic|city|ck|cl|claims|cleaning|click|clinic|clothing|club|cm|cn|co|coach|codes|coffee|college|cologne|com|community|company|computer|condos|construction|consulting|contractors|cooking|cool|coop|country|cr|credit|creditcard|cricket|crs|cruises|cu|cuisinella|cv|cw|cx|cy|cymru|cz|dad|dance|dating|day|de|deals|degree|delivery|democrat|dental|dentist|desi|diamonds|diet|digital|direct|directory|discount|dj|dk|dm|dnp|do|domains|durban|dvag|dz|eat|ec|edu|education|ee|eg|email|emerck|energy|engineer|engineering|enterprises|equipment|er|es|esq|estate|et|eu|eurovision|eus|events|everbank|exchange|expert|exposed|fail|farm|fashion|feedback|fi|finance|financial|firmdale|fish|fishing|fitness|fj|fk|flights|florist|flsmidth|fly|fm|fo|foo|forsale|foundation|fr|frl|frogans|fund|furniture|futbol|ga|gal|gallery|gb|gbiz|gd|ge|gent|gf|gg|gh|gi|gift|gifts|gives|gl|glass|gle|global|globo|gm|gmail|gmo|gmx|gn|google|gop|gov|gp|gq|gr|graphics|gratis|green|gripe|gs|gt|gu|guide|guitars|guru|gw|gy|hamburg|haus|healthcare|help|here|hiphop|hiv|hk|hm|hn|holdings|holiday|homes|horse|host|hosting|house|how|hr|ht|hu|ibm|id|ie|il|im|immo|immobilien|in|industries|info|ing|ink|institute|insure|int|international|investments|io|iq|ir|irish|is|it|je|jetzt|jm|jo|jobs|joburg|jp|juegos|kaufen|ke|kg|kh|ki|kim|kitchen|kiwi|km|kn|koeln|kp|kr|krd|kred|kw|ky|kz|la|lacaixa|land|latrobe|lawyer|lb|lc|lds|lease|legal|lgbt|li|life|lighting|limited|limo|link|lk|loans|local|london|lotto|lr|ls|lt|ltda|lu|luxe|luxury|lv|ly|ma|madrid|maison|management|mango|market|marketing|mc|md|me|media|meet|melbourne|meme|memorial|menu|mg|mh|miami|mil|mini|mk|ml|mm|mn|mo|mobi|moda|moe|monash|money|mormon|mortgage|moscow|motorcycles|mov|mp|mq|mr|ms|mt|mu|museum|mv|mw|mx|my|mz|na|nagoya|name|navy|nc|ne|net|network|neustar|new|nexus|nf|ng|ngo|nhk|ni|ninja|nl|no|np|nr|nra|nrw|nu|nyc|nz|okinawa|om|ong|onl|ooo|org|organic|otsuka|ovh|pa|paris|partners|parts|party|pe|pf|pg|ph|pharmacy|photo|photography|photos|physio|pics|pictures|pink|pizza|pk|pl|place|plumbing|pm|pn|pohl|poker|porn|post|pr|praxi|press|pro|prod|productions|prof|properties|property|ps|pt|pub|pw|py|qa|qpon|quebec|re|realtor|recipes|red|rehab|reise|reisen|reit|ren|rentals|repair|report|republican|rest|restaurant|reviews|rich|rio|rip|ro|rocks|rodeo|rs|rsvp|ru|ruhr|rw|ryukyu|sa|saarland|sarl|sb|sc|sca|scb|schmidt|schule|science|scot|sd|se|services|sexy|sg|sh|shiksha|shoes|si|singles|sj|sk|sl|sm|sn|so|social|software|sohu|solar|solutions|soy|space|spiegel|sr|st|su|supplies|supply|support|surf|surgery|suzuki|sv|sx|sy|sydney|systems|sz|taipei|tatar|tattoo|tax|tc|td|technology|tel|tf|tg|th|tienda|tips|tirol|tj|tk|tl|tm|tn|to|today|tokyo|tools|top|town|toys|tp|tr|trade|training|travel|trust|tt|tui|tv|tw|tz|ua|ug|uk|university|uno|uol|us|uy|uz|va|vacations|vc|ve|vegas|ventures|versicherung|vet|vg|vi|viajes|villas|vision|vlaanderen|vn|vodka|vote|voting|voto|voyage|vu|wales|wang|watch|webcam|website|wed|wedding|wf|whoswho|wien|wiki|williamhill|wme|work|works|world|ws|wtc|wtf|xxx|xyz|yachts|yandex|ye|yoga|yokohama|youtube|yt|za|zip|zm|zone|zw'.split('|'); // macro, see gulpfile.js
+	var tlds = 'aaa|aarp|abb|abbott|abogado|ac|academy|accenture|accountant|accountants|aco|active|actor|ad|adac|ads|adult|ae|aeg|aero|af|afl|ag|agency|ai|aig|airforce|airtel|al|alibaba|alipay|allfinanz|alsace|am|amica|amsterdam|an|analytics|android|ao|apartments|app|apple|aq|aquarelle|ar|aramco|archi|army|arpa|arte|as|asia|associates|at|attorney|au|auction|audi|audio|author|auto|autos|avianca|aw|ax|axa|az|azure|ba|baidu|band|bank|bar|barcelona|barclaycard|barclays|bargains|bauhaus|bayern|bb|bbc|bbva|bcg|bcn|bd|be|beats|beer|bentley|berlin|best|bet|bf|bg|bh|bharti|bi|bible|bid|bike|bing|bingo|bio|biz|bj|black|blackfriday|bloomberg|blue|bm|bms|bmw|bn|bnl|bnpparibas|bo|boats|boehringer|bom|bond|boo|book|boots|bosch|bostik|bot|boutique|br|bradesco|bridgestone|broadway|broker|brother|brussels|bs|bt|budapest|bugatti|build|builders|business|buy|buzz|bv|bw|by|bz|bzh|ca|cab|cafe|cal|call|camera|camp|cancerresearch|canon|capetown|capital|car|caravan|cards|care|career|careers|cars|cartier|casa|cash|casino|cat|catering|cba|cbn|cc|cd|ceb|center|ceo|cern|cf|cfa|cfd|cg|ch|chanel|channel|chase|chat|cheap|chloe|christmas|chrome|church|ci|cipriani|circle|cisco|citic|city|cityeats|ck|cl|claims|cleaning|click|clinic|clinique|clothing|cloud|club|clubmed|cm|cn|co|coach|codes|coffee|college|cologne|com|commbank|community|company|compare|computer|comsec|condos|construction|consulting|contact|contractors|cooking|cool|coop|corsica|country|coupon|coupons|courses|cr|credit|creditcard|creditunion|cricket|crown|crs|cruises|csc|cu|cuisinella|cv|cw|cx|cy|cymru|cyou|cz|dabur|dad|dance|date|dating|datsun|day|dclk|de|dealer|deals|degree|delivery|dell|deloitte|delta|democrat|dental|dentist|desi|design|dev|diamonds|diet|digital|direct|directory|discount|dj|dk|dm|dnp|do|docs|dog|doha|domains|download|drive|dubai|durban|dvag|dz|earth|eat|ec|edeka|edu|education|ee|eg|email|emerck|energy|engineer|engineering|enterprises|epson|equipment|er|erni|es|esq|estate|et|eu|eurovision|eus|events|everbank|exchange|expert|exposed|express|fage|fail|fairwinds|faith|family|fan|fans|farm|fashion|fast|feedback|ferrero|fi|film|final|finance|financial|firestone|firmdale|fish|fishing|fit|fitness|fj|fk|flickr|flights|florist|flowers|flsmidth|fly|fm|fo|foo|football|ford|forex|forsale|forum|foundation|fox|fr|fresenius|frl|frogans|frontier|fund|furniture|futbol|fyi|ga|gal|gallery|gallup|game|garden|gb|gbiz|gd|gdn|ge|gea|gent|genting|gf|gg|ggee|gh|gi|gift|gifts|gives|giving|gl|glass|gle|global|globo|gm|gmail|gmbh|gmo|gmx|gn|gold|goldpoint|golf|goo|goog|google|gop|got|gov|gp|gq|gr|grainger|graphics|gratis|green|gripe|group|gs|gt|gu|gucci|guge|guide|guitars|guru|gw|gy|hamburg|hangout|haus|hdfcbank|health|healthcare|help|helsinki|here|hermes|hiphop|hitachi|hiv|hk|hm|hn|hockey|holdings|holiday|homedepot|homes|honda|horse|host|hosting|hoteles|hotmail|house|how|hr|hsbc|ht|hu|hyundai|ibm|icbc|ice|icu|id|ie|ifm|iinet|il|im|immo|immobilien|in|industries|infiniti|info|ing|ink|institute|insurance|insure|int|international|investments|io|ipiranga|iq|ir|irish|is|iselect|ist|istanbul|it|itau|iwc|jaguar|java|jcb|je|jetzt|jewelry|jlc|jll|jm|jmp|jo|jobs|joburg|jot|joy|jp|jpmorgan|jprs|juegos|kaufen|kddi|ke|kerryhotels|kerrylogistics|kerryproperties|kfh|kg|kh|ki|kia|kim|kinder|kitchen|kiwi|km|kn|koeln|komatsu|kp|kpn|kr|krd|kred|kuokgroup|kw|ky|kyoto|kz|la|lacaixa|lamborghini|lamer|lancaster|land|landrover|lanxess|lasalle|lat|latrobe|law|lawyer|lb|lc|lds|lease|leclerc|legal|lexus|lgbt|li|liaison|lidl|life|lifeinsurance|lifestyle|lighting|like|limited|limo|lincoln|linde|link|live|living|lixil|lk|loan|loans|local|locus|lol|london|lotte|lotto|love|lr|ls|lt|ltd|ltda|lu|lupin|luxe|luxury|lv|ly|ma|madrid|maif|maison|makeup|man|management|mango|market|marketing|markets|marriott|mba|mc|md|me|med|media|meet|melbourne|meme|memorial|men|menu|meo|mg|mh|miami|microsoft|mil|mini|mk|ml|mm|mma|mn|mo|mobi|mobily|moda|moe|moi|mom|monash|money|montblanc|mormon|mortgage|moscow|motorcycles|mov|movie|movistar|mp|mq|mr|ms|mt|mtn|mtpc|mtr|mu|museum|mutuelle|mv|mw|mx|my|mz|na|nadex|nagoya|name|natura|navy|nc|ne|nec|net|netbank|network|neustar|new|news|nexus|nf|ng|ngo|nhk|ni|nico|nikon|ninja|nissan|nl|no|nokia|norton|nowruz|np|nr|nra|nrw|ntt|nu|nyc|nz|obi|office|okinawa|om|omega|one|ong|onl|online|ooo|oracle|orange|org|organic|origins|osaka|otsuka|ovh|pa|page|pamperedchef|panerai|paris|pars|partners|parts|party|passagens|pe|pet|pf|pg|ph|pharmacy|philips|photo|photography|photos|physio|piaget|pics|pictet|pictures|pid|pin|ping|pink|pizza|pk|pl|place|play|playstation|plumbing|plus|pm|pn|pohl|poker|porn|post|pr|praxi|press|pro|prod|productions|prof|promo|properties|property|protection|ps|pt|pub|pw|pwc|py|qa|qpon|quebec|quest|racing|re|read|realtor|realty|recipes|red|redstone|redumbrella|rehab|reise|reisen|reit|ren|rent|rentals|repair|report|republican|rest|restaurant|review|reviews|rexroth|rich|ricoh|rio|rip|ro|rocher|rocks|rodeo|room|rs|rsvp|ru|ruhr|run|rw|rwe|ryukyu|sa|saarland|safe|safety|sakura|sale|salon|samsung|sandvik|sandvikcoromant|sanofi|sap|sapo|sarl|sas|saxo|sb|sbs|sc|sca|scb|schaeffler|schmidt|scholarships|school|schule|schwarz|science|scor|scot|sd|se|seat|security|seek|select|sener|services|seven|sew|sex|sexy|sfr|sg|sh|sharp|shell|shia|shiksha|shoes|show|shriram|si|singles|site|sj|sk|ski|skin|sky|skype|sl|sm|smile|sn|sncf|so|soccer|social|softbank|software|sohu|solar|solutions|song|sony|soy|space|spiegel|spot|spreadbetting|sr|srl|st|stada|star|starhub|statefarm|statoil|stc|stcgroup|stockholm|storage|store|studio|study|style|su|sucks|supplies|supply|support|surf|surgery|suzuki|sv|swatch|swiss|sx|sy|sydney|symantec|systems|sz|tab|taipei|taobao|tatamotors|tatar|tattoo|tax|taxi|tc|tci|td|team|tech|technology|tel|telecity|telefonica|temasek|tennis|tf|tg|th|thd|theater|theatre|tickets|tienda|tiffany|tips|tires|tirol|tj|tk|tl|tm|tmall|tn|to|today|tokyo|tools|top|toray|toshiba|total|tours|town|toyota|toys|tp|tr|trade|trading|training|travel|travelers|travelersinsurance|trust|trv|tt|tube|tui|tunes|tushu|tv|tvs|tw|tz|ua|ubs|ug|uk|unicom|university|uno|uol|us|uy|uz|va|vacations|vana|vc|ve|vegas|ventures|verisign|versicherung|vet|vg|vi|viajes|video|viking|villas|vin|vip|virgin|vision|vista|vistaprint|viva|vlaanderen|vn|vodka|volkswagen|vote|voting|voto|voyage|vu|vuelos|wales|walter|wang|wanggou|watch|watches|weather|weatherchannel|webcam|weber|website|wed|wedding|weir|wf|whoswho|wien|wiki|williamhill|win|windows|wine|wme|wolterskluwer|work|works|world|ws|wtc|wtf|xbox|xerox|xin|xperia|xxx|xyz|yachts|yahoo|yamaxun|yandex|ye|yodobashi|yoga|yokohama|youtube|yt|za|zara|zero|zip|zm|zone|zuerich|zw'.split('|'); // macro, see gulpfile.js
 
 	var REGEXP_NUM = /[0-9]/;
 	var REGEXP_ALPHANUM = /[a-z0-9]/;
@@ -1490,6 +1124,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 	};
 
 	exports.find = find;
+	exports.inherits = inherits;
 	exports.options = options;
 	exports.parser = parser;
 	exports.scanner = scanner;

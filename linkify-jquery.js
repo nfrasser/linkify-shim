@@ -150,7 +150,7 @@
 		linkifyElement.normalize = options.normalize;
 
 		// Applies the plugin to jQuery
-		function linkifyJquery($) {
+		function apply($) {
 			var doc = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
 
 
@@ -207,10 +207,10 @@
 
 		// Try assigning linkifyElement to the browser scope
 		try {
-			window.linkifyElement = linkifyElement;
+			var a = !define && (window.linkifyElement = linkifyElement);
 		} catch (e) {}
 
-		return linkifyJquery;
+		return apply;
 	}($, linkify);
 	if (typeof $.fn.linkify !== 'function') {
 		linkifyJquery($);
