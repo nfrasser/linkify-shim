@@ -44,7 +44,7 @@ define('linkify-string', ['module', 'exports', './linkify'], function (module, e
 		var result = [];
 
 		for (var attr in attributes) {
-			var val = (attributes[attr] + '').replace(/"/g, '&quot;');
+			var val = attributes[attr] + '';
 			result.push(attr + '="' + escapeAttr(val) + '"');
 		}
 		return result.join(' ');
