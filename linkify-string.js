@@ -4,8 +4,14 @@
 	var linkifyString = function (linkify) {
 		'use strict';
 
+		/**
+  	Convert strings of text into linkable HTML text
+  */
+
 		var tokenize = linkify.tokenize;
 		var options = linkify.options;
+		var Options = options.Options;
+
 
 		function escapeText(text) {
 			return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -16,8 +22,9 @@
 		}
 
 		function attributesToString(attributes) {
-
-			if (!attributes) return '';
+			if (!attributes) {
+				return '';
+			}
 			var result = [];
 
 			for (var attr in attributes) {
@@ -30,54 +37,56 @@
 		function linkifyStr(str) {
 			var opts = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
+			opts = new Options(opts);
 
-			opts = options.normalize(opts);
-
-			var tokens = tokenize(str),
-			    result = [];
+			var tokens = tokenize(str);
+			var result = [];
 
 			for (var i = 0; i < tokens.length; i++) {
 				var token = tokens[i];
-				var validated = token.isLink && options.resolve(opts.validate, token.toString(), token.type);
 
-				if (token.isLink && validated) {
-
-					var href = token.toHref(opts.defaultProtocol),
-					    formatted = options.resolve(opts.format, token.toString(), token.type),
-					    formattedHref = options.resolve(opts.formatHref, href, token.type),
-					    attributesHash = options.resolve(opts.attributes, href, token.type),
-					    tagName = options.resolve(opts.tagName, href, token.type),
-					    linkClass = options.resolve(opts.linkClass, href, token.type),
-					    target = options.resolve(opts.target, href, token.type);
-
-					var link = '<' + tagName + ' href="' + escapeAttr(formattedHref) + '" class="' + escapeAttr(linkClass) + '"';
-					if (target) {
-						link += ' target="' + escapeAttr(target) + '"';
-					}
-
-					if (attributesHash) {
-						link += ' ' + attributesToString(attributesHash);
-					}
-
-					link += '>' + escapeText(formatted) + '</' + tagName + '>';
-					result.push(link);
-				} else if (token.type === 'nl' && opts.nl2br) {
-					if (opts.newLine) {
-						result.push(opts.newLine);
-					} else {
-						result.push('<br>\n');
-					}
-				} else {
+				if (token.type === 'nl' && opts.nl2br) {
+					result.push('<br>\n');
+					continue;
+				} else if (!token.isLink || !opts.check(token)) {
 					result.push(escapeText(token.toString()));
+					continue;
 				}
+
+				var _opts$resolve = opts.resolve(token);
+
+				var formatted = _opts$resolve.formatted;
+				var formattedHref = _opts$resolve.formattedHref;
+				var tagName = _opts$resolve.tagName;
+				var className = _opts$resolve.className;
+				var target = _opts$resolve.target;
+				var attributes = _opts$resolve.attributes;
+
+
+				var link = '<' + tagName + ' href="' + escapeAttr(formattedHref) + '"';
+
+				if (className) {
+					link += ' class="' + escapeAttr(className) + '"';
+				}
+
+				if (target) {
+					link += ' target="' + escapeAttr(target) + '"';
+				}
+
+				if (attributes) {
+					link += ' ' + attributesToString(attributes);
+				}
+
+				link += '>' + escapeText(formatted) + '</' + tagName + '>';
+				result.push(link);
 			}
 
 			return result.join('');
 		}
 
 		if (!String.prototype.linkify) {
-			String.prototype.linkify = function (options) {
-				return linkifyStr(this, options);
+			String.prototype.linkify = function (opts) {
+				return linkifyStr(this, opts);
 			};
 		}
 

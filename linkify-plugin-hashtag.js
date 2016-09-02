@@ -9,14 +9,9 @@
   */
 
 		function hashtag(linkify) {
-			var TT = linkify.scanner.TOKENS,
-			    // Text tokens
-			MT = linkify.parser.TOKENS,
-			    // Multi tokens
-			MultiToken = MT.Base,
-			    S_START = linkify.parser.start,
-			    S_HASH = void 0,
-			    S_HASHTAG = void 0;
+			var TT = linkify.scanner.TOKENS; // Text tokens
+			var MultiToken = linkify.parser.TOKENS.Base; // Base Multi token class
+			var S_START = linkify.parser.start;
 
 			function HASHTAG(value) {
 				this.v = value;
@@ -27,12 +22,12 @@
 				isLink: true
 			});
 
-			S_HASH = new linkify.parser.State();
-			S_HASHTAG = new linkify.parser.State(HASHTAG);
+			var S_HASH = S_START.jump(TT.POUND);
+			var S_HASHTAG = new linkify.parser.State(HASHTAG);
 
-			S_START.on(TT.POUND, S_HASH);
 			S_HASH.on(TT.DOMAIN, S_HASHTAG);
 			S_HASH.on(TT.TLD, S_HASHTAG);
+			S_HASH.on(TT.LOCALHOST, S_HASHTAG);
 		}
 
 		return hashtag;

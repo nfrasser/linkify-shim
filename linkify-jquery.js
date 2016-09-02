@@ -4,8 +4,15 @@
 	var linkifyJquery = function (jquery, linkify) {
 		'use strict';
 
+		/**
+  	Linkify a HTML DOM node
+  */
+
 		var tokenize = linkify.tokenize;
 		var options = linkify.options;
+		var Options = options.Options;
+
+
 		var TEXT_TOKEN = linkify.parser.TOKENS.TEXT;
 
 		var HTML_NODE = 1;
@@ -27,44 +34,62 @@
   	Given an array of MultiTokens, return an array of Nodes that are either
   	(a) Plain Text nodes (node type 3)
   	(b) Anchor tag nodes (usually, unless tag name is overridden in the options)
-  		Takes the same options as linkifyElement and an optional doc element
+  
+  	Takes the same options as linkifyElement and an optional doc element
   	(this should be passed in by linkifyElement)
   */
 		function tokensToNodes(tokens, opts, doc) {
 			var result = [];
 
-			for (var i = 0; i < tokens.length; i++) {
-				var token = tokens[i];
+			for (var _iterator = tokens, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+				var _ref;
+
+				if (_isArray) {
+					if (_i >= _iterator.length) break;
+					_ref = _iterator[_i++];
+				} else {
+					_i = _iterator.next();
+					if (_i.done) break;
+					_ref = _i.value;
+				}
+
+				var token = _ref;
 
 				if (token.type === 'nl' && opts.nl2br) {
 					result.push(doc.createElement('br'));
 					continue;
-				} else if (!token.isLink || !options.resolve(opts.validate, token.toString(), token.type)) {
+				} else if (!token.isLink || !opts.check(token)) {
 					result.push(doc.createTextNode(token.toString()));
 					continue;
 				}
 
-				var href = token.toHref(opts.defaultProtocol);
-				var formatted = options.resolve(opts.format, token.toString(), token.type);
-				var formattedHref = options.resolve(opts.formatHref, href, token.type);
-				var attributesHash = options.resolve(opts.attributes, href, token.type);
-				var tagName = options.resolve(opts.tagName, href, token.type);
-				var linkClass = options.resolve(opts.linkClass, href, token.type);
-				var target = options.resolve(opts.target, href, token.type);
-				var events = options.resolve(opts.events, href, token.type);
+				var _opts$resolve = opts.resolve(token);
+
+				var formatted = _opts$resolve.formatted;
+				var formattedHref = _opts$resolve.formattedHref;
+				var tagName = _opts$resolve.tagName;
+				var className = _opts$resolve.className;
+				var target = _opts$resolve.target;
+				var events = _opts$resolve.events;
+				var attributes = _opts$resolve.attributes;
 
 				// Build the link
+
 				var link = doc.createElement(tagName);
 				link.setAttribute('href', formattedHref);
-				link.setAttribute('class', linkClass);
+
+				if (className) {
+					link.setAttribute('class', className);
+				}
+
 				if (target) {
 					link.setAttribute('target', target);
 				}
 
 				// Build up additional attributes
-				if (attributesHash) {
-					for (var attr in attributesHash) {
-						link.setAttribute(attr, attributesHash[attr]);
+				if (attributes) {
+					for (var attr in attributes) {
+						link.setAttribute(attr, attributes[attr]);
 					}
 				}
 
@@ -137,34 +162,36 @@
 		}
 
 		function linkifyElement(element, opts) {
-			var doc = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+			var doc = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 			try {
-				doc = doc || window && window.document || global && global.document;
+				doc = doc || document || window && window.document || global && global.document;
 			} catch (e) {/* do nothing for now */}
 
 			if (!doc) {
 				throw new Error('Cannot find document implementation. ' + 'If you are in a non-browser environment like Node.js, ' + 'pass the document implementation as the third argument to linkifyElement.');
 			}
 
-			opts = options.normalize(opts);
+			opts = new Options(opts);
 			return linkifyElementHelper(element, opts, doc);
 		}
 
 		// Maintain reference to the recursive helper to cache option-normalization
 		linkifyElement.helper = linkifyElementHelper;
-		linkifyElement.normalize = options.normalize;
+		linkifyElement.normalize = function (opts) {
+			return new Options(opts);
+		};
 
 		// Applies the plugin to jQuery
 		function apply($) {
-			var doc = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+			var doc = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
 			$.fn = $.fn || {};
 
 			try {
-				doc = doc || window && window.document || global && global.document;
+				doc = doc || document || window && window.document || global && global.document;
 			} catch (e) {/* do nothing for now */}
 
 			if (!doc) {
@@ -187,22 +214,20 @@
 
 			$(doc).ready(function () {
 				$('[data-linkify]').each(function () {
-
-					var $this = $(this),
-					    data = $this.data(),
-					    target = data.linkify,
-					    nl2br = data.linkifyNlbr,
-					    options = {
-						linkAttributes: data.linkifyAttributes,
+					var $this = $(this);
+					var data = $this.data();
+					var target = data.linkify;
+					var nl2br = data.linkifyNlbr;
+					var options = {
+						attributes: data.linkifyAttributes,
 						defaultProtocol: data.linkifyDefaultProtocol,
 						events: data.linkifyEvents,
 						format: data.linkifyFormat,
 						formatHref: data.linkifyFormatHref,
-						newLine: data.linkifyNewline, // deprecated
 						nl2br: !!nl2br && nl2br !== 0 && nl2br !== 'false',
 						tagName: data.linkifyTagname,
 						target: data.linkifyTarget,
-						linkClass: data.linkifyLinkclass,
+						className: data.linkifyClassName || data.linkifyLinkclass, // linkClass is deprecated
 						validate: data.linkifyValidate,
 						ignoreTags: data.linkifyIgnoreTags
 					};

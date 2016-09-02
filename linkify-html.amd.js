@@ -1,9 +1,9 @@
 define("simple-html-tokenizer/entity-parser", ["module", "exports"], function (module, exports) {
   "use strict";
 
-  try { Object.defineProperty(exports, "__esModule", {
+  try { try { Object.defineProperty(exports, "__esModule", {
     value: true
-  }); } catch (e) { exports['__esModule'] = true; }
+  }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
   function EntityParser(named) {
     this.named = named;
   }
@@ -36,9 +36,9 @@ define("simple-html-tokenizer/entity-parser", ["module", "exports"], function (m
 define('simple-html-tokenizer/evented-tokenizer', ['module', 'exports', './utils'], function (module, exports, _utils) {
   'use strict';
 
-  try { Object.defineProperty(exports, "__esModule", {
+  try { try { Object.defineProperty(exports, "__esModule", {
     value: true
-  }); } catch (e) { exports['__esModule'] = true; }
+  }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
 
 
   function EventedTokenizer(delegate, entityParser) {
@@ -441,9 +441,9 @@ define('simple-html-tokenizer/evented-tokenizer', ['module', 'exports', './utils
 define("simple-html-tokenizer/html5-named-char-refs", ["module", "exports"], function (module, exports) {
   "use strict";
 
-  try { Object.defineProperty(exports, "__esModule", {
+  try { try { Object.defineProperty(exports, "__esModule", {
     value: true
-  }); } catch (e) { exports['__esModule'] = true; }
+  }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
   var HTML5NamedCharRefs = {};
   exports['default'] = HTML5NamedCharRefs;
   module.exports = exports["default"];
@@ -451,9 +451,9 @@ define("simple-html-tokenizer/html5-named-char-refs", ["module", "exports"], fun
 define('simple-html-tokenizer/index', ['exports', './html5-named-char-refs', './entity-parser', './evented-tokenizer', './tokenizer', './tokenize'], function (exports, _html5NamedCharRefs, _entityParser, _eventedTokenizer, _tokenizer, _tokenize) {
   'use strict';
 
-  try { Object.defineProperty(exports, "__esModule", {
+  try { try { Object.defineProperty(exports, "__esModule", {
     value: true
-  }); } catch (e) { exports['__esModule'] = true; }
+  }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
   Object.defineProperty(exports, 'HTML5NamedCharRefs', {
     enumerable: true,
     get: function () {
@@ -494,9 +494,9 @@ define('simple-html-tokenizer/index', ['exports', './html5-named-char-refs', './
 define('simple-html-tokenizer/tokenize', ['module', 'exports', './tokenizer', './entity-parser', './html5-named-char-refs'], function (module, exports, _tokenizer, _entityParser, _html5NamedCharRefs) {
   'use strict';
 
-  try { Object.defineProperty(exports, "__esModule", {
+  try { try { Object.defineProperty(exports, "__esModule", {
     value: true
-  }); } catch (e) { exports['__esModule'] = true; }
+  }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
   exports['default'] = tokenize;
 
   var _tokenizer2 = _interopRequireDefault(_tokenizer);
@@ -520,9 +520,9 @@ define('simple-html-tokenizer/tokenize', ['module', 'exports', './tokenizer', '.
 define('simple-html-tokenizer/tokenizer', ['module', 'exports', './evented-tokenizer'], function (module, exports, _eventedTokenizer) {
   'use strict';
 
-  try { Object.defineProperty(exports, "__esModule", {
+  try { try { Object.defineProperty(exports, "__esModule", {
     value: true
-  }); } catch (e) { exports['__esModule'] = true; }
+  }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
 
   var _eventedTokenizer2 = _interopRequireDefault(_eventedTokenizer);
 
@@ -681,9 +681,9 @@ define('simple-html-tokenizer/tokenizer', ['module', 'exports', './evented-token
 define("simple-html-tokenizer/utils", ["exports"], function (exports) {
   "use strict";
 
-  try { Object.defineProperty(exports, "__esModule", {
+  try { try { Object.defineProperty(exports, "__esModule", {
     value: true
-  }); } catch (e) { exports['__esModule'] = true; }
+  }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
   exports.isSpace = isSpace;
   exports.isAlpha = isAlpha;
   exports.preprocessInput = preprocessInput;
@@ -706,9 +706,9 @@ define("simple-html-tokenizer/utils", ["exports"], function (exports) {
 define('simple-html-tokenizer', ['module', 'exports', './simple-html-tokenizer/html5-named-char-refs', './simple-html-tokenizer/entity-parser', './simple-html-tokenizer/evented-tokenizer', './simple-html-tokenizer/tokenizer', './simple-html-tokenizer/tokenize'], function (module, exports, _html5NamedCharRefs, _entityParser, _eventedTokenizer, _tokenizer, _tokenize) {
 	'use strict';
 
-	try { Object.defineProperty(exports, "__esModule", {
+	try { try { Object.defineProperty(exports, "__esModule", {
 		value: true
-	}); } catch (e) { exports['__esModule'] = true; }
+	}); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
 
 	var _html5NamedCharRefs2 = _interopRequireDefault(_html5NamedCharRefs);
 
@@ -740,9 +740,9 @@ define('simple-html-tokenizer', ['module', 'exports', './simple-html-tokenizer/h
 define('linkify-html', ['module', 'exports', './simple-html-tokenizer', './linkify'], function (module, exports, _simpleHtmlTokenizer, _linkify) {
 	'use strict';
 
-	try { Object.defineProperty(exports, "__esModule", {
+	try { try { Object.defineProperty(exports, "__esModule", {
 		value: true
-	}); } catch (e) { exports['__esModule'] = true; }
+	}); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
 	exports['default'] = linkifyHtml;
 
 	var _simpleHtmlTokenizer2 = _interopRequireDefault(_simpleHtmlTokenizer);
@@ -773,6 +773,9 @@ define('linkify-html', ['module', 'exports', './simple-html-tokenizer', './linki
 	}
 
 	var options = linkify.options;
+	var Options = options.Options;
+
+
 	var StartTag = 'StartTag';
 	var EndTag = 'EndTag';
 	var Chars = 'Chars';
@@ -790,7 +793,7 @@ define('linkify-html', ['module', 'exports', './simple-html-tokenizer', './linki
 		var linkified = [];
 		var i;
 
-		opts = linkify.options.normalize(opts);
+		opts = new Options(opts);
 
 		// Linkify the tokens given by the parser
 		for (i = 0; i < tokens.length; i++) {
@@ -802,7 +805,9 @@ define('linkify-html', ['module', 'exports', './simple-html-tokenizer', './linki
 				// Ignore all the contents of ignored tags
 				var tagName = token.tagName.toUpperCase();
 				var isIgnored = tagName === 'A' || options.contains(opts.ignoreTags, tagName);
-				if (!isIgnored) continue;
+				if (!isIgnored) {
+					continue;
+				}
 
 				var preskipLen = linkifiedTokens.length;
 				skipTagTokens(tagName, tokens, ++i, linkifiedTokens);
@@ -857,7 +862,6 @@ define('linkify-html', ['module', 'exports', './simple-html-tokenizer', './linki
 
 		for (var i = 0; i < tokens.length; i++) {
 			var token = tokens[i];
-			var validated = token.isLink && linkify.options.resolve(opts.validate, token.toString(), token.type);
 
 			if (token.type === 'nl' && opts.nl2br) {
 				result.push({
@@ -867,35 +871,42 @@ define('linkify-html', ['module', 'exports', './simple-html-tokenizer', './linki
 					selfClosing: true
 				});
 				continue;
-			} else if (!token.isLink || !validated) {
+			} else if (!token.isLink || !opts.check(token)) {
 				result.push({ type: Chars, chars: token.toString() });
 				continue;
 			}
 
-			var href = token.toHref(opts.defaultProtocol);
-			var formatted = linkify.options.resolve(opts.format, token.toString(), token.type);
-			var formattedHref = linkify.options.resolve(opts.formatHref, href, token.type);
-			var attributesHash = linkify.options.resolve(opts.attributes, href, token.type);
-			var tagName = linkify.options.resolve(opts.tagName, href, token.type);
-			var linkClass = linkify.options.resolve(opts.linkClass, href, token.type);
-			var target = linkify.options.resolve(opts.target, href, token.type);
+			var _opts$resolve = opts.resolve(token);
+
+			var href = _opts$resolve.href;
+			var formatted = _opts$resolve.formatted;
+			var formattedHref = _opts$resolve.formattedHref;
+			var tagName = _opts$resolve.tagName;
+			var className = _opts$resolve.className;
+			var target = _opts$resolve.target;
+			var attributes = _opts$resolve.attributes;
+
 
 			// Build up attributes
-			var attributes = [['href', formattedHref], ['class', linkClass]];
+			var attributeArray = [['href', formattedHref]];
 
-			if (target) {
-				attributes.push(['target', target]);
+			if (className) {
+				attributeArray.push(['class', className]);
 			}
 
-			for (var attr in attributesHash) {
-				attributes.push([attr, attributesHash[attr]]);
+			if (target) {
+				attributeArray.push(['target', target]);
+			}
+
+			for (var attr in attributes) {
+				attributeArray.push([attr, attributes[attr]]);
 			}
 
 			// Add the required tokens
 			result.push({
 				type: StartTag,
 				tagName: tagName,
-				attributes: attributes,
+				attributes: attributeArray,
 				selfClosing: false
 			});
 			result.push({ type: Chars, chars: formatted });
