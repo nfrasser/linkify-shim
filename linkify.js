@@ -576,7 +576,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	var NUMBERS = '0123456789'.split('');
 	var ALPHANUM = '0123456789abcdefghijklmnopqrstuvwxyz'.split('');
-	var WHITESPACE = [' ', '\f', '\r', '\t', '\v']; // excluding line breaks
+	var WHITESPACE = [' ', '\f', '\r', '\t', '\v', ' ', ' ', '᠎']; // excluding line breaks
 
 	var domainStates = []; // states that jump to DOMAIN on /[a-z0-9]/
 	var makeState = function makeState(tokenClass) {
