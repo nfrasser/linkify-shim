@@ -2,7 +2,7 @@
   "name": "linkifyjs",
   "main": "linkify.js",
 
-  "version": "2.1.2",
+  "version": "2.1.3",
   "authors": [
     "SoapBox Innovations Inc. <dev@soapboxhq.com>"
   ],
