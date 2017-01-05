@@ -24,8 +24,8 @@ define('linkify-element', ['module', 'exports', './linkify'], function (module, 
 		}
 	}
 
-	var tokenize = linkify.tokenize;
-	var options = linkify.options;
+	var tokenize = linkify.tokenize,
+	    options = linkify.options;
 	var Options = options.Options;
 
 
@@ -80,16 +80,14 @@ define('linkify-element', ['module', 'exports', './linkify'], function (module, 
 				continue;
 			}
 
-			var _opts$resolve = opts.resolve(token);
-
-			var formatted = _opts$resolve.formatted;
-			var formattedHref = _opts$resolve.formattedHref;
-			var tagName = _opts$resolve.tagName;
-			var className = _opts$resolve.className;
-			var target = _opts$resolve.target;
-			var events = _opts$resolve.events;
-			var attributes = _opts$resolve.attributes;
-
+			var _opts$resolve = opts.resolve(token),
+			    formatted = _opts$resolve.formatted,
+			    formattedHref = _opts$resolve.formattedHref,
+			    tagName = _opts$resolve.tagName,
+			    className = _opts$resolve.className,
+			    target = _opts$resolve.target,
+			    events = _opts$resolve.events,
+			    attributes = _opts$resolve.attributes;
 
 			// Build the link
 			var link = doc.createElement(tagName);
@@ -179,7 +177,7 @@ define('linkify-element', ['module', 'exports', './linkify'], function (module, 
 	}
 
 	function linkifyElement(element, opts) {
-		var doc = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+		var doc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 
 		try {

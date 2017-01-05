@@ -56,17 +56,15 @@ define('linkify-react', ['module', 'exports', 'react', './linkify'], function (m
 				continue;
 			}
 
-			var _opts$resolve = opts.resolve(token);
-
-			var href = _opts$resolve.href;
-			var formatted = _opts$resolve.formatted;
-			var formattedHref = _opts$resolve.formattedHref;
-			var tagName = _opts$resolve.tagName;
-			var className = _opts$resolve.className;
-			var target = _opts$resolve.target;
-			var attributes = _opts$resolve.attributes;
-			var events = _opts$resolve.events;
-
+			var _opts$resolve = opts.resolve(token),
+			    href = _opts$resolve.href,
+			    formatted = _opts$resolve.formatted,
+			    formattedHref = _opts$resolve.formattedHref,
+			    tagName = _opts$resolve.tagName,
+			    className = _opts$resolve.className,
+			    target = _opts$resolve.target,
+			    attributes = _opts$resolve.attributes,
+			    events = _opts$resolve.events;
 
 			var props = {
 				key: 'linkified-' + ++linkId,
@@ -97,7 +95,7 @@ define('linkify-react', ['module', 'exports', 'react', './linkify'], function (m
 
 	// Recursively linkify the contents of the given React Element instance
 	function linkifyReactElement(element, opts) {
-		var elementId = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+		var elementId = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
 		if (_react2['default'].Children.count(element.props.children) === 0) {
 			// No need to clone if the element had no children

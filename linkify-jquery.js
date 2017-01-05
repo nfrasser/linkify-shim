@@ -4,12 +4,14 @@
 	var linkifyJquery = function (jquery, linkify) {
 		'use strict';
 
+		jquery = 'default' in jquery ? jquery['default'] : jquery;
+
 		/**
   	Linkify a HTML DOM node
   */
 
-		var tokenize = linkify.tokenize;
-		var options = linkify.options;
+		var tokenize = linkify.tokenize,
+		    options = linkify.options;
 		var Options = options.Options;
 
 
@@ -17,6 +19,7 @@
 
 		var HTML_NODE = 1;
 		var TXT_NODE = 3;
+
 		/**
   	Given a parent element and child node that the parent contains, replaces
   	that child with the given array of new children
@@ -63,17 +66,17 @@
 					continue;
 				}
 
-				var _opts$resolve = opts.resolve(token);
-
-				var formatted = _opts$resolve.formatted;
-				var formattedHref = _opts$resolve.formattedHref;
-				var tagName = _opts$resolve.tagName;
-				var className = _opts$resolve.className;
-				var target = _opts$resolve.target;
-				var events = _opts$resolve.events;
-				var attributes = _opts$resolve.attributes;
+				var _opts$resolve = opts.resolve(token),
+				    formatted = _opts$resolve.formatted,
+				    formattedHref = _opts$resolve.formattedHref,
+				    tagName = _opts$resolve.tagName,
+				    className = _opts$resolve.className,
+				    target = _opts$resolve.target,
+				    events = _opts$resolve.events,
+				    attributes = _opts$resolve.attributes;
 
 				// Build the link
+
 
 				var link = doc.createElement(tagName);
 				link.setAttribute('href', formattedHref);
@@ -162,7 +165,7 @@
 		}
 
 		function linkifyElement(element, opts) {
-			var doc = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+			var doc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 
 			try {
@@ -185,7 +188,7 @@
 
 		// Applies the plugin to jQuery
 		function apply($) {
-			var doc = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+			var doc = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 
 			$.fn = $.fn || {};
@@ -244,6 +247,7 @@
 
 		return apply;
 	}($, linkify);
+
 	if (typeof $.fn.linkify !== 'function') {
 		linkifyJquery($);
 	}

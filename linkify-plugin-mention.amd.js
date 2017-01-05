@@ -10,9 +10,9 @@ define('linkify/plugins/mention', ['module', 'exports'], function (module, expor
  */
 	function mention(linkify) {
 		var TT = linkify.scanner.TOKENS; // Text tokens
-		var _linkify$parser = linkify.parser;
-		var MT = _linkify$parser.TOKENS;
-		var State = _linkify$parser.State;
+		var _linkify$parser = linkify.parser,
+		    MT = _linkify$parser.TOKENS,
+		    State = _linkify$parser.State;
 		// Multi tokens, state
 		var MultiToken = MT.Base;
 		var S_START = linkify.parser.start;

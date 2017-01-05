@@ -1,12 +1,12 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 define('linkify', ['exports'], function (exports) {
 	'use strict';
 
 	function inherits(parent, child) {
-		var props = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+		var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 		var extended = Object.create(parent.prototype);
 		for (var p in props) {
@@ -282,7 +282,7 @@ define('linkify', ['exports'], function (exports) {
  	@class TokenState
  	@extends BaseState
  */
-	var State = inherits(BaseState, createStateClass(), {
+	var TokenState = inherits(BaseState, createStateClass(), {
 
 		/**
    * Similar to `on`, but returns the state the results in the transition from
@@ -293,7 +293,7 @@ define('linkify', ['exports'], function (exports) {
    * @return state
    */
 		jump: function jump(token) {
-			var tClass = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+			var tClass = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
 			var state = this.next(new token('')); // dummy temp token
 			if (state === this.defaultTransition) {
@@ -451,7 +451,7 @@ define('linkify', ['exports'], function (exports) {
  	@class NL
  	@extends TextToken
  */
-	var TNL = inheritsToken('\n');
+	var NL = inheritsToken('\n');
 
 	/**
  	@class NUM
@@ -478,12 +478,19 @@ define('linkify', ['exports'], function (exports) {
  	* `https:`
  	* `ftp:`
  	* `ftps:`
- 	* There's Another super weird one
  
  	@class PROTOCOL
  	@extends TextToken
  */
 	var PROTOCOL = inheritsToken();
+
+	/**
+ 	Represents the start of the email URI protocol
+ 
+ 	@class MAILTO
+ 	@extends TextToken
+ */
+	var MAILTO = inheritsToken('mailto:');
 
 	/**
  	@class QUERY
@@ -537,7 +544,9 @@ define('linkify', ['exports'], function (exports) {
 	var CLOSEANGLEBRACKET = inheritsToken('>');
 	var CLOSEPAREN = inheritsToken(')');
 
-	var TOKENS = Object.freeze({
+	var AMPERSAND = inheritsToken('&');
+
+	var text = Object.freeze({
 		Base: TextToken,
 		DOMAIN: DOMAIN,
 		AT: AT,
@@ -545,12 +554,13 @@ define('linkify', ['exports'], function (exports) {
 		DOT: DOT,
 		PUNCTUATION: PUNCTUATION,
 		LOCALHOST: LOCALHOST,
-		NL: TNL,
+		NL: NL,
 		NUM: NUM,
 		PLUS: PLUS,
 		POUND: POUND,
 		QUERY: QUERY,
 		PROTOCOL: PROTOCOL,
+		MAILTO: MAILTO,
 		SLASH: SLASH,
 		UNDERSCORE: UNDERSCORE,
 		SYM: SYM,
@@ -563,7 +573,8 @@ define('linkify', ['exports'], function (exports) {
 		CLOSEBRACE: CLOSEBRACE,
 		CLOSEBRACKET: CLOSEBRACKET,
 		CLOSEANGLEBRACKET: CLOSEANGLEBRACKET,
-		CLOSEPAREN: CLOSEPAREN
+		CLOSEPAREN: CLOSEPAREN,
+		AMPERSAND: AMPERSAND
 	});
 
 	/**
@@ -579,7 +590,7 @@ define('linkify', ['exports'], function (exports) {
 
 	var NUMBERS = '0123456789'.split('');
 	var ALPHANUM = '0123456789abcdefghijklmnopqrstuvwxyz'.split('');
-	var WHITESPACE = [' ', '\f', '\r', '\t', '\v', ' ', ' ', '᠎']; // excluding line breaks
+	var WHITESPACE = [' ', '\f', '\r', '\t', '\v', '\xA0', '\u1680', '\u180E']; // excluding line breaks
 
 	var domainStates = []; // states that jump to DOMAIN on /[a-z0-9]/
 	var makeState = function makeState(tokenClass) {
@@ -594,11 +605,11 @@ define('linkify', ['exports'], function (exports) {
 	var S_WS = makeState(WS);
 
 	// States for special URL symbols
-	S_START.on('@', makeState(AT)).on('.', makeState(DOT)).on('+', makeState(PLUS)).on('#', makeState(POUND)).on('?', makeState(QUERY)).on('/', makeState(SLASH)).on('_', makeState(UNDERSCORE)).on(':', makeState(COLON)).on('{', makeState(OPENBRACE)).on('[', makeState(OPENBRACKET)).on('<', makeState(OPENANGLEBRACKET)).on('(', makeState(OPENPAREN)).on('}', makeState(CLOSEBRACE)).on(']', makeState(CLOSEBRACKET)).on('>', makeState(CLOSEANGLEBRACKET)).on(')', makeState(CLOSEPAREN)).on([',', ';', '!', '"', '\''], makeState(PUNCTUATION));
+	S_START.on('@', makeState(AT)).on('.', makeState(DOT)).on('+', makeState(PLUS)).on('#', makeState(POUND)).on('?', makeState(QUERY)).on('/', makeState(SLASH)).on('_', makeState(UNDERSCORE)).on(':', makeState(COLON)).on('{', makeState(OPENBRACE)).on('[', makeState(OPENBRACKET)).on('<', makeState(OPENANGLEBRACKET)).on('(', makeState(OPENPAREN)).on('}', makeState(CLOSEBRACE)).on(']', makeState(CLOSEBRACKET)).on('>', makeState(CLOSEANGLEBRACKET)).on(')', makeState(CLOSEPAREN)).on('&', makeState(AMPERSAND)).on([',', ';', '!', '"', '\''], makeState(PUNCTUATION));
 
 	// Whitespace jumps
 	// Tokens of only non-newline whitespace are arbitrarily long
-	S_START.on('\n', makeState(TNL)).on(WHITESPACE, S_WS);
+	S_START.on('\n', makeState(NL)).on(WHITESPACE, S_WS);
 
 	// If any whitespace except newline, more whitespace!
 	S_WS.on(WHITESPACE, S_WS);
@@ -614,6 +625,7 @@ define('linkify', ['exports'], function (exports) {
 	var partialProtocolFileStates = stateify('file', S_START, DOMAIN, DOMAIN);
 	var partialProtocolFtpStates = stateify('ftp', S_START, DOMAIN, DOMAIN);
 	var partialProtocolHttpStates = stateify('http', S_START, DOMAIN, DOMAIN);
+	var partialProtocolMailtoStates = stateify('mailto', S_START, DOMAIN, DOMAIN);
 
 	// Add the states to the array of DOMAINeric states
 	domainStates.push.apply(domainStates, partialProtocolFileStates);
@@ -624,8 +636,10 @@ define('linkify', ['exports'], function (exports) {
 	var S_PROTOCOL_FILE = partialProtocolFileStates.pop();
 	var S_PROTOCOL_FTP = partialProtocolFtpStates.pop();
 	var S_PROTOCOL_HTTP = partialProtocolHttpStates.pop();
+	var S_MAILTO = partialProtocolMailtoStates.pop();
 	var S_PROTOCOL_SECURE = makeState(DOMAIN);
 	var S_FULL_PROTOCOL = makeState(PROTOCOL); // Full protocol ends with COLON
+	var S_FULL_MAILTO = makeState(MAILTO); // Mailto ends with COLON
 
 	// Secure protocols (end with 's')
 	S_PROTOCOL_FTP.on('s', S_PROTOCOL_SECURE).on(':', S_FULL_PROTOCOL);
@@ -637,6 +651,7 @@ define('linkify', ['exports'], function (exports) {
 	// Become protocol tokens after a COLON
 	S_PROTOCOL_FILE.on(':', S_FULL_PROTOCOL);
 	S_PROTOCOL_SECURE.on(':', S_FULL_PROTOCOL);
+	S_MAILTO.on(':', S_FULL_MAILTO);
 
 	// Localhost
 	var partialLocalhostStates = stateify('localhost', S_START, LOCALHOST, DOMAIN);
@@ -729,7 +744,7 @@ define('linkify', ['exports'], function (exports) {
 
 	var scanner = Object.freeze({
 		State: CharacterState,
-		TOKENS: TOKENS,
+		TOKENS: text,
 		run: run,
 		start: start
 	});
@@ -809,7 +824,7 @@ define('linkify', ['exports'], function (exports) {
   	@return {Object}
   */
 		toObject: function toObject() {
-			var protocol = arguments.length <= 0 || arguments[0] === undefined ? 'http' : arguments[0];
+			var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'http';
 
 			return {
 				type: this.type,
@@ -820,6 +835,16 @@ define('linkify', ['exports'], function (exports) {
 	};
 
 	/**
+ 	Represents an arbitrarily mailto email address with the prefix included
+ 	@class MAILTO
+ 	@extends MultiToken
+ */
+	var MAILTOEMAIL = inherits(MultiToken, createTokenClass(), {
+		type: 'email',
+		isLink: true
+	});
+
+	/**
  	Represents a list of tokens making up a valid email address
  	@class EMAIL
  	@extends MultiToken
@@ -828,6 +853,7 @@ define('linkify', ['exports'], function (exports) {
 		type: 'email',
 		isLink: true,
 		toHref: function toHref() {
+			var tokens = this.v;
 			return 'mailto:' + this.toString();
 		}
 	});
@@ -844,7 +870,7 @@ define('linkify', ['exports'], function (exports) {
  	@class NL
  	@extends MultiToken
  */
-	var NL = inherits(MultiToken, createTokenClass(), { type: 'nl' });
+	var NL$1 = inherits(MultiToken, createTokenClass(), { type: 'nl' });
 
 	/**
  	Represents a list of tokens making up a valid URL
@@ -864,7 +890,7 @@ define('linkify', ['exports'], function (exports) {
   	@return {String}
   */
 		toHref: function toHref() {
-			var protocol = arguments.length <= 0 || arguments[0] === undefined ? 'http' : arguments[0];
+			var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'http';
 
 			var hasProtocol = false;
 			var hasSlashSlash = false;
@@ -911,10 +937,11 @@ define('linkify', ['exports'], function (exports) {
 		}
 	});
 
-	var TOKENS$1 = Object.freeze({
+	var multi = Object.freeze({
 		Base: MultiToken,
+		MAILTOEMAIL: MAILTOEMAIL,
 		EMAIL: EMAIL,
-		NL: NL,
+		NL: NL$1,
 		TEXT: TEXT,
 		URL: URL
 	});
@@ -935,7 +962,7 @@ define('linkify', ['exports'], function (exports) {
  */
 
 	var makeState$1 = function makeState$1(tokenClass) {
-		return new State(tokenClass);
+		return new TokenState(tokenClass);
 	};
 
 	// The universal starting state.
@@ -944,6 +971,7 @@ define('linkify', ['exports'], function (exports) {
 	// Intermediate states for URLs. Note that domains that begin with a protocol
 	// are treated slighly differently from those that don't.
 	var S_PROTOCOL = makeState$1(); // e.g., 'http:'
+	var S_MAILTO$1 = makeState$1(); // 'mailto:'
 	var S_PROTOCOL_SLASH = makeState$1(); // e.g., '/', 'http:/''
 	var S_PROTOCOL_SLASH_SLASH = makeState$1(); // e.g., '//', 'http://'
 	var S_DOMAIN$1 = makeState$1(); // parsed string ends with a potential domain name (A)
@@ -970,13 +998,15 @@ define('linkify', ['exports'], function (exports) {
 	var S_EMAIL = makeState$1(EMAIL); // (C) Possible email address (could have more tlds)
 	var S_EMAIL_COLON = makeState$1(); // (C) URL followed by colon (potential port number here)
 	var S_EMAIL_PORT = makeState$1(EMAIL); // (C) Email address with a port
+	var S_MAILTO_EMAIL = makeState$1(MAILTOEMAIL); // Email that begins with the mailto prefix (D)
+	var S_MAILTO_EMAIL_NON_ACCEPTING = makeState$1(); // (D) Followed by some non-query string chars
 	var S_LOCALPART = makeState$1(); // Local part of the email address
 	var S_LOCALPART_AT = makeState$1(); // Local part of the email address plus @
 	var S_LOCALPART_DOT = makeState$1(); // Local part of the email address plus '.' (localpart cannot end in .)
-	var S_NL = makeState$1(NL); // single new line
+	var S_NL = makeState$1(NL$1); // single new line
 
 	// Make path from start to protocol (with '//')
-	S_START$1.on(TNL, S_NL).on(PROTOCOL, S_PROTOCOL).on(SLASH, S_PROTOCOL_SLASH);
+	S_START$1.on(NL, S_NL).on(PROTOCOL, S_PROTOCOL).on(MAILTO, S_MAILTO$1).on(SLASH, S_PROTOCOL_SLASH);
 
 	S_PROTOCOL.on(SLASH, S_PROTOCOL_SLASH);
 	S_PROTOCOL_SLASH.on(SLASH, S_PROTOCOL_SLASH_SLASH);
@@ -984,7 +1014,7 @@ define('linkify', ['exports'], function (exports) {
 	// The very first potential domain name
 	S_START$1.on(TLD, S_DOMAIN$1).on(DOMAIN, S_DOMAIN$1).on(LOCALHOST, S_TLD).on(NUM, S_DOMAIN$1);
 
-	// Force URL for anything sane followed by protocol
+	// Force URL for protocol followed by anything sane
 	S_PROTOCOL_SLASH_SLASH.on(TLD, S_URL).on(DOMAIN, S_URL).on(NUM, S_URL).on(LOCALHOST, S_URL);
 
 	// Account for dots and hyphens
@@ -1013,7 +1043,7 @@ define('linkify', ['exports'], function (exports) {
 	S_EMAIL_COLON.on(NUM, S_EMAIL_PORT);
 
 	// Types of characters the URL can definitely end in
-	var qsAccepting = [DOMAIN, AT, LOCALHOST, NUM, PLUS, POUND, PROTOCOL, SLASH, TLD, UNDERSCORE, SYM];
+	var qsAccepting = [DOMAIN, AT, LOCALHOST, NUM, PLUS, POUND, PROTOCOL, SLASH, TLD, UNDERSCORE, SYM, AMPERSAND];
 
 	// Types of tokens that can follow a URL and be part of the query string
 	// but cannot be the very last characters
@@ -1085,8 +1115,17 @@ define('linkify', ['exports'], function (exports) {
 	// Note: We are not allowing '/' in email addresses since this would interfere
 	// with real URLs
 
+	// For addresses with the mailto prefix
+	// 'mailto:' followed by anything sane is a valid email
+	S_MAILTO$1.on(TLD, S_MAILTO_EMAIL).on(DOMAIN, S_MAILTO_EMAIL).on(NUM, S_MAILTO_EMAIL).on(LOCALHOST, S_MAILTO_EMAIL);
+
+	// Greedily get more potential valid email values
+	S_MAILTO_EMAIL.on(qsAccepting, S_MAILTO_EMAIL).on(qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING);
+	S_MAILTO_EMAIL_NON_ACCEPTING.on(qsAccepting, S_MAILTO_EMAIL).on(qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING);
+
+	// For addresses without the mailto prefix
 	// Tokens allowed in the localpart of the email
-	var localpartAccepting = [DOMAIN, NUM, PLUS, POUND, QUERY, UNDERSCORE, SYM, TLD];
+	var localpartAccepting = [DOMAIN, NUM, PLUS, POUND, QUERY, UNDERSCORE, SYM, AMPERSAND, TLD];
 
 	// Some of the tokens in `localpartAccepting` are already accounted for here and
 	// will not be overwritten (don't worry)
@@ -1176,8 +1215,8 @@ define('linkify', ['exports'], function (exports) {
 	};
 
 	var parser = Object.freeze({
-		State: State,
-		TOKENS: TOKENS$1,
+		State: TokenState,
+		TOKENS: multi,
 		run: run$1,
 		start: S_START$1
 	});
@@ -1202,7 +1241,7 @@ define('linkify', ['exports'], function (exports) {
  	Returns a list of linkable items in the given string.
  */
 	var find = function find(str) {
-		var type = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+		var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
 		var tokens = tokenize(str);
 		var filtered = [];
@@ -1231,7 +1270,7 @@ define('linkify', ['exports'], function (exports) {
  	Will return `true` if str is a valid email.
  */
 	var test = function test(str) {
-		var type = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+		var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
 		var tokens = tokenize(str);
 		return tokens.length === 1 && tokens[0].isLink && (!type || tokens[0].type === type);

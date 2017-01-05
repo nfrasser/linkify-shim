@@ -32,5 +32,6 @@
 
 		return hashtag;
 	}();
+
 	plugin(linkify);
 })(linkify);

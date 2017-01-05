@@ -32,5 +32,6 @@
 
 		return ticket;
 	}();
+
 	plugin(linkify);
 })(linkify);
