@@ -26,7 +26,7 @@ define("simple-html-tokenizer/entity-parser", ["module", "exports"], function (m
     }
     matches = entity.match(NAMED);
     if (matches) {
-      return "&" + matches[1] + ";";
+      return this.named[matches[1]] || "&" + matches[1] + ";";
     }
   };
 
@@ -476,14 +476,20 @@ define('simple-html-tokenizer/evented-tokenizer', ['module', 'exports', './utils
   module.exports = exports['default'];
 });
 define("simple-html-tokenizer/html5-named-char-refs", ["module", "exports"], function (module, exports) {
-  "use strict";
+    "use strict";
 
-  try { try { Object.defineProperty(exports, "__esModule", {
-    value: true
-  }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
-  var HTML5NamedCharRefs = {};
-  exports['default'] = HTML5NamedCharRefs;
-  module.exports = exports["default"];
+    try { try { Object.defineProperty(exports, "__esModule", {
+        value: true
+    }); } catch (e) { exports['__esModule'] = true; } } catch (e) { exports['__esModule'] = true; }
+    var HTML5NamedCharRefs = {
+        // We don't need the complete named character reference because linkifyHtml
+        // does not modify the escape sequences. We do need &nbsp; so that
+        // whitespace is parsed properly. Other types of whitespace should already
+        // be accounted for
+        nbsp: "\xA0"
+    };
+    exports['default'] = HTML5NamedCharRefs;
+    module.exports = exports["default"];
 });
 define('simple-html-tokenizer/index', ['exports', './html5-named-char-refs', './entity-parser', './evented-tokenizer', './tokenizer', './tokenize'], function (exports, _html5NamedCharRefs, _entityParser, _eventedTokenizer, _tokenizer, _tokenize) {
   'use strict';

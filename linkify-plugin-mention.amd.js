@@ -23,6 +23,7 @@ define('linkify/plugins/mention', ['module', 'exports'], function (module, expor
 		var TT_SLASH = TT.SLASH;
 		var TT_TLD = TT.TLD;
 		var TT_UNDERSCORE = TT.UNDERSCORE;
+		var TT_DOT = TT.DOT;
 
 		function MENTION(value) {
 			this.v = value;
@@ -39,14 +40,14 @@ define('linkify/plugins/mention', ['module', 'exports'], function (module, expor
 		var S_AT = S_START.jump(TT.AT); // @
 		var S_AT_SYMS = new State();
 		var S_MENTION = new State(MENTION);
-		var S_MENTION_SLASH = new State();
-		var S_MENTION_SLASH_SYMS = new State();
+		var S_MENTION_DIVIDER = new State();
+		var S_MENTION_DIVIDER_SYMS = new State();
 
 		// @_,
 		S_AT.on(TT_UNDERSCORE, S_AT_SYMS);
 
 		//  @_*
-		S_AT_SYMS.on(TT_UNDERSCORE, S_AT_SYMS);
+		S_AT_SYMS.on(TT_UNDERSCORE, S_AT_SYMS).on(TT_DOT, S_AT_SYMS);
 
 		// Valid mention (not made up entirely of symbols)
 		S_AT.on(TT_DOMAIN, S_MENTION).on(TT_LOCALHOST, S_MENTION).on(TT_TLD, S_MENTION).on(TT_NUM, S_MENTION);
@@ -56,17 +57,17 @@ define('linkify/plugins/mention', ['module', 'exports'], function (module, expor
 		// More valid mentions
 		S_MENTION.on(TT_DOMAIN, S_MENTION).on(TT_LOCALHOST, S_MENTION).on(TT_TLD, S_MENTION).on(TT_NUM, S_MENTION).on(TT_UNDERSCORE, S_MENTION);
 
-		// Mention with a slash
-		S_MENTION.on(TT_SLASH, S_MENTION_SLASH);
+		// Mention with a divider
+		S_MENTION.on(TT_SLASH, S_MENTION_DIVIDER).on(TT_DOT, S_MENTION_DIVIDER);
 
 		// Mention _ trailing stash plus syms
-		S_MENTION_SLASH.on(TT_UNDERSCORE, S_MENTION_SLASH_SYMS);
-		S_MENTION_SLASH_SYMS.on(TT_UNDERSCORE, S_MENTION_SLASH_SYMS);
+		S_MENTION_DIVIDER.on(TT_UNDERSCORE, S_MENTION_DIVIDER_SYMS);
+		S_MENTION_DIVIDER_SYMS.on(TT_UNDERSCORE, S_MENTION_DIVIDER_SYMS);
 
 		// Once we get a word token, mentions can start up again
-		S_MENTION_SLASH.on(TT_DOMAIN, S_MENTION).on(TT_LOCALHOST, S_MENTION).on(TT_TLD, S_MENTION).on(TT_NUM, S_MENTION);
+		S_MENTION_DIVIDER.on(TT_DOMAIN, S_MENTION).on(TT_LOCALHOST, S_MENTION).on(TT_TLD, S_MENTION).on(TT_NUM, S_MENTION);
 
-		S_MENTION_SLASH_SYMS.on(TT_DOMAIN, S_MENTION).on(TT_LOCALHOST, S_MENTION).on(TT_TLD, S_MENTION).on(TT_NUM, S_MENTION);
+		S_MENTION_DIVIDER_SYMS.on(TT_DOMAIN, S_MENTION).on(TT_LOCALHOST, S_MENTION).on(TT_TLD, S_MENTION).on(TT_NUM, S_MENTION);
 	}
 	module.exports = exports['default'];
 });
