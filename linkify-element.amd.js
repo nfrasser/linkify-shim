@@ -144,30 +144,34 @@ define('linkify-element', ['module', 'exports', './linkify'], function (module, 
 		var childElement = element.firstChild;
 
 		while (childElement) {
+			var str = void 0,
+			    tokens = void 0,
+			    nodes = void 0;
 
 			switch (childElement.nodeType) {
 				case HTML_NODE:
 					linkifyElementHelper(childElement, opts, doc);
 					break;
 				case TXT_NODE:
+					{
+						str = childElement.nodeValue;
+						tokens = tokenize(str);
 
-					var str = childElement.nodeValue;
-					var tokens = tokenize(str);
+						if (tokens.length === 0 || tokens.length === 1 && tokens[0] instanceof TEXT_TOKEN) {
+							// No node replacement required
+							break;
+						}
 
-					if (tokens.length === 0 || tokens.length === 1 && tokens[0] instanceof TEXT_TOKEN) {
-						// No node replacement required
+						nodes = tokensToNodes(tokens, opts, doc);
+
+						// Swap out the current child for the set of nodes
+						replaceChildWithChildren(element, childElement, nodes);
+
+						// so that the correct sibling is selected next
+						childElement = nodes[nodes.length - 1];
+
 						break;
 					}
-
-					var nodes = tokensToNodes(tokens, opts, doc);
-
-					// Swap out the current child for the set of nodes
-					replaceChildWithChildren(element, childElement, nodes);
-
-					// so that the correct sibling is selected next
-					childElement = nodes[nodes.length - 1];
-
-					break;
 			}
 
 			childElement = childElement.nextSibling;

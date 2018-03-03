@@ -698,14 +698,16 @@
         var _token = linkifiedTokens[i];
         switch (_token.type) {
           case StartTag:
-            var link = '<' + _token.tagName;
-            if (_token.attributes.length > 0) {
-              var attrs = attrsToStrings(_token.attributes);
-              link += ' ' + attrs.join(' ');
+            {
+              var link = '<' + _token.tagName;
+              if (_token.attributes.length > 0) {
+                var attrs = attrsToStrings(_token.attributes);
+                link += ' ' + attrs.join(' ');
+              }
+              link += '>';
+              linkified.push(link);
+              break;
             }
-            link += '>';
-            linkified.push(link);
-            break;
           case EndTag:
             linkified.push("</" + _token.tagName + ">");
             break;
@@ -746,7 +748,6 @@
         }
 
         var _opts$resolve = opts.resolve(token),
-            href = _opts$resolve.href,
             formatted = _opts$resolve.formatted,
             formattedHref = _opts$resolve.formattedHref,
             tagName = _opts$resolve.tagName,

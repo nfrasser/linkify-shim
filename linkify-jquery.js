@@ -1,10 +1,8 @@
 'use strict';
 
 ;(function (window, linkify, $) {
-	var linkifyJquery = function (jquery, linkify) {
+	var linkifyJquery = function (linkify) {
 		'use strict';
-
-		jquery = 'default' in jquery ? jquery['default'] : jquery;
 
 		/**
   	Linkify a HTML DOM node
@@ -132,30 +130,34 @@
 			var childElement = element.firstChild;
 
 			while (childElement) {
+				var str = void 0,
+				    tokens = void 0,
+				    nodes = void 0;
 
 				switch (childElement.nodeType) {
 					case HTML_NODE:
 						linkifyElementHelper(childElement, opts, doc);
 						break;
 					case TXT_NODE:
+						{
+							str = childElement.nodeValue;
+							tokens = tokenize(str);
 
-						var str = childElement.nodeValue;
-						var tokens = tokenize(str);
+							if (tokens.length === 0 || tokens.length === 1 && tokens[0] instanceof TEXT_TOKEN) {
+								// No node replacement required
+								break;
+							}
 
-						if (tokens.length === 0 || tokens.length === 1 && tokens[0] instanceof TEXT_TOKEN) {
-							// No node replacement required
+							nodes = tokensToNodes(tokens, opts, doc);
+
+							// Swap out the current child for the set of nodes
+							replaceChildWithChildren(element, childElement, nodes);
+
+							// so that the correct sibling is selected next
+							childElement = nodes[nodes.length - 1];
+
 							break;
 						}
-
-						var nodes = tokensToNodes(tokens, opts, doc);
-
-						// Swap out the current child for the set of nodes
-						replaceChildWithChildren(element, childElement, nodes);
-
-						// so that the correct sibling is selected next
-						childElement = nodes[nodes.length - 1];
-
-						break;
 				}
 
 				childElement = childElement.nextSibling;
@@ -221,19 +223,56 @@
 					var data = $this.data();
 					var target = data.linkify;
 					var nl2br = data.linkifyNlbr;
+
 					var options = {
-						attributes: data.linkifyAttributes,
-						defaultProtocol: data.linkifyDefaultProtocol,
-						events: data.linkifyEvents,
-						format: data.linkifyFormat,
-						formatHref: data.linkifyFormatHref,
-						nl2br: !!nl2br && nl2br !== 0 && nl2br !== 'false',
-						tagName: data.linkifyTagname,
-						target: data.linkifyTarget,
-						className: data.linkifyClassName || data.linkifyLinkclass, // linkClass is deprecated
-						validate: data.linkifyValidate,
-						ignoreTags: data.linkifyIgnoreTags
+						nl2br: !!nl2br && nl2br !== 0 && nl2br !== 'false'
 					};
+
+					if ('linkifyAttributes' in data) {
+						options.attributes = data.linkifyAttributes;
+					}
+
+					if ('linkifyDefaultProtocol' in data) {
+						options.defaultProtocol = data.linkifyDefaultProtocol;
+					}
+
+					if ('linkifyEvents' in data) {
+						options.events = data.linkifyEvents;
+					}
+
+					if ('linkifyFormat' in data) {
+						options.format = data.linkifyFormat;
+					}
+
+					if ('linkifyFormatHref' in data) {
+						options.formatHref = data.linkifyFormatHref;
+					}
+
+					if ('linkifyTagname' in data) {
+						options.tagName = data.linkifyTagname;
+					}
+
+					if ('linkifyTarget' in data) {
+						options.target = data.linkifyTarget;
+					}
+
+					if ('linkifyValidate' in data) {
+						options.validate = data.linkifyValidate;
+					}
+
+					if ('linkifyIgnoreTags' in data) {
+						options.ignoreTags = data.linkifyIgnoreTags;
+					}
+
+					if ('linkifyClassName' in data) {
+						options.className = data.linkifyClassName;
+					} else if ('linkifyLinkclass' in data) {
+						// linkClass is deprecated
+						options.className = data.linkifyLinkclass;
+					}
+
+					options = linkifyElement.normalize(options);
+
 					var $target = target === 'this' ? $this : $this.find(target);
 					$target.linkify(options);
 				});
@@ -242,11 +281,11 @@
 
 		// Try assigning linkifyElement to the browser scope
 		try {
-			var a = !define && (window.linkifyElement = linkifyElement);
-		} catch (e) {}
+			!undefined.define && (window.linkifyElement = linkifyElement);
+		} catch (e) {/**/}
 
 		return apply;
-	}($, linkify);
+	}(linkify);
 
 	if (typeof $.fn.linkify !== 'function') {
 		linkifyJquery($);

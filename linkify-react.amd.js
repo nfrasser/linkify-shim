@@ -87,14 +87,12 @@ define('linkify-react', ['module', 'exports', 'react', './linkify'], function (m
 			}
 
 			var _opts$resolve = opts.resolve(token),
-			    href = _opts$resolve.href,
 			    formatted = _opts$resolve.formatted,
 			    formattedHref = _opts$resolve.formattedHref,
 			    tagName = _opts$resolve.tagName,
 			    className = _opts$resolve.className,
 			    target = _opts$resolve.target,
-			    attributes = _opts$resolve.attributes,
-			    events = _opts$resolve.events;
+			    attributes = _opts$resolve.attributes;
 
 			var props = {
 				key: 'linkified-' + ++linkId,
@@ -136,6 +134,8 @@ define('linkify-react', ['module', 'exports', 'react', './linkify'], function (m
 
 		_react2['default'].Children.forEach(element.props.children, function (child) {
 			if (typeof child === 'string') {
+				// ensure that we always generate unique element IDs for keys
+				elementId = elementId + 1;
 				children.push.apply(children, stringToElements(child, opts));
 			} else if (_react2['default'].isValidElement(child)) {
 				if (typeof child.type === 'string' && options.contains(opts.ignoreTags, child.type.toUpperCase())) {
