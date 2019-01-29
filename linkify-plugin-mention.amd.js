@@ -24,6 +24,7 @@ define('linkify/plugins/mention', ['module', 'exports'], function (module, expor
 		var TT_TLD = TT.TLD;
 		var TT_UNDERSCORE = TT.UNDERSCORE;
 		var TT_DOT = TT.DOT;
+		var TT_AT = TT.AT;
 
 		function MENTION(value) {
 			this.v = value;
@@ -58,7 +59,7 @@ define('linkify/plugins/mention', ['module', 'exports'], function (module, expor
 		S_MENTION.on(TT_DOMAIN, S_MENTION).on(TT_LOCALHOST, S_MENTION).on(TT_TLD, S_MENTION).on(TT_NUM, S_MENTION).on(TT_UNDERSCORE, S_MENTION);
 
 		// Mention with a divider
-		S_MENTION.on(TT_SLASH, S_MENTION_DIVIDER).on(TT_DOT, S_MENTION_DIVIDER);
+		S_MENTION.on(TT_SLASH, S_MENTION_DIVIDER).on(TT_DOT, S_MENTION_DIVIDER).on(TT_AT, S_MENTION_DIVIDER);
 
 		// Mention _ trailing stash plus syms
 		S_MENTION_DIVIDER.on(TT_UNDERSCORE, S_MENTION_DIVIDER_SYMS);
